@@ -4,7 +4,7 @@ plugins {
     `kotlin-dsl`
 }
 
-group = "com.tynkovski.messenger.buildlogic"
+group = "com.tynkovski.apps.messenger.buildlogic"
 
 java {
     sourceCompatibility = JavaVersion.VERSION_17

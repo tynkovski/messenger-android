@@ -1,4 +1,4 @@
-package com.tynkovski.messenger
+package com.tynkovski.apps.messenger
 
 import org.junit.Test
 
