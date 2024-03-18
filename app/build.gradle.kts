@@ -18,11 +18,9 @@ android {
 
     defaultConfig {
         applicationId = "com.tynkovski.apps.messenger"
-        //minSdk = 33
-        //targetSdk = 34
+        // minSdk = 33; targetSdk = 34
         versionCode = 1
-        versionName = "1.0" // X.Y.Z; X = Major, Y = minor, Z = Patch level
-
+        versionName = "1.0.0" // X.Y.Z; X = Major, Y = minor, Z = Patch level
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
         vectorDrawables {
             useSupportLibrary = true
@@ -64,6 +62,8 @@ dependencies {
     implementation(projects.core.model)
 
     implementation(projects.feature.rooms)
+
+    implementation(projects.sync.work)
 
     implementation(libs.androidx.activity.compose)
     implementation(libs.androidx.core.ktx)
