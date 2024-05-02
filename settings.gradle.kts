@@ -33,10 +33,11 @@ include(":core:notifications")
 include(":core:testing")
 include(":core:ui")
 
+include(":feature:auth")
 // include(":feature:chat")
 // include(":feature:contacts")
 include(":feature:rooms")
-// include(":feature:search")
+include(":feature:search")
 // include(":feature:settings")
 // include(":feature:user")
 

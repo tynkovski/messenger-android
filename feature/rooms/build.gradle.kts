@@ -12,6 +12,7 @@ dependencies {
     implementation(projects.core.data)
     implementation(projects.core.domain)
     implementation(projects.core.ui)
+    implementation(projects.core.designsystem)
 
     testImplementation(projects.core.testing)
 

@@ -14,11 +14,12 @@ plugins {
 
 android {
     namespace = "com.tynkovski.apps.messenger"
-    //compileSdk = 34
+    compileSdk = 34
 
     defaultConfig {
         applicationId = "com.tynkovski.apps.messenger"
-        // minSdk = 33; targetSdk = 34
+        minSdk = 33
+        targetSdk = 34
         versionCode = 1
         versionName = "1.0.0" // X.Y.Z; X = Major, Y = minor, Z = Patch level
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
@@ -91,4 +92,8 @@ dependencies {
     androidTestImplementation(libs.androidx.navigation.testing)
     androidTestImplementation(libs.accompanist.testharness)
     androidTestImplementation(libs.hilt.android.testing)
+
+    // todo remove coil
+    implementation(libs.coil.kt)
+    implementation(libs.coil.kt.compose)
 }
