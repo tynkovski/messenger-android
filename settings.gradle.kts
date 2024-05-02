@@ -38,7 +38,7 @@ include(":feature:auth")
 // include(":feature:contacts")
 include(":feature:rooms")
 include(":feature:search")
-// include(":feature:settings")
+include(":feature:settings")
 // include(":feature:user")
 
 include(":sync:work")
