@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 
 <resources>
-    <string name="text">Text</string>
+    <string name="feature_auth_title_auth">Auth</string>
 
 </resources>
