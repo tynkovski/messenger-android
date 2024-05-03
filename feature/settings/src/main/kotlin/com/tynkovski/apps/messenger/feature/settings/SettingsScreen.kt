@@ -1,5 +1,6 @@
 package com.tynkovski.apps.messenger.feature.settings
 
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
@@ -18,7 +19,7 @@ internal fun SettingsScreen(
     modifier: Modifier = Modifier,
 ) {
     Text(
-        modifier = Modifier,
+        modifier = Modifier.fillMaxSize(),
         text = "Settings"
     )
 }
