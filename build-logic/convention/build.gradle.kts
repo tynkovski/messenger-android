@@ -85,10 +85,10 @@ gradlePlugin {
             id = "messenger.android.application.flavors"
             implementationClass = "AndroidApplicationFlavorsConventionPlugin"
         }
-//        register("androidLint") {
-//            id = "messenger.android.lint"
-//            implementationClass = "AndroidLintConventionPlugin"
-//        }
+        register("androidLint") {
+            id = "messenger.android.lint"
+            implementationClass = "AndroidLintConventionPlugin"
+        }
         register("jvmLibrary") {
             id = "messenger.jvm.library"
             implementationClass = "JvmLibraryConventionPlugin"

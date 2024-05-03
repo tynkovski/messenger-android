@@ -6,15 +6,15 @@ import androidx.navigation.NavOptions
 import androidx.navigation.compose.composable
 import com.tynkovski.apps.messenger.feature.contacts.ContactsRoute
 
-const val _ROUTE = "_route"
+const val CONTACTS_ROUTE = "contacts_route"
 
-fun NavController.navigateToContacts(navOptions: NavOptions) = navigate(_ROUTE, navOptions)
+fun NavController.navigateToContacts(navOptions: NavOptions) = navigate(CONTACTS_ROUTE, navOptions)
 
-fun NavGraphBuilder.ContactsScreen(
+fun NavGraphBuilder.contactsScreen(
 
 ) {
     composable(
-        route = _ROUTE,
+        route = CONTACTS_ROUTE,
         arguments = listOf(),
     ) {
         ContactsRoute()

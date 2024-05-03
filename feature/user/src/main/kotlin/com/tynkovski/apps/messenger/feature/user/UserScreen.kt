@@ -6,6 +6,7 @@ import androidx.hilt.navigation.compose.hiltViewModel
 
 @Composable
 internal fun UserRoute(
+    onBackClick: () -> Unit,
     modifier: Modifier = Modifier,
     viewModel: UserViewModel = hiltViewModel(),
 ) {

@@ -6,15 +6,15 @@ import androidx.navigation.NavOptions
 import androidx.navigation.compose.composable
 import com.tynkovski.apps.messenger.feature.chats.ChatsRoute
 
-const val _ROUTE = "_route"
+const val CHATS_ROUTE = "chats_route"
 
-fun NavController.navigateToChats(navOptions: NavOptions) = navigate(_ROUTE, navOptions)
+fun NavController.navigateToChats(navOptions: NavOptions) = navigate(CHATS_ROUTE, navOptions)
 
-fun NavGraphBuilder.ChatsScreen(
+fun NavGraphBuilder.chatsScreen(
 
 ) {
     composable(
-        route = _ROUTE,
+        route = CHATS_ROUTE,
         arguments = listOf(),
     ) {
         ChatsRoute()

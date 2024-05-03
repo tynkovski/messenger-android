@@ -171,17 +171,34 @@ room = { id = "androidx.room", version.ref = "room" }
 secrets = { id = "com.google.android.libraries.mapsplatform.secrets-gradle-plugin", version.ref = "secrets" }
 
 # Plugins defined by this project
-messenger-android-application          = { id = "messenger.android.application",          version = "unspecified" }
-messenger-android-application-compose  = { id = "messenger.android.application.compose",  version = "unspecified" }
-messenger-android-application-flavors  = { id = "messenger.android.application.flavors",  version = "unspecified" }
-messenger-android-application-jacoco   = { id = "messenger.android.application.jacoco",   version = "unspecified" }
-messenger-android-feature              = { id = "messenger.android.feature",              version = "unspecified" }
-messenger-android-hilt                 = { id = "messenger.android.hilt",                 version = "unspecified" }
-messenger-android-library              = { id = "messenger.android.library",              version = "unspecified" }
-messenger-android-library-compose      = { id = "messenger.android.library.compose",      version = "unspecified" }
-messenger-android-library-jacoco       = { id = "messenger.android.library.jacoco",       version = "unspecified" }
-messenger-android-room                 = { id = "messenger.android.room",                 version = "unspecified" }
-messenger-jvm-library                  = { id = "messenger.jvm.library",                  version = "unspecified" }
-messenger-android-test                 = { id = "messenger.android.test",                 version = "unspecified" }
-# messenger-android-lint                 = { id = "messenger.android.lint",                 version = "unspecified" }
-# messenger-android-application-firebase = { id = "messenger.android.application.firebase", version = "unspecified" }
+
+messenger-android-application = { id = "messenger.android.application", version = "unspecified" }
+messenger-android-application-compose = { id = "messenger.android.application.compose", version = "unspecified" }
+messenger-android-application-firebase = { id = "messenger.android.application.firebase", version = "unspecified" }
+messenger-android-application-flavors = { id = "messenger.android.application.flavors", version = "unspecified" }
+messenger-android-application-jacoco = { id = "messenger.android.application.jacoco", version = "unspecified" }
+messenger-android-feature = { id = "messenger.android.feature", version = "unspecified" }
+messenger-android-hilt = { id = "messenger.android.hilt", version = "unspecified" }
+messenger-android-library = { id = "messenger.android.library", version = "unspecified" }
+messenger-android-library-compose = { id = "messenger.android.library.compose", version = "unspecified" }
+messenger-android-library-jacoco = { id = "messenger.android.library.jacoco", version = "unspecified" }
+messenger-android-lint = { id = "messenger.android.lint", version = "unspecified" }
+messenger-android-room = { id = "messenger.android.room", version = "unspecified" }
+messenger-android-test = { id = "messenger.android.test", version = "unspecified" }
+messenger-jvm-library = { id = "messenger.jvm.library", version = "unspecified" }
+
+# old todo delete
+#messenger-android-application          = { id = "messenger.android.application",          version = "unspecified" }
+#messenger-android-application-compose  = { id = "messenger.android.application.compose",  version = "unspecified" }
+#messenger-android-application-flavors  = { id = "messenger.android.application.flavors",  version = "unspecified" }
+#messenger-android-application-jacoco   = { id = "messenger.android.application.jacoco",   version = "unspecified" }
+#messenger-android-feature              = { id = "messenger.android.feature",              version = "unspecified" }
+#messenger-android-hilt                 = { id = "messenger.android.hilt",                 version = "unspecified" }
+#messenger-android-library              = { id = "messenger.android.library",              version = "unspecified" }
+#messenger-android-library-compose      = { id = "messenger.android.library.compose",      version = "unspecified" }
+#messenger-android-library-jacoco       = { id = "messenger.android.library.jacoco",       version = "unspecified" }
+#messenger-android-room                 = { id = "messenger.android.room",                 version = "unspecified" }
+#messenger-jvm-library                  = { id = "messenger.jvm.library",                  version = "unspecified" }
+#messenger-android-test                 = { id = "messenger.android.test",                 version = "unspecified" }
+## messenger-android-lint                 = { id = "messenger.android.lint",                 version = "unspecified" }
+## messenger-android-application-firebase = { id = "messenger.android.application.firebase", version = "unspecified" }

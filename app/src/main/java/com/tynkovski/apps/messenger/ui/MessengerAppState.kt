@@ -15,7 +15,14 @@ import androidx.navigation.navOptions
 import androidx.tracing.trace
 import com.tynkovski.apps.messenger.core.data.util.NetworkMonitor
 import com.tynkovski.apps.messenger.core.data.util.TimeZoneMonitor
+import com.tynkovski.apps.messenger.feature.auth.navigation.navigateToAuth
+import com.tynkovski.apps.messenger.feature.chat.navigation.navigateToChat
+import com.tynkovski.apps.messenger.feature.chats.navigation.CHATS_ROUTE
 import com.tynkovski.apps.messenger.feature.chats.navigation.navigateToChats
+import com.tynkovski.apps.messenger.feature.contacts.navigation.CONTACTS_ROUTE
+import com.tynkovski.apps.messenger.feature.contacts.navigation.navigateToContacts
+import com.tynkovski.apps.messenger.feature.settings.navigation.SETTINGS_ROUTE
+import com.tynkovski.apps.messenger.feature.settings.navigation.navigateToSettings
 import com.tynkovski.apps.messenger.navigation.TopLevelDestination
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.flow.SharingStarted
@@ -56,7 +63,9 @@ class MessengerAppState(
     networkMonitor: NetworkMonitor,
     timeZoneMonitor: TimeZoneMonitor,
 ) {
-    val currentDestination: NavDestination? @Composable get() = navController.currentBackStackEntryAsState().value?.destination
+    val shouldShowBottomBar = true // todo use `windowSizeClass.widthSizeClass == WindowWidthSizeClass.Compact`
+
+    val topLevelDestinations: List<TopLevelDestination> = TopLevelDestination.entries
 
     val currentTopLevelDestination: TopLevelDestination?
         @Composable get() = when (currentDestination?.route) {
@@ -66,11 +75,8 @@ class MessengerAppState(
             else -> null
         }
 
-    val shouldShowBottomBar: Boolean
-        get() = windowSizeClass.widthSizeClass == WindowWidthSizeClass.Compact
-
-    val shouldShowNavRail: Boolean
-        get() = !shouldShowBottomBar
+    val currentDestination: NavDestination?
+        @Composable get() = navController.currentBackStackEntryAsState().value?.destination
 
     val isOffline = networkMonitor.isOnline
         .map(Boolean::not)
@@ -80,11 +86,6 @@ class MessengerAppState(
             initialValue = false,
         )
 
-    /**
-     * Map of top level destinations to be used in the TopBar, BottomBar and NavRail. The key is the
-     * route.
-     */
-    val topLevelDestinations: List<TopLevelDestination> = TopLevelDestination.entries
 
     val currentTimeZone = timeZoneMonitor.currentTimeZone.stateIn(
         coroutineScope,
@@ -92,13 +93,6 @@ class MessengerAppState(
         TimeZone.currentSystemDefault(),
     )
 
-    /**
-     * UI logic for navigating to a top level destination in the app. Top level destinations have
-     * only one copy of the destination of the back stack, and save and restore state whenever you
-     * navigate to and from it.
-     *
-     * @param topLevelDestination: The destination the app needs to navigate to.
-     */
     fun navigateToTopLevelDestination(topLevelDestination: TopLevelDestination) {
         trace("Navigation: ${topLevelDestination.name}") {
             val topLevelNavOptions = navOptions {
@@ -117,13 +111,5 @@ class MessengerAppState(
         }
     }
 
-    fun navigateToHome() = navController.navigateToHome()
-
     fun navigateToAuth() = navController.navigateToAuth()
-
-    fun navigateToSearch() = navController.navigateToSearch()
-
-    fun navigateToChat() = navController.navigateToChat()
-
-    fun navigateToUser() = navController.navigateToUser()
 }

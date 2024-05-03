@@ -6,15 +6,15 @@ import androidx.navigation.NavOptions
 import androidx.navigation.compose.composable
 import com.tynkovski.apps.messenger.feature.settings.SettingsRoute
 
-const val _ROUTE = "_route"
+const val SETTINGS_ROUTE = "settings_route"
 
-fun NavController.navigateToSettings(navOptions: NavOptions) = navigate(_ROUTE, navOptions)
+fun NavController.navigateToSettings(navOptions: NavOptions) = navigate(SETTINGS_ROUTE, navOptions)
 
-fun NavGraphBuilder.SettingsScreen(
+fun NavGraphBuilder.settingsScreen(
 
 ) {
     composable(
-        route = _ROUTE,
+        route = SETTINGS_ROUTE,
         arguments = listOf(),
     ) {
         SettingsRoute()

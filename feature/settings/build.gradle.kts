@@ -4,7 +4,6 @@ plugins {
     alias(libs.plugins.messenger.android.library.jacoco)
 }
 
-
 android {
     namespace = "com.tynkovski.apps.messenger.feature.settings"
 }

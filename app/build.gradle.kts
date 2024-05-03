@@ -57,9 +57,12 @@ android {
 
 dependencies {
     // feature-modules here
+    implementation(projects.feature.auth)
     implementation(projects.feature.contacts)
     implementation(projects.feature.chats)
     implementation(projects.feature.settings)
+    implementation(projects.feature.chat)
+    implementation(projects.feature.user)
 
     // core modules here
     implementation(projects.core.common)

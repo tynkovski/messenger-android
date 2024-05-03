@@ -6,15 +6,15 @@ import androidx.navigation.NavOptions
 import androidx.navigation.compose.composable
 import com.tynkovski.apps.messenger.feature.search.SearchRoute
 
-const val _ROUTE = "_route"
+const val SEARCH_ROUTE = "search_route"
 
-fun NavController.navigateToSearch(navOptions: NavOptions) = navigate(_ROUTE, navOptions)
+fun NavController.navigateToSearch(navOptions: NavOptions) = navigate(SEARCH_ROUTE, navOptions)
 
-fun NavGraphBuilder.SearchScreen(
+fun NavGraphBuilder.searchScreen(
 
 ) {
     composable(
-        route = _ROUTE,
+        route = SEARCH_ROUTE,
         arguments = listOf(),
     ) {
         SearchRoute()
