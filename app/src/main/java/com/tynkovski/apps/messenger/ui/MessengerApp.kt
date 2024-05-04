@@ -60,8 +60,8 @@ fun MessengerApp(
         }
 
         MessengerApp(
-            appState=appState,
-            snackbarHostState=snackbarHostState,
+            appState = appState,
+            snackbarHostState = snackbarHostState,
         )
     }
 }
@@ -97,15 +97,6 @@ fun MessengerApp(
 
             val shouldShowTopAppBar = destination != null
 
-            if (destination != null) {
-                MessengerTopAppBar(
-                    titleRes = destination.titleTextId,
-                    colors = TopAppBarDefaults.centerAlignedTopAppBarColors(
-                        containerColor = Color.Transparent,
-                    )
-                )
-            }
-
             val boxModifier = if (shouldShowTopAppBar) {
                 Modifier.consumeWindowInsets(
                     WindowInsets.safeDrawing.only(WindowInsetsSides.Top),
@@ -122,6 +113,15 @@ fun MessengerApp(
                             duration = SnackbarDuration.Short,
                         ) == SnackbarResult.ActionPerformed
                     }
+                )
+            }
+
+            if (destination != null) {
+                MessengerTopAppBar(
+                    titleRes = destination.titleTextId,
+                    colors = TopAppBarDefaults.centerAlignedTopAppBarColors(
+                        containerColor = Color.Transparent,
+                    )
                 )
             }
         }

@@ -1,0 +1,48 @@
+package com.tynkovski.apps.messenger.core.network.impl
+
+import androidx.tracing.trace
+import com.jakewharton.retrofit2.converter.kotlinx.serialization.asConverterFactory
+import com.tynkovski.apps.messenger.core.network.AuthDataSource
+import com.tynkovski.apps.messenger.core.network.BuildConfig
+import com.tynkovski.apps.messenger.core.network.model.AccessResponse
+import com.tynkovski.apps.messenger.core.network.model.TokenResponse
+import com.tynkovski.apps.messenger.core.network.retrofit.AuthNetworkApi
+import kotlinx.serialization.json.Json
+import okhttp3.Call
+import okhttp3.MediaType.Companion.toMediaType
+import retrofit2.Retrofit
+
+private const val BASE_URL = BuildConfig.BACKEND_URL
+
+class AuthDataSourceImpl(
+    networkJson: Json,
+    okhttpCallFactory: dagger.Lazy<Call.Factory>,
+): AuthDataSource {
+
+    private val api = trace("AuthNetworkApi") {
+        Retrofit.Builder()
+            .baseUrl(BASE_URL)
+            .callFactory { okhttpCallFactory.get().newCall(it) }
+            .addConverterFactory(
+                networkJson.asConverterFactory("application/json".toMediaType()),
+            )
+            .build()
+            .create(AuthNetworkApi::class.java)
+    }
+
+    override suspend fun signUp(name: String?, login: String, password: String): TokenResponse {
+        return api.signUp(name, login, password).data
+    }
+
+    override suspend fun signIn(login: String, password: String): TokenResponse {
+        return api.signIn(login, password).data
+    }
+
+    override suspend fun refreshToken(refreshToken: String): AccessResponse {
+        return api.refreshToken(refreshToken).data
+    }
+
+    override suspend fun logout(refreshToken: String) {
+        return api.logout(refreshToken).data
+    }
+}
