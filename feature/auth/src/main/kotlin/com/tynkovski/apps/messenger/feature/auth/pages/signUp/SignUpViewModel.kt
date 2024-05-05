@@ -1,11 +1,11 @@
-package com.tynkovski.apps.messenger.feature.auth
+package com.tynkovski.apps.messenger.feature.auth.pages.signUp
 
 import androidx.lifecycle.ViewModel
 import dagger.hilt.android.lifecycle.HiltViewModel
 import javax.inject.Inject
 
 @HiltViewModel
-class AuthViewModel @Inject constructor(
+class SignUpViewModel @Inject constructor(
 
 ) : ViewModel() {
 

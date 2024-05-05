@@ -21,8 +21,7 @@ private val Context.dataStore: DataStore<Preferences> by preferencesDataStore(
 
 @Module
 @InstallIn(SingletonComponent::class)
-abstract class DataStoreModule {
-
+ class DataStoreModule {
     @Provides
     @Singleton
     fun provideDataStorePreferences(@ApplicationContext context: Context): DataStore<Preferences> {
@@ -34,9 +33,13 @@ abstract class DataStoreModule {
 //    fun provideMessengerPreferencesDataSource(@ApplicationContext context: Context): MessengerPreferencesDataSource {
 //        return MessengerPreferencesDataSource(...)
 //    }
+}
 
+@Module
+@InstallIn(SingletonComponent::class)
+interface TokenHolderModule {
     @Binds
-    internal abstract fun bindsTokenHolder(
+    fun bindsTokenHolder(
         tokenHolderImpl: TokenHolderImpl
     ): TokenHolder
 }

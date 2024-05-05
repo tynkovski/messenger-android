@@ -5,7 +5,10 @@ import androidx.tracing.trace
 import coil.ImageLoader
 import coil.decode.SvgDecoder
 import coil.util.DebugLogger
+import com.tynkovski.apps.messenger.core.network.AuthDataSource
 import com.tynkovski.apps.messenger.core.network.BuildConfig
+import com.tynkovski.apps.messenger.core.network.impl.AuthDataSourceImpl
+import dagger.Binds
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -61,5 +64,6 @@ internal object NetworkModule {
             }
             .build()
     }
+
 
 }

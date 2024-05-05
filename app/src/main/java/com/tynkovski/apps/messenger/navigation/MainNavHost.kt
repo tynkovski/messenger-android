@@ -13,7 +13,7 @@ import com.tynkovski.apps.messenger.feature.settings.navigation.settingsScreen
 import com.tynkovski.apps.messenger.ui.MessengerAppState
 
 @Composable
-fun MessengerNavHost(
+fun MainNavHost(
     appState: MessengerAppState,
     onShowSnackbar: suspend (message: String, action: String?) -> Boolean,
     modifier: Modifier = Modifier,

@@ -31,18 +31,18 @@ class AuthDataSourceImpl(
     }
 
     override suspend fun signUp(name: String?, login: String, password: String): TokenResponse {
-        return api.signUp(name, login, password).data
+        return api.signUp(AuthNetworkApi.SignUpRequest(name, login, password)).data
     }
 
     override suspend fun signIn(login: String, password: String): TokenResponse {
-        return api.signIn(login, password).data
+        return api.signIn(AuthNetworkApi.SignInRequest(login, password)).data
     }
 
     override suspend fun refreshToken(refreshToken: String): AccessResponse {
-        return api.refreshToken(refreshToken).data
+        return api.refreshToken(AuthNetworkApi.RefreshTokenRequest(refreshToken)).data
     }
 
     override suspend fun logout(refreshToken: String) {
-        return api.logout(refreshToken).data
+        return api.logout(AuthNetworkApi.RefreshTokenRequest(refreshToken)).data
     }
 }

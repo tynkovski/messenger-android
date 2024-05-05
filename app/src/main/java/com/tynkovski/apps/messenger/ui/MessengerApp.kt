@@ -1,53 +1,47 @@
 package com.tynkovski.apps.messenger.ui
 
-import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.WindowInsets
-import androidx.compose.foundation.layout.WindowInsetsSides
-import androidx.compose.foundation.layout.consumeWindowInsets
-import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.only
-import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.safeDrawing
-import androidx.compose.material3.ExperimentalMaterial3Api
-import androidx.compose.material3.Icon
-import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.Scaffold
+import androidx.compose.animation.AnimatedContent
+import androidx.compose.animation.SizeTransform
+import androidx.compose.animation.core.tween
+import androidx.compose.animation.fadeIn
+import androidx.compose.animation.fadeOut
+import androidx.compose.animation.togetherWith
 import androidx.compose.material3.SnackbarDuration
-import androidx.compose.material3.SnackbarHost
 import androidx.compose.material3.SnackbarHostState
-import androidx.compose.material3.SnackbarResult
-import androidx.compose.material3.Text
-import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
-import androidx.compose.ui.ExperimentalComposeUiApi
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.composed
-import androidx.compose.ui.draw.drawWithContent
-import androidx.compose.ui.geometry.Offset
-import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
-import androidx.navigation.NavDestination
-import androidx.navigation.NavDestination.Companion.hierarchy
+import com.tynkovski.apps.messenger.core.data.util.NetworkMonitor
+import com.tynkovski.apps.messenger.core.data.util.TimeZoneMonitor
 import com.tynkovski.apps.messenger.core.designsystem.component.MessengerBackground
-import com.tynkovski.apps.messenger.core.designsystem.component.MessengerNavigationBar
-import com.tynkovski.apps.messenger.core.designsystem.component.MessengerNavigationBarItem
-import com.tynkovski.apps.messenger.core.designsystem.component.MessengerTopAppBar
-import com.tynkovski.apps.messenger.navigation.MessengerNavHost
-import com.tynkovski.apps.messenger.navigation.TopLevelDestination
+import com.tynkovski.apps.messenger.core.ui.LocalTimeZone
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.flow.SharingStarted
+import kotlinx.coroutines.flow.collect
+import kotlinx.coroutines.flow.stateIn
+import kotlinx.datetime.TimeZone
 
 @Composable
 fun MessengerApp(
-    appState: MessengerAppState,
-    modifier: Modifier = Modifier
+    authenticated: Boolean,
+    timeZoneMonitor: TimeZoneMonitor,
+    networkMonitor: NetworkMonitor,
+    modifier: Modifier = Modifier,
 ) {
     MessengerBackground(modifier = modifier) {
-        val isOffline by appState.isOffline.collectAsStateWithLifecycle()
+        val currentTimeZone by timeZoneMonitor.currentTimeZone.collectAsStateWithLifecycle(
+            initialValue = TimeZone.currentSystemDefault()
+        )
+
+        val isOffline by networkMonitor.isOnline.collectAsStateWithLifecycle(
+            initialValue = false
+        )
+
         val snackbarHostState = remember { SnackbarHostState() }
 
         LaunchedEffect(isOffline) {
@@ -59,126 +53,48 @@ fun MessengerApp(
             }
         }
 
-        MessengerApp(
-            appState = appState,
-            snackbarHostState = snackbarHostState,
-        )
-    }
-}
-
-@Composable
-@OptIn(ExperimentalMaterial3Api::class, ExperimentalComposeUiApi::class)
-fun MessengerApp(
-    appState: MessengerAppState,
-    snackbarHostState: SnackbarHostState,
-    modifier: Modifier = Modifier
-) {
-    Scaffold(
-        modifier = modifier,
-        containerColor = Color.Transparent,
-        contentColor = MaterialTheme.colorScheme.onBackground,
-        contentWindowInsets = WindowInsets(0, 0, 0, 0),
-        snackbarHost = { SnackbarHost(snackbarHostState) },
-        bottomBar = {
-            MessengerBottomBar(
-                destinations = appState.topLevelDestinations,
-                currentDestination = appState.currentDestination,
-                onNavigateToDestination = appState::navigateToTopLevelDestination,
-                modifier = Modifier,
-            )
-        }
-    ) { padding ->
-        Column(
-            Modifier
-                .fillMaxSize()
-                .padding(padding)
+        CompositionLocalProvider(
+            LocalTimeZone provides currentTimeZone,
         ) {
-            val destination = appState.currentTopLevelDestination
-
-            val shouldShowTopAppBar = destination != null
-
-            val boxModifier = if (shouldShowTopAppBar) {
-                Modifier.consumeWindowInsets(
-                    WindowInsets.safeDrawing.only(WindowInsetsSides.Top),
-                )
-            } else Modifier
-
-            Box(boxModifier) {
-                MessengerNavHost(
+            if (authenticated) {
+                val appState = rememberMessengerAppState()
+                MainScreen(
                     appState = appState,
-                    onShowSnackbar = { message, action ->
-                        snackbarHostState.showSnackbar(
-                            message = message,
-                            actionLabel = action,
-                            duration = SnackbarDuration.Short,
-                        ) == SnackbarResult.ActionPerformed
-                    }
+                    snackbarHostState = snackbarHostState
+                )
+            } else {
+                val authState = rememberMessengerAuthState()
+                AuthScreen(
+                    authState = authState,
+                    snackbarHostState = snackbarHostState
                 )
             }
 
-            if (destination != null) {
-                MessengerTopAppBar(
-                    titleRes = destination.titleTextId,
-                    colors = TopAppBarDefaults.centerAlignedTopAppBarColors(
-                        containerColor = Color.Transparent,
-                    )
-                )
-            }
+//            AnimatedContent(
+//                targetState = authenticated,
+//                modifier = modifier,
+//                transitionSpec = {
+//                    val tweenSpec = tween<Float>(200)
+//                    val start = fadeIn(animationSpec = tweenSpec)
+//                    val end = fadeOut(animationSpec = tweenSpec)
+//                    start.togetherWith(end).using(SizeTransform(clip = false))
+//                },
+//                label = "AnimatedContent Main Auth Screen",
+//            ) {
+//                if (it) {
+//                    val appState = rememberMessengerAppState()
+//                    MainScreen(
+//                        appState = appState,
+//                        snackbarHostState = snackbarHostState
+//                    )
+//                } else {
+//                    val authState = rememberMessengerAuthState()
+//                    AuthScreen(
+//                        authState = authState,
+//                        snackbarHostState = snackbarHostState
+//                    )
+//                }
+//            }
         }
-    }
-}
-
-@Composable
-private fun MessengerBottomBar(
-    destinations: List<TopLevelDestination>,
-    currentDestination: NavDestination?,
-    onNavigateToDestination: (TopLevelDestination) -> Unit,
-    modifier: Modifier = Modifier,
-) {
-    MessengerNavigationBar(
-        modifier = modifier
-    ) {
-        destinations.forEach { destination ->
-            val selected = currentDestination.isTopLevelDestinationInHierarchy(destination)
-            MessengerNavigationBarItem(
-                selected = selected,
-                onClick = { onNavigateToDestination(destination) },
-                icon = {
-                    Icon(
-                        imageVector = destination.unselectedIcon,
-                        contentDescription = null,
-                    )
-                },
-                selectedIcon = {
-                    Icon(
-                        imageVector = destination.selectedIcon,
-                        contentDescription = null,
-                    )
-                },
-                label = { Text(stringResource(destination.iconTextId)) },
-                modifier = Modifier,
-            )
-        }
-    }
-}
-
-private fun NavDestination?.isTopLevelDestinationInHierarchy(destination: TopLevelDestination) =
-    this?.hierarchy?.any {
-        it.route?.contains(destination.name, true) ?: false
-    } ?: false
-
-// for unread messages in chats
-private fun Modifier.notificationDot(): Modifier = composed {
-    val tertiaryColor = MaterialTheme.colorScheme.tertiary
-    drawWithContent {
-        drawContent()
-        drawCircle(
-            tertiaryColor,
-            radius = 5.dp.toPx(),
-            center = center + Offset(
-                64.dp.toPx() * .45f,
-                32.dp.toPx() * -.45f - 6.dp.toPx(),
-            )
-        )
     }
 }
