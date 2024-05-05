@@ -4,6 +4,8 @@ import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.tynkovski.apps.messenger.core.data.repository.AuthRepository
+import com.tynkovski.apps.messenger.core.domain.LoginUserUsecase
+import com.tynkovski.apps.messenger.core.domain.RegisterUserUsecase
 import com.tynkovski.apps.messenger.core.onError
 import com.tynkovski.apps.messenger.core.onLoading
 import com.tynkovski.apps.messenger.core.onSuccess
@@ -17,13 +19,13 @@ import javax.inject.Inject
 
 @HiltViewModel
 class SignInViewModel @Inject constructor(
-    private val authRepository: AuthRepository
+    private val loginUserUsecase: LoginUserUsecase,
 ) : ViewModel() {
     private val _buttonState = MutableStateFlow(SignInButtonState.Success)
 
     fun signIn(login: String, password: String) {
         viewModelScope.launch {
-            authRepository.signIn(login, password)
+            loginUserUsecase(login, password)
                 .onSuccess {
                     Log.d("SignInViewModel.signIn", "${it.javaClass.simpleName} $it")
                     _buttonState.value = SignInButtonState.Success
