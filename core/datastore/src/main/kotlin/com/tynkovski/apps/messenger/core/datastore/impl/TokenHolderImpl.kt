@@ -11,19 +11,19 @@ import javax.inject.Inject
 class TokenHolderImpl @Inject constructor(
     private val messengerPreferencesDataSource: MessengerPreferencesDataSource,
 ) : TokenHolder {
-    override suspend fun getAccessToken(): String {
-        val flow = messengerPreferencesDataSource
-            .tokenPreferencesFlow
-            .map { it.accessToken }
-        return flow.firstOrNull() ?: ""
-    }
-
-    override suspend fun getRefreshToken(): String {
-        val flow = messengerPreferencesDataSource
-            .tokenPreferencesFlow
-            .map { it.refreshToken }
-        return flow.firstOrNull() ?: ""
-    }
+//    override suspend fun getAccessToken(): String {
+//        val flow = messengerPreferencesDataSource
+//            .tokenPreferencesFlow
+//            .map { it.accessToken }
+//        return flow.firstOrNull() ?: ""
+//    }
+//
+//    override suspend fun getRefreshToken(): String {
+//        val flow = messengerPreferencesDataSource
+//            .tokenPreferencesFlow
+//            .map { it.refreshToken }
+//        return flow.firstOrNull() ?: ""
+//    }
 
     override suspend fun setAccessToken(accessToken: String) {
         messengerPreferencesDataSource.setAccessToken(accessToken)

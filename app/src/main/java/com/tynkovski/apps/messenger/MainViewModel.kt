@@ -14,10 +14,19 @@ import javax.inject.Inject
 class MainActivityViewModel @Inject constructor(
     tokenHolder: TokenHolder,
 ) : ViewModel() {
-    val hasToken: StateFlow<Boolean> = tokenHolder.getTokenFlow()
-        .map { it.accessToken.isNotEmpty() }.stateIn(
+    val tokenState: StateFlow<TokenState> = tokenHolder
+        .getTokenFlow()
+        .map {
+            TokenState.Success(it.accessToken.isNotEmpty())
+        }.stateIn(
             scope = viewModelScope,
-            initialValue = false,
-            started = SharingStarted.WhileSubscribed(5_000),
+            initialValue = TokenState.Loading,
+            started = SharingStarted.WhileSubscribed(),
         )
+
+    sealed interface TokenState {
+        data object Loading : TokenState
+        data class Success(val hasToken: Boolean) : TokenState
+        fun authenticated(): Boolean = this is Success && this.hasToken
+    }
 }

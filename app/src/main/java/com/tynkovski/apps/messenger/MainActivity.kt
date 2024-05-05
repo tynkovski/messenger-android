@@ -45,27 +45,24 @@ class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         val splashScreen = installSplashScreen()
         super.onCreate(savedInstanceState)
-        // todo should add splashScreen.setKeepOnScreenCondition {
-        //      when (authViewModel.getAuthStatus().state().isLoading()) {
-        //          AuthStatusState.IsLoading -> true
-        //          AuthStatusState.Success -> false
-        //      }
-        // }
 
-        var hasToken: Boolean by mutableStateOf(false)
+        var tokenState: MainActivityViewModel.TokenState by mutableStateOf(MainActivityViewModel.TokenState.Loading)
         lifecycleScope.launch {
             lifecycle.repeatOnLifecycle(Lifecycle.State.STARTED) {
-                viewModel.hasToken
-                    .onEach { hasToken = it }
+                viewModel.tokenState
+                    .onEach { tokenState = it }
                     .collect()
             }
         }
 
+        splashScreen.setKeepOnScreenCondition {
+            when (tokenState) {
+                MainActivityViewModel.TokenState.Loading -> true
+                is MainActivityViewModel.TokenState.Success -> false
+            }
+        }
+
         setContent {
-//            val testHasToken by viewModel.hasToken.collectAsStateWithLifecycle(
-//                initialValue = false,
-//                lifecycle = lifecycle
-//            )
             val isSystemInDarkTheme = isSystemInDarkTheme()
             DisposableEffect(false) {
                 enableEdgeToEdge(
@@ -83,7 +80,7 @@ class MainActivity : ComponentActivity() {
 
             MessengerTheme {
                 MessengerApp(
-                    authenticated = hasToken,
+                    authenticated = tokenState.authenticated(),
                     timeZoneMonitor = timeZoneMonitor,
                     networkMonitor = networkMonitor
                 )

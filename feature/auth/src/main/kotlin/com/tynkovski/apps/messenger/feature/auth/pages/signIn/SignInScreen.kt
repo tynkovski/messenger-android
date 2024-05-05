@@ -46,6 +46,5 @@ internal fun SignInScreen(
                 Text("to sign up")
             }
         }
-
     }
 }
