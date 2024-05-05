@@ -11,8 +11,3 @@ data class TokenResponse(
     val accessToken: String,
     val refreshToken: String
 )
-
-fun TokenResponse.asExternalModel() = Token(
-    accessToken = accessToken,
-    refreshToken = refreshToken
-)

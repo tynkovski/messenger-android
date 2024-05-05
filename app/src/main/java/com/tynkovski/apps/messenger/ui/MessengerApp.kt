@@ -13,17 +13,13 @@ import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
-import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Modifier
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.tynkovski.apps.messenger.core.data.util.NetworkMonitor
 import com.tynkovski.apps.messenger.core.data.util.TimeZoneMonitor
 import com.tynkovski.apps.messenger.core.designsystem.component.MessengerBackground
 import com.tynkovski.apps.messenger.core.ui.LocalTimeZone
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.flow.SharingStarted
-import kotlinx.coroutines.flow.collect
-import kotlinx.coroutines.flow.stateIn
+import kotlinx.coroutines.flow.map
 import kotlinx.datetime.TimeZone
 
 @Composable
@@ -38,9 +34,9 @@ fun MessengerApp(
             initialValue = TimeZone.currentSystemDefault()
         )
 
-        val isOffline by networkMonitor.isOnline.collectAsStateWithLifecycle(
-            initialValue = false
-        )
+        val isOffline by networkMonitor.isOnline
+            .map(Boolean::not)
+            .collectAsStateWithLifecycle(initialValue = true)
 
         val snackbarHostState = remember { SnackbarHostState() }
 
@@ -53,48 +49,32 @@ fun MessengerApp(
             }
         }
 
-        CompositionLocalProvider(
-            LocalTimeZone provides currentTimeZone,
-        ) {
-            if (authenticated) {
-                val appState = rememberMessengerAppState()
-                MainScreen(
-                    appState = appState,
-                    snackbarHostState = snackbarHostState
-                )
-            } else {
-                val authState = rememberMessengerAuthState()
-                AuthScreen(
-                    authState = authState,
-                    snackbarHostState = snackbarHostState
-                )
+        CompositionLocalProvider(LocalTimeZone provides currentTimeZone) {
+            AnimatedContent(
+                targetState = authenticated,
+                modifier = modifier,
+                transitionSpec = {
+                    val tweenSpec = tween<Float>(200)
+                    val start = fadeIn(animationSpec = tweenSpec)
+                    val end = fadeOut(animationSpec = tweenSpec)
+                    start.togetherWith(end).using(SizeTransform(clip = false))
+                },
+                label = "AnimatedContent Main Auth Screen",
+            ) {
+                if (it) {
+                    val appState = rememberMessengerMainState()
+                    MainScreen(
+                        appState = appState,
+                        snackbarHostState = snackbarHostState
+                    )
+                } else {
+                    val authState = rememberMessengerAuthState()
+                    AuthScreen(
+                        authState = authState,
+                        snackbarHostState = snackbarHostState
+                    )
+                }
             }
-
-//            AnimatedContent(
-//                targetState = authenticated,
-//                modifier = modifier,
-//                transitionSpec = {
-//                    val tweenSpec = tween<Float>(200)
-//                    val start = fadeIn(animationSpec = tweenSpec)
-//                    val end = fadeOut(animationSpec = tweenSpec)
-//                    start.togetherWith(end).using(SizeTransform(clip = false))
-//                },
-//                label = "AnimatedContent Main Auth Screen",
-//            ) {
-//                if (it) {
-//                    val appState = rememberMessengerAppState()
-//                    MainScreen(
-//                        appState = appState,
-//                        snackbarHostState = snackbarHostState
-//                    )
-//                } else {
-//                    val authState = rememberMessengerAuthState()
-//                    AuthScreen(
-//                        authState = authState,
-//                        snackbarHostState = snackbarHostState
-//                    )
-//                }
-//            }
         }
     }
 }

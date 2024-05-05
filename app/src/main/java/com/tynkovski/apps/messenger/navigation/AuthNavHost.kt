@@ -20,11 +20,7 @@ fun AuthNavHost(
         startDestination = startDestination,
         modifier = modifier,
     ) {
-        signInScreen(
-            navigateToSignUp = authState::navigateToSignUp
-        )
-        signUpScreen(
-            navigateToSignIn = authState::navigateToSignIn
-        )
+        signInScreen(navigateToSignUp = authState::navigateToSignUp)
+        signUpScreen(navigateToSignIn = authState::navigateToSignIn)
     }
 }

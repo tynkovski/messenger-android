@@ -16,6 +16,7 @@ internal fun SignUpRoute(
     viewModel: SignUpViewModel = hiltViewModel(),
 ) {
     SignUpScreen(
+        modifier = modifier,
         navigateToSignIn = navigateToSignIn
     )
 }

@@ -19,20 +19,18 @@ import com.tynkovski.apps.messenger.feature.settings.navigation.navigateToSettin
 import com.tynkovski.apps.messenger.navigation.TopLevelDestination
 
 @Composable
-fun rememberMessengerAppState(
+fun rememberMessengerMainState(
     navController: NavHostController = rememberNavController(),
-): MessengerAppState {
+): MessengerMainState {
     return remember(navController) {
-        MessengerAppState(navController = navController)
+        MessengerMainState(navController = navController)
     }
 }
 
 @Stable
-class MessengerAppState(
+class MessengerMainState(
     val navController: NavHostController,
 ) {
-
-
     val topLevelDestinations: List<TopLevelDestination> = TopLevelDestination.entries
 
     val currentTopLevelDestination: TopLevelDestination?

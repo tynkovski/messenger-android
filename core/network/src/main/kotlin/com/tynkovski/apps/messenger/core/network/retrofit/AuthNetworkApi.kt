@@ -1,9 +1,9 @@
 package com.tynkovski.apps.messenger.core.network.retrofit
 
-import com.tynkovski.apps.messenger.core.network.NetworkResponse
 import com.tynkovski.apps.messenger.core.network.model.AccessResponse
 import com.tynkovski.apps.messenger.core.network.model.TokenResponse
 import kotlinx.serialization.Serializable
+import retrofit2.Response
 import retrofit2.http.Body
 import retrofit2.http.POST
 
@@ -20,14 +20,14 @@ interface AuthNetworkApi {
     data class RefreshTokenRequest(val refreshToken: String)
 
     @POST("${AUTH_URL}/signUp")
-    suspend fun signUp(@Body request: SignUpRequest): NetworkResponse<TokenResponse>
+    suspend fun signUp(@Body request: SignUpRequest): Response<TokenResponse>
 
     @POST("${AUTH_URL}/signIn")
-    suspend fun signIn(@Body request: SignInRequest): NetworkResponse<TokenResponse>
+    suspend fun signIn(@Body request: SignInRequest): Response<TokenResponse>
 
     @POST("${AUTH_URL}/refreshToken")
-    suspend fun refreshToken(@Body request: RefreshTokenRequest): NetworkResponse<AccessResponse>
+    suspend fun refreshToken(@Body request: RefreshTokenRequest): Response<AccessResponse>
 
     @POST("${AUTH_URL}/logout")
-    suspend fun logout(@Body request: RefreshTokenRequest): NetworkResponse<Unit>
+    suspend fun logout(@Body request: RefreshTokenRequest): Response<Unit>
 }

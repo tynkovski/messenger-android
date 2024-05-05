@@ -40,7 +40,7 @@ import com.tynkovski.apps.messenger.navigation.TopLevelDestination
 @Composable
 @OptIn(ExperimentalMaterial3Api::class, ExperimentalComposeUiApi::class)
 fun MainScreen(
-    appState: MessengerAppState,
+    appState: MessengerMainState,
     snackbarHostState: SnackbarHostState,
     modifier: Modifier = Modifier
 ) {

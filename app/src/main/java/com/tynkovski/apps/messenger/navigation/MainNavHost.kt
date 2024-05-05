@@ -10,11 +10,11 @@ import com.tynkovski.apps.messenger.feature.chats.navigation.CHATS_ROUTE
 import com.tynkovski.apps.messenger.feature.chats.navigation.chatsScreen
 import com.tynkovski.apps.messenger.feature.contacts.navigation.contactsScreen
 import com.tynkovski.apps.messenger.feature.settings.navigation.settingsScreen
-import com.tynkovski.apps.messenger.ui.MessengerAppState
+import com.tynkovski.apps.messenger.ui.MessengerMainState
 
 @Composable
 fun MainNavHost(
-    appState: MessengerAppState,
+    appState: MessengerMainState,
     onShowSnackbar: suspend (message: String, action: String?) -> Boolean,
     modifier: Modifier = Modifier,
     startDestination: String = CHATS_ROUTE,
