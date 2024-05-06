@@ -11,7 +11,7 @@ private const val AUTH_URL = "/auth"
 
 interface AuthNetworkApi {
     @Serializable
-    data class SignUpRequest(val name: String?, val login: String, val password: String)
+    data class SignUpRequest(val login: String, val password: String, val image: String?, val name: String?)
 
     @Serializable
     data class SignInRequest(val login: String, val password: String)

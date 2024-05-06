@@ -59,14 +59,14 @@ internal fun SignInRoute(
     val password by viewModel.passwordInputState.collectAsStateWithLifecycle()
 
     SignInScreen(
-        buttonState = buttonState,
-        signInButtonClick = viewModel::signIn,
-        navigateToSignUp = navigateToSignUp,
-        modifier = modifier,
         login = login,
         loginChanged = viewModel::setLoginInputState,
         password = password,
         passwordChanged = viewModel::setPasswordInputState,
+        buttonState = buttonState,
+        signInButtonClick = viewModel::signIn,
+        navigateToSignUp = navigateToSignUp,
+        modifier = modifier,
     )
 }
 
@@ -80,10 +80,10 @@ internal fun SignInScreen(
     signInButtonClick: () -> Unit,
     navigateToSignUp: () -> Unit,
     modifier: Modifier = Modifier,
-    coroutineScope: CoroutineScope = rememberCoroutineScope(),
-    pagerState: PagerState = rememberPagerState { TAB_COUNT },
 ) {
     val keyboardVisible = WindowInsets.isImeVisible
+    val pagerState: PagerState = rememberPagerState { TAB_COUNT }
+    val coroutineScope: CoroutineScope = rememberCoroutineScope()
 
     HorizontalPager(
         modifier = Modifier.fillMaxSize(),
@@ -91,11 +91,11 @@ internal fun SignInScreen(
         userScrollEnabled = false,
     ) {
         fun previousPage() {
-            coroutineScope.launch { pagerState.animateScrollToPage(it - 1) }
+            coroutineScope.launch { pagerState.scrollToPage(it - 1) }
         }
 
         fun nextPage() {
-            coroutineScope.launch { pagerState.animateScrollToPage(it + 1) }
+            coroutineScope.launch { pagerState.scrollToPage(it + 1) }
         }
 
         when (it) {

@@ -21,10 +21,7 @@ fun AuthNavHost(
         navController = authState.navController,
         startDestination = startDestination,
         modifier = modifier,
-        enterTransition = { slideInHorizontally { it } },
-        exitTransition = { slideOutHorizontally { -it } },
-        popEnterTransition = { slideInHorizontally { -it } },
-        popExitTransition = { slideOutHorizontally { it } }
+
     ) {
         signInScreen(
             navigateToSignUp = authState::navigateToSignUp

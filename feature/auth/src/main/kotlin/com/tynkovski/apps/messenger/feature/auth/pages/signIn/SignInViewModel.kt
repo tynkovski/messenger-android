@@ -21,16 +21,12 @@ class SignInViewModel @Inject constructor(
     private val loginUserUsecase: LoginUserUsecase,
 ) : ViewModel() {
     private val _buttonState = MutableStateFlow(ButtonState.Success)
+
     private val _loginInputState = MutableStateFlow("")
     private val _passwordInputState = MutableStateFlow("")
 
-    fun setPasswordInputState(value: String) {
-        _passwordInputState.value = value
-    }
-
-    fun setLoginInputState(value: String) {
-        _loginInputState.value = value
-    }
+    fun setPasswordInputState(value: String) { _passwordInputState.value = value }
+    fun setLoginInputState(value: String) { _loginInputState.value = value }
 
     fun signIn() {
         viewModelScope.launch {
@@ -55,6 +51,7 @@ class SignInViewModel @Inject constructor(
     }
 
     val buttonState: StateFlow<ButtonState> = _buttonState.asStateFlow()
+
     val loginInputState: StateFlow<String> = _loginInputState.asStateFlow()
     val passwordInputState: StateFlow<String> = _passwordInputState.asStateFlow()
 }

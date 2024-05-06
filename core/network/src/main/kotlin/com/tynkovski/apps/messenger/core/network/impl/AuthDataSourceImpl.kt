@@ -39,7 +39,7 @@ class AuthDataSourceImpl @Inject constructor(
         login: String,
         password: String
     ): NetResult<TokenResponse, ErrorResponse> {
-        return api.signUp(AuthNetworkApi.SignUpRequest(name, login, password)).asNetResult()
+        return api.signUp(AuthNetworkApi.SignUpRequest(login, password, name, null)).asNetResult()
     }
 
     override suspend fun signIn(

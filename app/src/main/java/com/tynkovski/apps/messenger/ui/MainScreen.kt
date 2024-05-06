@@ -74,6 +74,15 @@ fun MainScreen(
                 )
             } else Modifier
 
+            if (destination != null) {
+                MessengerTopAppBar(
+                    titleRes = destination.titleTextId,
+                    colors = TopAppBarDefaults.centerAlignedTopAppBarColors(
+                        containerColor = Color.Transparent,
+                    )
+                )
+            }
+
             Box(boxModifier) {
                 MainNavHost(
                     appState = appState,
@@ -84,15 +93,6 @@ fun MainScreen(
                             duration = SnackbarDuration.Short,
                         ) == SnackbarResult.ActionPerformed
                     }
-                )
-            }
-
-            if (destination != null) {
-                MessengerTopAppBar(
-                    titleRes = destination.titleTextId,
-                    colors = TopAppBarDefaults.centerAlignedTopAppBarColors(
-                        containerColor = Color.Transparent,
-                    )
                 )
             }
         }

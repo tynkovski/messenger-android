@@ -1,5 +1,6 @@
 package com.tynkovski.apps.messenger.core.designsystem.component
 
+import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.KeyboardOptions
@@ -11,6 +12,7 @@ import androidx.compose.material3.OutlinedTextFieldDefaults
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextFieldColors
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.DisposableEffect
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.derivedStateOf
 import androidx.compose.runtime.getValue
@@ -25,6 +27,7 @@ import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.unit.dp
 import com.tynkovski.apps.messenger.core.designsystem.icon.MessengerIcons
 import com.tynkovski.apps.messenger.core.designsystem.theme.MessengerTypography
+import kotlinx.coroutines.delay
 
 @Composable
 private fun authFieldDefaultColors() = OutlinedTextFieldDefaults.colors(
@@ -143,8 +146,9 @@ fun AuthField(
         isError = isError
     )
 
-    LaunchedEffect(Unit) {
+    LaunchedEffect(requestFocus) {
         if (requestFocus) {
+            delay(200)
             focusRequester.requestFocus()
         }
     }
