@@ -1,5 +1,7 @@
 package com.tynkovski.apps.messenger.feature.auth.navigation
 
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.ui.Modifier
 import androidx.navigation.NavController
 import androidx.navigation.NavGraph.Companion.findStartDestination
 import androidx.navigation.NavGraphBuilder
@@ -29,24 +31,30 @@ fun NavController.navigateToAuthSignUp() =
     }
 
 fun NavGraphBuilder.signInScreen(
-    navigateToSignUp: () -> Unit
+    navigateToSignUp: () -> Unit,
 ) {
     composable(
         route = AUTH_ROUTE_SIGN_IN,
         arguments = listOf(),
     ) {
-        SignInRoute(navigateToSignUp = navigateToSignUp)
+        SignInRoute(
+            modifier = Modifier.fillMaxSize(),
+            navigateToSignUp = navigateToSignUp,
+        )
     }
 }
 
 fun NavGraphBuilder.signUpScreen(
-    navigateToSignIn: () -> Unit
+    navigateToSignIn: () -> Unit,
 ) {
     composable(
         route = AUTH_ROUTE_SIGN_UP,
         arguments = listOf(),
     ) {
-        SignUpRoute(navigateToSignIn = navigateToSignIn)
+        SignUpRoute(
+            modifier = Modifier.fillMaxSize(),
+            navigateToSignIn = navigateToSignIn,
+        )
     }
 }
 

@@ -9,6 +9,11 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.hilt.navigation.compose.hiltViewModel
 
+private const val NAME_TAB = 0
+private const val LOGIN_TAB = 1
+private const val PASSWORD_TAB = 2
+private const val TAB_COUNT = 3
+
 @Composable
 internal fun SignUpRoute(
     navigateToSignIn: () -> Unit,
@@ -27,7 +32,7 @@ internal fun SignUpScreen(
     modifier: Modifier = Modifier,
 ) {
     Box(
-        modifier = modifier.fillMaxSize(),
+        modifier = modifier,
         contentAlignment = Alignment.Center
     ) {
         Button(

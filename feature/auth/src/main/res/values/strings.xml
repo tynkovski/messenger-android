@@ -1,7 +1,26 @@
 <?xml version="1.0" encoding="utf-8"?>
 
 <resources>
-    <string name="feature_auth_title_auth">Auth</string>
     <string name="feature_auth_title_sign_in">Sign In</string>
     <string name="feature_auth_title_sign_up">Sign Up</string>
+
+    <string name="feature_auth_text_name">Name</string>
+    <string name="feature_auth_text_login">Login</string>
+    <string name="feature_auth_text_password">Password</string>
+    <string name="feature_auth_button_enter">Enter</string>
+    <string name="feature_auth_button_sign_ip">Sign In</string>
+    <string name="feature_auth_button_sign_up">Sign Up</string>
+    <string name="feature_auth_button_continue">Continue</string>
+
+    <!-- sign in-->
+    <!-- page 1-->
+    <string name="feature_auth_title_page_1">Messenger</string>
+    <string name="feature_auth_description_login">Sign in or create an account</string>
+    <string name="feature_auth_text_variant">or</string>
+    <!-- page 2-->
+    <string name="feature_auth_title_page_2">Communicate\nwith people</string>
+    <string name="feature_auth_description_page_2">It just works</string>
+    <string name="feature_auth_description_password">Enter your password</string>
+
+
 </resources>

@@ -3,9 +3,8 @@ package com.tynkovski.apps.messenger.feature.auth.pages.signIn
 import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.tynkovski.apps.messenger.core.data.repository.AuthRepository
+import com.tynkovski.apps.messenger.core.designsystem.component.ButtonState
 import com.tynkovski.apps.messenger.core.domain.LoginUserUsecase
-import com.tynkovski.apps.messenger.core.domain.RegisterUserUsecase
 import com.tynkovski.apps.messenger.core.onError
 import com.tynkovski.apps.messenger.core.onLoading
 import com.tynkovski.apps.messenger.core.onSuccess
@@ -21,28 +20,41 @@ import javax.inject.Inject
 class SignInViewModel @Inject constructor(
     private val loginUserUsecase: LoginUserUsecase,
 ) : ViewModel() {
-    private val _buttonState = MutableStateFlow(SignInButtonState.Success)
+    private val _buttonState = MutableStateFlow(ButtonState.Success)
+    private val _loginInputState = MutableStateFlow("")
+    private val _passwordInputState = MutableStateFlow("")
 
-    fun signIn(login: String, password: String) {
+    fun setPasswordInputState(value: String) {
+        _passwordInputState.value = value
+    }
+
+    fun setLoginInputState(value: String) {
+        _loginInputState.value = value
+    }
+
+    fun signIn() {
         viewModelScope.launch {
+            val login = _loginInputState.value
+            val password = _passwordInputState.value
             loginUserUsecase(login, password)
+                .onLoading {
+                    Log.d("SignInViewModel.signIn", "Loading")
+                    _buttonState.value = ButtonState.Loading
+                }
                 .onSuccess {
                     Log.d("SignInViewModel.signIn", "${it.javaClass.simpleName} $it")
-                    _buttonState.value = SignInButtonState.Success
+                    _buttonState.value = ButtonState.Success
                 }
                 .onError {
                     Log.d("SignInViewModel.signIn", "${it.javaClass.simpleName} $it")
-                    _buttonState.value = SignInButtonState.Error
+                    _buttonState.value = ButtonState.Error
                 }
-                .onLoading {
-                    Log.d("SignInViewModel.signIn", "Loading")
-                    _buttonState.value = SignInButtonState.Loading
-                }
+
                 .collect()
         }
     }
 
-    val buttonState: StateFlow<SignInButtonState> = _buttonState.asStateFlow()
-
-    enum class SignInButtonState { Loading, Success, Error }
+    val buttonState: StateFlow<ButtonState> = _buttonState.asStateFlow()
+    val loginInputState: StateFlow<String> = _loginInputState.asStateFlow()
+    val passwordInputState: StateFlow<String> = _passwordInputState.asStateFlow()
 }

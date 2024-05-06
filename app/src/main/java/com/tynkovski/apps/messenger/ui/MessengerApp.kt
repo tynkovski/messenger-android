@@ -6,6 +6,7 @@ import androidx.compose.animation.core.tween
 import androidx.compose.animation.fadeIn
 import androidx.compose.animation.fadeOut
 import androidx.compose.animation.togetherWith
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.material3.SnackbarDuration
 import androidx.compose.material3.SnackbarHostState
 import androidx.compose.runtime.Composable
@@ -29,7 +30,7 @@ fun MessengerApp(
     networkMonitor: NetworkMonitor,
     modifier: Modifier = Modifier,
 ) {
-    MessengerBackground(modifier = modifier) {
+    MessengerBackground(modifier = Modifier.fillMaxSize()) {
         val currentTimeZone by timeZoneMonitor.currentTimeZone.collectAsStateWithLifecycle(
             initialValue = TimeZone.currentSystemDefault()
         )
@@ -65,13 +66,15 @@ fun MessengerApp(
                     val appState = rememberMessengerMainState()
                     MainScreen(
                         appState = appState,
-                        snackbarHostState = snackbarHostState
+                        snackbarHostState = snackbarHostState,
+                        modifier = Modifier.fillMaxSize(),
                     )
                 } else {
                     val authState = rememberMessengerAuthState()
                     AuthScreen(
                         authState = authState,
-                        snackbarHostState = snackbarHostState
+                        snackbarHostState = snackbarHostState,
+                        modifier = Modifier.fillMaxSize(),
                     )
                 }
             }

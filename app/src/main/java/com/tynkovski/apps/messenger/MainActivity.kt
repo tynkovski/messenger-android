@@ -8,14 +8,14 @@ import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
 import androidx.activity.viewModels
 import androidx.compose.foundation.isSystemInDarkTheme
-import androidx.compose.material3.windowsizeclass.ExperimentalMaterial3WindowSizeClassApi
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.runtime.DisposableEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
+import androidx.compose.ui.Modifier
 import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
 import androidx.lifecycle.Lifecycle
-import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
 import com.tynkovski.apps.messenger.core.data.util.NetworkMonitor
@@ -28,10 +28,6 @@ import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
-private val lightScrim = Color.argb(0xe6, 0xFF, 0xFF, 0xFF)
-private val darkScrim = Color.argb(0x80, 0x1b, 0x1b, 0x1b)
-
-@OptIn(ExperimentalMaterial3WindowSizeClassApi::class)
 @AndroidEntryPoint
 class MainActivity : ComponentActivity() {
     @Inject
@@ -71,8 +67,8 @@ class MainActivity : ComponentActivity() {
                         Color.TRANSPARENT,
                     ) { isSystemInDarkTheme },
                     navigationBarStyle = SystemBarStyle.auto(
-                        lightScrim,
-                        darkScrim,
+                        Color.TRANSPARENT,
+                        Color.TRANSPARENT,
                     ) { isSystemInDarkTheme },
                 )
                 onDispose {}
@@ -82,7 +78,8 @@ class MainActivity : ComponentActivity() {
                 MessengerApp(
                     authenticated = tokenState.authenticated(),
                     timeZoneMonitor = timeZoneMonitor,
-                    networkMonitor = networkMonitor
+                    networkMonitor = networkMonitor,
+                    modifier = Modifier.fillMaxSize(),
                 )
             }
         }

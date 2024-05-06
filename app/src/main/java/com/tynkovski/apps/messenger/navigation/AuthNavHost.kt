@@ -1,5 +1,7 @@
 package com.tynkovski.apps.messenger.navigation
 
+import androidx.compose.animation.slideInHorizontally
+import androidx.compose.animation.slideOutHorizontally
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.navigation.compose.NavHost
@@ -19,8 +21,16 @@ fun AuthNavHost(
         navController = authState.navController,
         startDestination = startDestination,
         modifier = modifier,
+        enterTransition = { slideInHorizontally { it } },
+        exitTransition = { slideOutHorizontally { -it } },
+        popEnterTransition = { slideInHorizontally { -it } },
+        popExitTransition = { slideOutHorizontally { it } }
     ) {
-        signInScreen(navigateToSignUp = authState::navigateToSignUp)
-        signUpScreen(navigateToSignIn = authState::navigateToSignIn)
+        signInScreen(
+            navigateToSignUp = authState::navigateToSignUp
+        )
+        signUpScreen(
+            navigateToSignIn = authState::navigateToSignIn
+        )
     }
 }

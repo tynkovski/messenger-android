@@ -18,6 +18,7 @@
         android:theme="@style/MessengerTheme">
         <activity
             android:name="com.tynkovski.apps.messenger.MainActivity"
+            android:windowSoftInputMode="adjustResize"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
