@@ -5,9 +5,9 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.tynkovski.apps.messenger.core.designsystem.component.ButtonState
 import com.tynkovski.apps.messenger.core.domain.LoginUserUsecase
-import com.tynkovski.apps.messenger.core.onError
-import com.tynkovski.apps.messenger.core.onLoading
-import com.tynkovski.apps.messenger.core.onSuccess
+import com.tynkovski.apps.messenger.core.model.onError
+import com.tynkovski.apps.messenger.core.model.onLoading
+import com.tynkovski.apps.messenger.core.model.onSuccess
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow

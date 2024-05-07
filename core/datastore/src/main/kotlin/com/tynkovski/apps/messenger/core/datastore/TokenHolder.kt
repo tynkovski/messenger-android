@@ -9,4 +9,5 @@ interface TokenHolder {
     suspend fun setToken(accessToken: String, refreshToken: String)
     suspend fun logout()
     fun getTokenFlow(): Flow<Token>
+    fun getToken(): Token?
 }

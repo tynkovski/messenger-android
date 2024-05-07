@@ -1,6 +1,6 @@
-package com.tynkovski.apps.messenger.core.network
+package com.tynkovski.apps.messenger.core.network.util
 
-import com.tynkovski.apps.messenger.core.NetResult
+import com.tynkovski.apps.messenger.core.model.NetResult
 import retrofit2.Response
 
 fun<R, E> Response<R>.asNetResult(): NetResult<R, E> {

@@ -2,14 +2,14 @@ package com.tynkovski.apps.messenger.core.network.impl
 
 import androidx.tracing.trace
 import com.jakewharton.retrofit2.converter.kotlinx.serialization.asConverterFactory
-import com.tynkovski.apps.messenger.core.NetResult
+import com.tynkovski.apps.messenger.core.model.NetResult
 import com.tynkovski.apps.messenger.core.network.AuthDataSource
 import com.tynkovski.apps.messenger.core.network.BuildConfig
-import com.tynkovski.apps.messenger.core.network.asNetResult
 import com.tynkovski.apps.messenger.core.network.model.AccessResponse
 import com.tynkovski.apps.messenger.core.network.model.ErrorResponse
 import com.tynkovski.apps.messenger.core.network.model.TokenResponse
 import com.tynkovski.apps.messenger.core.network.retrofit.AuthNetworkApi
+import com.tynkovski.apps.messenger.core.network.util.asNetResult
 import kotlinx.serialization.json.Json
 import okhttp3.Call
 import okhttp3.MediaType.Companion.toMediaType
@@ -23,7 +23,7 @@ class AuthDataSourceImpl @Inject constructor(
     okhttpCallFactory: dagger.Lazy<Call.Factory>,
 ) : AuthDataSource {
 
-    private val api = trace("AuthNetworkApi") {
+    private val api: AuthNetworkApi = trace("AuthNetworkApi") {
         Retrofit.Builder()
             .baseUrl(BASE_URL)
             .callFactory { okhttpCallFactory.get().newCall(it) }

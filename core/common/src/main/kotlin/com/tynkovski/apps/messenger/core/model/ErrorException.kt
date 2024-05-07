@@ -1,4 +1,4 @@
-package com.tynkovski.apps.messenger.core
+package com.tynkovski.apps.messenger.core.model
 
 sealed class ErrorException : Throwable() {
     data class NetError(val code: Int, override val message: String) : ErrorException()

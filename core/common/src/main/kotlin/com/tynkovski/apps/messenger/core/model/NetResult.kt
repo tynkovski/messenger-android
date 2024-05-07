@@ -1,4 +1,4 @@
-package com.tynkovski.apps.messenger.core
+package com.tynkovski.apps.messenger.core.model
 
 sealed interface NetResult<out R, out E> {
     data class Error<E>(val code: Int, val message: String) : NetResult<Nothing, E>

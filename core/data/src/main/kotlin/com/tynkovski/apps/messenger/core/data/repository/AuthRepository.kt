@@ -1,6 +1,6 @@
 package com.tynkovski.apps.messenger.core.data.repository
 
-import com.tynkovski.apps.messenger.core.Result
+import com.tynkovski.apps.messenger.core.model.Result
 import com.tynkovski.apps.messenger.core.model.data.AccessToken
 import com.tynkovski.apps.messenger.core.model.data.Token
 import kotlinx.coroutines.flow.Flow

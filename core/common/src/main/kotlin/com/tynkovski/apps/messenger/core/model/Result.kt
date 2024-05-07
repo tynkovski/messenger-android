@@ -1,4 +1,4 @@
-package com.tynkovski.apps.messenger.core
+package com.tynkovski.apps.messenger.core.model
 
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.catch

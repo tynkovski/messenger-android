@@ -1,7 +1,7 @@
 package com.tynkovski.apps.messenger.core.data.repository.impl
 
-import com.tynkovski.apps.messenger.core.NetResult
-import com.tynkovski.apps.messenger.core.Result
+import com.tynkovski.apps.messenger.core.model.NetResult
+import com.tynkovski.apps.messenger.core.model.Result
 import com.tynkovski.apps.messenger.core.data.repository.AuthRepository
 import com.tynkovski.apps.messenger.core.datastore.TokenHolder
 import com.tynkovski.apps.messenger.core.model.data.AccessToken
@@ -11,7 +11,7 @@ import com.tynkovski.apps.messenger.core.network.Dispatcher
 import com.tynkovski.apps.messenger.core.network.MessengerDispatchers
 import com.tynkovski.apps.messenger.core.network.model.AccessResponse
 import com.tynkovski.apps.messenger.core.network.model.TokenResponse
-import com.tynkovski.apps.messenger.core.toResult
+import com.tynkovski.apps.messenger.core.model.toResult
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
@@ -19,9 +19,9 @@ import kotlinx.coroutines.flow.flowOn
 import javax.inject.Inject
 
 class AuthRepositoryImpl @Inject constructor(
-    @Dispatcher(MessengerDispatchers.IO) private val ioDispatcher: CoroutineDispatcher,
     private val tokenHolder: TokenHolder,
     private val network: AuthDataSource,
+    @Dispatcher(MessengerDispatchers.IO) private val ioDispatcher: CoroutineDispatcher,
 ) : AuthRepository {
     private val tokenMapper: (TokenResponse) -> Token = { Token(it.accessToken, it.refreshToken) }
     private val accessMapper: (AccessResponse) -> AccessToken = { AccessToken(it.accessToken) }
