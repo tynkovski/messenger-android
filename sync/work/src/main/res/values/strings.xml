@@ -2,5 +2,5 @@
 <resources>
     <string name="sync_work_notification_title">Messenger</string>
     <string name="sync_work_notification_channel_name">Sync</string>
-    <string name="sync_work_notification_channel_description">Background tasks for Messenger</string>
+    <string name="sync_work_notification_channel_description">Messenger Background tasks</string>
 </resources>

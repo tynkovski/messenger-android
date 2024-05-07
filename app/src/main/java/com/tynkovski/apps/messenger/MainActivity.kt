@@ -2,93 +2,86 @@ package com.tynkovski.apps.messenger
 
 import android.graphics.Color
 import android.os.Bundle
-import android.util.Log
 import androidx.activity.ComponentActivity
 import androidx.activity.SystemBarStyle
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
+import androidx.activity.viewModels
+import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.navigationBarsPadding
-import androidx.compose.foundation.layout.statusBarsPadding
-import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.Surface
-import androidx.compose.material3.Text
-import androidx.compose.runtime.Composable
 import androidx.compose.runtime.DisposableEffect
+import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
-import com.tynkovski.apps.messenger.ui.theme.MyApplicationTheme
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.delay
+import androidx.lifecycle.Lifecycle
+import androidx.lifecycle.lifecycleScope
+import androidx.lifecycle.repeatOnLifecycle
+import com.tynkovski.apps.messenger.core.data.util.NetworkMonitor
+import com.tynkovski.apps.messenger.core.data.util.TimeZoneMonitor
+import com.tynkovski.apps.messenger.core.designsystem.theme.MessengerTheme
+import com.tynkovski.apps.messenger.ui.MessengerApp
+import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.flow.collect
+import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.launch
+import javax.inject.Inject
 
-private val lightScrim = Color.argb(0xe6, 0xFF, 0xFF, 0xFF)
-private val darkScrim = Color.argb(0x80, 0x1b, 0x1b, 0x1b)
-
+@AndroidEntryPoint
 class MainActivity : ComponentActivity() {
+    @Inject
+    lateinit var networkMonitor: NetworkMonitor
+
+    @Inject
+    lateinit var timeZoneMonitor: TimeZoneMonitor
+
+    val viewModel: MainActivityViewModel by viewModels()
+
     override fun onCreate(savedInstanceState: Bundle?) {
+        val splashScreen = installSplashScreen()
         super.onCreate(savedInstanceState)
 
-        val stateFlow = mutableStateOf(false)
-
-        CoroutineScope(Dispatchers.Default).launch {
-            delay(1_000) // Count for 1 seconds
-            stateFlow.value = true // Set StateFlow to true after 5 seconds
+        var tokenState: MainActivityViewModel.TokenState by mutableStateOf(MainActivityViewModel.TokenState.Loading)
+        lifecycleScope.launch {
+            lifecycle.repeatOnLifecycle(Lifecycle.State.STARTED) {
+                viewModel.tokenState
+                    .onEach { tokenState = it }
+                    .collect()
+            }
         }
 
-        val splashScreen = installSplashScreen()
         splashScreen.setKeepOnScreenCondition {
-            when (stateFlow.value) {
-                true -> false
-                else -> true
+            when (tokenState) {
+                MainActivityViewModel.TokenState.Loading -> true
+                is MainActivityViewModel.TokenState.Success -> false
             }
         }
 
         setContent {
+            val isSystemInDarkTheme = isSystemInDarkTheme()
             DisposableEffect(false) {
                 enableEdgeToEdge(
                     statusBarStyle = SystemBarStyle.auto(
                         Color.TRANSPARENT,
                         Color.TRANSPARENT,
-                    ) { false },
+                    ) { isSystemInDarkTheme },
                     navigationBarStyle = SystemBarStyle.auto(
-                        lightScrim,
-                        darkScrim,
-                    ) { false },
+                        Color.TRANSPARENT,
+                        Color.TRANSPARENT,
+                    ) { isSystemInDarkTheme },
                 )
                 onDispose {}
             }
-            MyApplicationTheme {
-                // A surface container using the 'background' color from the theme
-                Surface(
-                    modifier = Modifier
-                        .fillMaxSize()
-                        .statusBarsPadding()
-                        .navigationBarsPadding(),
-                    color = MaterialTheme.colorScheme.background
-                ) {
-                    Greeting("Android")
-                }
+
+            MessengerTheme {
+                MessengerApp(
+                    authenticated = tokenState.authenticated(),
+                    timeZoneMonitor = timeZoneMonitor,
+                    networkMonitor = networkMonitor,
+                    modifier = Modifier.fillMaxSize(),
+                )
             }
         }
-    }
-}
-
-@Composable
-fun Greeting(name: String, modifier: Modifier = Modifier) {
-    Text(
-        text = "Hello $name!",
-        modifier = modifier
-    )
-}
-
-@Preview(showBackground = true)
-@Composable
-fun GreetingPreview() {
-    MyApplicationTheme {
-        Greeting("Android")
     }
 }

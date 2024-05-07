@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<resources>
+    <!-- common -->
+    <string name="feature_auth_title_sign_in">Sign In</string>
+    <string name="feature_auth_title_sign_up">Sign Up</string>
+
+    <string name="feature_auth_text_login">Login</string>
+    <string name="feature_auth_text_name">Name</string>
+    <string name="feature_auth_text_password">Password</string>
+    <string name="feature_auth_text_repeat_password">Repeat password</string>
+    <string name="feature_auth_button_sign_ip">Sign In</string>
+    <string name="feature_auth_button_sign_up">Sign Up</string>
+
+    <!-- sign in page 1 -->
+    <string name="feature_auth_title_page_1">Messenger</string>
+    <string name="feature_auth_description_login">Sign in or create an account</string>
+    <string name="feature_auth_text_variant">or</string>
+    <string name="feature_auth_button_continue">Continue</string>
+    <!-- sign in page 2 -->
+    <string name="feature_auth_title_page_2">Communicate\nwith people</string>
+    <string name="feature_auth_description_page_2">It just works</string>
+    <string name="feature_auth_description_password">Enter your password</string>
+    <string name="feature_auth_button_enter">Enter</string>
+
+    <!--  sign up page 1 -->
+    <string name="feature_auth_sign_up_login_title">Registration</string>
+    <string name="feature_auth_sign_up_login_description">Come up with a unique login to create an account</string>
+    <string name="feature_auth_sign_up_login_field_description">Only latin letters, numbers, no spaces are allowed in login</string>
+    <string name="feature_auth_sign_up_login_field_description_length">Length must be in 2 – 16</string>
+    <string name="feature_auth_sign_up_login_button">Take a login</string>
+    <!--  sign up page 2 -->
+    <string name="feature_auth_sign_up_name_title">Enter your name</string>
+    <string name="feature_auth_sign_up_name_title_second">Use your imagination</string>
+    <string name="feature_auth_sign_up_name_title_avatar">Your avatar</string>
+    <string name="feature_auth_sign_up_name_description">What is your name?</string>
+    <string name="feature_auth_sign_up_name_field_description">Optional</string>
+    <!--  sign up page 3 -->
+    <string name="feature_auth_sign_up_password_title">Almost done</string>
+    <string name="feature_auth_sign_up_password_title_second">Soon you will be using the app</string>
+    <string name="feature_auth_sign_up_password_description">Create a password and repeat it</string>
+    <string name="feature_auth_sign_up_password_field_description_size">Length must be in 8 – 32</string>
+    <string name="feature_auth_sign_up_password_field_description_digits">Length must have digits</string>
+    <string name="feature_auth_sign_up_password_field_description_capitalized">Length must have capital letters</string>
+    <string name="feature_auth_sign_up_password_field_description_whitespaces">Length must have no whitespaces</string>
+    <string name="feature_auth_sign_up_password_field_description_mismatch">Password mismatch</string>
+    <string name="feature_auth_sign_up_name_button">Take a name</string>
+    <string name="feature_auth_sign_up_password_button">Create an account</string>
+</resources>

@@ -99,7 +99,7 @@ abstract class CheckBadgingTask : DefaultTask() {
     fun taskAction() {
         assertWithMessage(
             "Generated badging is different from golden badging! " +
-                "If this change is intended, run ./gradlew ${updateBadgingTaskName.get()}",
+                    "If this change is intended, run ./gradlew ${updateBadgingTaskName.get()}",
         )
             .that(generatedBadging.get().asFile.readText())
             .isEqualTo(goldenBadging.get().asFile.readText())
@@ -124,8 +124,8 @@ fun Project.configureBadgingTasks(
                     File(
                         baseExtension.sdkDirectory,
                         "${SdkConstants.FD_BUILD_TOOLS}/" +
-                            "${baseExtension.buildToolsVersion}/" +
-                            SdkConstants.FN_AAPT2,
+                                "${baseExtension.buildToolsVersion}/" +
+                                SdkConstants.FN_AAPT2,
                     ),
                 )
 

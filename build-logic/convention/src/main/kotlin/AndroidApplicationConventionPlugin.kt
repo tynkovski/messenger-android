@@ -32,13 +32,15 @@ class AndroidApplicationConventionPlugin : Plugin<Project> {
             with(pluginManager) {
                 apply("com.android.application")
                 apply("org.jetbrains.kotlin.android")
-                apply("messenger.android.lint")
+                //apply("messenger.android.lint")
                 apply("com.dropbox.dependency-guard")
             }
 
             extensions.configure<ApplicationExtension> {
                 configureKotlinAndroid(this)
                 defaultConfig.targetSdk = 34
+                @Suppress("UnstableApiUsage")
+                testOptions.animationsDisabled = true
                 configureGradleManagedDevices(this)
             }
             extensions.configure<ApplicationAndroidComponentsExtension> {

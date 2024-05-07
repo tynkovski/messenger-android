@@ -23,7 +23,7 @@ enum class MessengerFlavor(
 }
 
 fun configureFlavors(
-    commonExtension: CommonExtension<*, *, *, *, *>,
+    commonExtension: CommonExtension<*, *, *, *, *, *>,
     flavorConfigurationBlock: ProductFlavor.(flavor: MessengerFlavor) -> Unit = {}
 ) {
     commonExtension.apply {
