@@ -1,5 +1,8 @@
 package com.tynkovski.apps.messenger.ui
 
+import androidx.compose.animation.AnimatedVisibility
+import androidx.compose.animation.expandVertically
+import androidx.compose.animation.shrinkVertically
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.WindowInsets
@@ -18,7 +21,6 @@ import androidx.compose.material3.SnackbarHost
 import androidx.compose.material3.SnackbarHostState
 import androidx.compose.material3.SnackbarResult
 import androidx.compose.material3.Text
-import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
@@ -33,9 +35,10 @@ import androidx.navigation.NavDestination.Companion.hierarchy
 import com.tynkovski.apps.messenger.core.designsystem.component.MessengerNavigationBar
 import com.tynkovski.apps.messenger.core.designsystem.component.MessengerNavigationBarItem
 import com.tynkovski.apps.messenger.core.designsystem.component.MessengerTopAppBar
+import com.tynkovski.apps.messenger.core.designsystem.component.TransparentIconButton
+import com.tynkovski.apps.messenger.core.designsystem.icon.MessengerIcons
 import com.tynkovski.apps.messenger.navigation.MainNavHost
 import com.tynkovski.apps.messenger.navigation.TopLevelDestination
-
 
 @Composable
 @OptIn(ExperimentalMaterial3Api::class, ExperimentalComposeUiApi::class)
@@ -44,6 +47,8 @@ fun MainScreen(
     snackbarHostState: SnackbarHostState,
     modifier: Modifier = Modifier
 ) {
+    val destination = appState.currentTopLevelDestination
+
     Scaffold(
         modifier = modifier,
         containerColor = Color.Transparent,
@@ -51,12 +56,18 @@ fun MainScreen(
         contentWindowInsets = WindowInsets(0, 0, 0, 0),
         snackbarHost = { SnackbarHost(snackbarHostState) },
         bottomBar = {
-            MessengerBottomBar(
-                destinations = appState.topLevelDestinations,
-                currentDestination = appState.currentDestination,
-                onNavigateToDestination = appState::navigateToTopLevelDestination,
-                modifier = Modifier
-            )
+            AnimatedVisibility(
+                visible = destination != null,
+                enter = expandVertically { -it },
+                exit = shrinkVertically { -it }
+            ) {
+                MessengerBottomBar(
+                    destinations = appState.topLevelDestinations,
+                    currentDestination = appState.currentDestination,
+                    onNavigateToDestination = appState::navigateToTopLevelDestination,
+                    modifier = Modifier
+                )
+            }
         }
     ) { padding ->
         Column(
@@ -64,7 +75,6 @@ fun MainScreen(
                 .fillMaxSize()
                 .padding(padding)
         ) {
-            val destination = appState.currentTopLevelDestination
 
             val shouldShowTopAppBar = destination != null
 
@@ -74,13 +84,32 @@ fun MainScreen(
                 )
             } else Modifier
 
-            if (destination != null) {
-                MessengerTopAppBar(
-                    titleRes = destination.titleTextId,
-                    colors = TopAppBarDefaults.centerAlignedTopAppBarColors(
-                        containerColor = Color.Transparent,
+            when (destination) {
+                TopLevelDestination.CONTACTS -> {
+                    MessengerTopAppBar(
+                        titleRes = destination.titleTextId
                     )
-                )
+                }
+
+                TopLevelDestination.CHATS -> {
+                    MessengerTopAppBar(
+                        titleRes = destination.titleTextId,
+                        actions = {
+                            TransparentIconButton(
+                                imageVector = MessengerIcons.Search,
+                                onClick = appState::navigateToSearch
+                            )
+                        }
+                    )
+                }
+
+                TopLevelDestination.SETTINGS -> {
+                    MessengerTopAppBar(
+                        titleRes = destination.titleTextId
+                    )
+                }
+
+                null -> Unit
             }
 
             Box(boxModifier) {

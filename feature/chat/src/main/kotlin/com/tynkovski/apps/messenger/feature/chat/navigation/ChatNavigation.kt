@@ -19,21 +19,20 @@ internal const val CHAT_ID_ARG = "room_id"
 const val CHAT_ROUTE = "chat_route"
 
 internal class ChatArgs(
-    val chatId: String
+    val chatId: Long
 ) {
     constructor(
         savedStateHandle: SavedStateHandle
     ) : this(
-        URLDecoder.decode(checkNotNull(savedStateHandle[CHAT_ID_ARG]), URL_CHARACTER_ENCODING)
+        checkNotNull(savedStateHandle.get<Long>(CHAT_ID_ARG))
     )
 }
 
 fun NavController.navigateToChat(
-    chatId: String,
+    chatId: Long,
     navOptions: NavOptionsBuilder.() -> Unit = {}
 ) {
-    val encodedId = URLEncoder.encode(chatId, URL_CHARACTER_ENCODING)
-    val newRoute = "$CHAT_ROUTE/$encodedId"
+    val newRoute = "$CHAT_ROUTE/$chatId"
     navigate(newRoute) {
         navOptions()
     }
@@ -44,7 +43,7 @@ fun NavGraphBuilder.chatScreen(
 ) {
     composable(
         route = "$CHAT_ROUTE/{$CHAT_ID_ARG}",
-        arguments = listOf(navArgument(CHAT_ID_ARG) { type = NavType.StringType })
+        arguments = listOf(navArgument(CHAT_ID_ARG) { type = NavType.LongType })
     ) {
         ChatRoute(
             onBackClick = onBackClick

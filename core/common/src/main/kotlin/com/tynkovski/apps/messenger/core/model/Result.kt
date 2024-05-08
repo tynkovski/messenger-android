@@ -50,7 +50,7 @@ fun <T> Flow<Result<T>>.onSuccess(
 }
 
 fun <T> Flow<Result<T>>.onError(
-    action: suspend (value: Throwable) -> Unit,
+    action: suspend (value: ErrorException) -> Unit,
 ): Flow<Result<T>> = catch {
     it.printStackTrace()
     action(it.toErrorException())

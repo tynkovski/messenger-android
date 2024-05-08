@@ -5,5 +5,5 @@ import com.tynkovski.apps.messenger.core.model.data.User
 import kotlinx.coroutines.flow.Flow
 
 interface SearchRepository {
-    fun findUserByLogin(login: String): Flow<Result<User>>
+    fun getUser(login: String): Flow<User>
 }

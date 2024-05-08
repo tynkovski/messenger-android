@@ -11,7 +11,9 @@ internal fun ContactsRoute(
     modifier: Modifier = Modifier,
     viewModel: ContactsViewModel = hiltViewModel(),
 ) {
-    ContactsScreen(modifier = modifier)
+    ContactsScreen(
+        modifier = modifier
+    )
 }
 
 @Composable

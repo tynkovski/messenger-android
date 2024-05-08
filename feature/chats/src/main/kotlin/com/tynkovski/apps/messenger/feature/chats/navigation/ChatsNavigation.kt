@@ -11,12 +11,12 @@ const val CHATS_ROUTE = "chats_route"
 fun NavController.navigateToChats(navOptions: NavOptions) = navigate(CHATS_ROUTE, navOptions)
 
 fun NavGraphBuilder.chatsScreen(
-
 ) {
     composable(
         route = CHATS_ROUTE,
         arguments = listOf(),
     ) {
-        ChatsRoute()
+        ChatsRoute(
+        )
     }
 }

@@ -9,7 +9,9 @@ import androidx.navigation.compose.NavHost
 import com.tynkovski.apps.messenger.feature.chats.navigation.CHATS_ROUTE
 import com.tynkovski.apps.messenger.feature.chats.navigation.chatsScreen
 import com.tynkovski.apps.messenger.feature.contacts.navigation.contactsScreen
+import com.tynkovski.apps.messenger.feature.search.navigation.searchScreen
 import com.tynkovski.apps.messenger.feature.settings.navigation.settingsScreen
+import com.tynkovski.apps.messenger.feature.user.navigation.navigateToUser
 import com.tynkovski.apps.messenger.ui.MessengerMainState
 
 @Composable
@@ -26,12 +28,16 @@ fun MainNavHost(
         modifier = modifier,
         enterTransition = { fadeIn(animationSpec = tween(200)) },
         exitTransition = { fadeOut(animationSpec = tween(200)) },
-        popEnterTransition =  { fadeIn(animationSpec = tween(200)) },
+        popEnterTransition = { fadeIn(animationSpec = tween(200)) },
         popExitTransition = { fadeOut(animationSpec = tween(200)) },
 
-    ) {
+        ) {
         contactsScreen()
-        chatsScreen()
         settingsScreen()
-   }
+        chatsScreen()
+        searchScreen(
+            navigateToUser = navController::navigateToUser,
+            navigatePopBack = navController::popBackStack
+        )
+    }
 }

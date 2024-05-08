@@ -5,7 +5,4 @@ sealed class ErrorException : Throwable() {
     data object Unknown : ErrorException()
 }
 
-fun Throwable.toErrorException(): ErrorException = when (val error = this) {
-    is ErrorException.NetError -> error
-    else -> ErrorException.Unknown
-}
+fun Throwable.toErrorException(): ErrorException = this as? ErrorException ?: ErrorException.Unknown

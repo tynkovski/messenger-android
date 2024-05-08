@@ -64,6 +64,7 @@ dependencies {
     implementation(projects.feature.settings)
     implementation(projects.feature.chat)
     implementation(projects.feature.user)
+    implementation(projects.feature.search)
 
     // core modules here
     implementation(projects.core.common)

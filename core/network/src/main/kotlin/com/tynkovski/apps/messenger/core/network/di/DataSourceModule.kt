@@ -4,6 +4,7 @@ import com.tynkovski.apps.messenger.core.network.AuthDataSource
 import com.tynkovski.apps.messenger.core.network.ContactsDataSource
 import com.tynkovski.apps.messenger.core.network.MessagesDataSource
 import com.tynkovski.apps.messenger.core.network.RoomsDataSource
+import com.tynkovski.apps.messenger.core.network.SearchDataSource
 import com.tynkovski.apps.messenger.core.network.UserDataSource
 import com.tynkovski.apps.messenger.core.network.impl.*
 import dagger.Binds
@@ -24,4 +25,6 @@ internal interface DataSourceModule {
     fun bindsMessagesDataSource(impl: MessagesDataSourceImpl): MessagesDataSource
     @Binds
     fun bindsRoomsDataSource(impl: RoomsDataSourceImpl): RoomsDataSource
+    @Binds
+    fun bindsSearchDataSource(impl: SearchDataSourceImpl): SearchDataSource
 }
