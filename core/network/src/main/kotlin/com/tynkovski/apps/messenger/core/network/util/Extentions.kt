@@ -7,6 +7,6 @@ fun<R, E> Response<R>.asNetResult(): NetResult<R, E> {
     return if (isSuccessful) {
         NetResult.Success(body()!!)
     } else {
-        NetResult.Error(code(), errorBody().toString())
+        NetResult.Error(code(), "${errorBody()}")
     }
 }

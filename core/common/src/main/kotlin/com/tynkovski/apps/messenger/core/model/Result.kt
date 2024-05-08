@@ -20,7 +20,8 @@ fun <T> Flow<T>.asResult(): Flow<Result<T>> = map<T, Result<T>> { Result.Success
 fun <R, L, E> Flow<NetResult<R, E>>.toResult(
     mapper: (R) -> L
 ): Flow<Result<L>> {
-    return map { it.toLocalResult(mapper) }.onStart { emit(Result.Loading) }
+    return map { it.toLocalResult(mapper) }
+        .onStart { emit(Result.Loading) }
 }
 
 private fun <R, L, E> NetResult<R, E>.toLocalResult(

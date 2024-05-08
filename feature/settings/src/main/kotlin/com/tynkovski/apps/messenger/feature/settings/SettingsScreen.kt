@@ -23,6 +23,7 @@ internal fun SettingsRoute(
     SettingsScreen(
         modifier = modifier,
         signOut = viewModel::signOut,
+        getUser = viewModel::getUser
     )
 }
 
@@ -30,6 +31,7 @@ internal fun SettingsRoute(
 internal fun SettingsScreen(
     modifier: Modifier = Modifier,
     signOut: () -> Unit,
+    getUser: () -> Unit,
 ) {
     Scaffold(
         modifier = modifier,
@@ -43,6 +45,12 @@ internal fun SettingsScreen(
                 modifier = Modifier.fillMaxWidth(),
                 text = "Settings"
             )
+            Button(
+                modifier = Modifier.fillMaxWidth(),
+                onClick = getUser
+            ) {
+                Text("getUser")
+            }
             Button(
                 modifier = Modifier.fillMaxWidth(),
                 onClick = signOut

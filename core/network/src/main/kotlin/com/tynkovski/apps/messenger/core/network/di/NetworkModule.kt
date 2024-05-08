@@ -34,16 +34,15 @@ internal object NetworkModule {
         tokenInterceptor: TokenInterceptor,
         refreshTokenInterceptor: RefreshTokenInterceptor
     ): Call.Factory = trace("OkHttpClient") {
+        val loggingInterceptor = HttpLoggingInterceptor().apply {
+            if (BuildConfig.DEBUG) {
+                setLevel(HttpLoggingInterceptor.Level.BODY)
+            }
+        }
         OkHttpClient.Builder()
             .addInterceptor(tokenInterceptor)
             .addInterceptor(refreshTokenInterceptor)
-            .addInterceptor(
-                HttpLoggingInterceptor().apply {
-                    if (BuildConfig.DEBUG) {
-                        setLevel(HttpLoggingInterceptor.Level.BODY)
-                    }
-                }
-            )
+            .addInterceptor(loggingInterceptor)
             .build()
     }
 

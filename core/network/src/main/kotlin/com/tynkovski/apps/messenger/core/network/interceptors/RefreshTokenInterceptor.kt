@@ -20,6 +20,7 @@ class RefreshTokenInterceptor @Inject constructor(
                 response.close()
                 val newToken = refreshToken()
                 if (newToken.isNullOrBlank()) {
+                    Log.d("JWT.Logout", "logout")
                     logout()
                     return@synchronized
                 } else {
@@ -40,10 +41,10 @@ class RefreshTokenInterceptor @Inject constructor(
     }
 
     private fun newRequest(chain: Interceptor.Chain, newToken: String): Response {
-        Log.d("JWT.Access", newToken)
+        Log.d("JWT.RefreshedAccess", newToken)
         val newRequest = chain.request()
             .newBuilder()
-            .addHeader("Authorization", "Bearer $newToken")
+            .header("Authorization", "Bearer $newToken")
             .build()
         return chain.proceed(newRequest)
     }
