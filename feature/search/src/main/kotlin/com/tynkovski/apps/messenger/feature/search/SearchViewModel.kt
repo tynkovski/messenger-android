@@ -3,6 +3,7 @@ package com.tynkovski.apps.messenger.feature.search
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.tynkovski.apps.messenger.core.domain.CreateChatUsecase
 import com.tynkovski.apps.messenger.core.domain.FindUserUsecase
 import com.tynkovski.apps.messenger.core.model.Result
 import com.tynkovski.apps.messenger.core.model.data.User
@@ -18,12 +19,14 @@ import kotlinx.coroutines.flow.flowOf
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.onStart
 import kotlinx.coroutines.flow.stateIn
+import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 private const val SEARCH_QUERY = "searchQuery"
 
 @HiltViewModel
 class SearchViewModel @Inject constructor(
+    private val createChatUsecase: CreateChatUsecase,
     private val findUserUsecase: FindUserUsecase,
     private val savedStateHandle: SavedStateHandle,
 ) : ViewModel() {
@@ -31,6 +34,12 @@ class SearchViewModel @Inject constructor(
 
     fun setQuery(value: String) {
         savedStateHandle[SEARCH_QUERY] = value
+    }
+
+    fun createRoom(collocutorId: Long) {
+        viewModelScope.launch {
+
+        }
     }
 
     val searchResultUiState: StateFlow<SearchUiState> = queryState.flatMapLatest { query ->

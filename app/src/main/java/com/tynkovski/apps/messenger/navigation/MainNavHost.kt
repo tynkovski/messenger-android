@@ -6,6 +6,7 @@ import androidx.compose.animation.fadeOut
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.navigation.compose.NavHost
+import com.tynkovski.apps.messenger.feature.chat.navigation.navigateToChat
 import com.tynkovski.apps.messenger.feature.chats.navigation.CHATS_ROUTE
 import com.tynkovski.apps.messenger.feature.chats.navigation.chatsScreen
 import com.tynkovski.apps.messenger.feature.contacts.navigation.contactsScreen
@@ -34,10 +35,13 @@ fun MainNavHost(
         ) {
         contactsScreen()
         settingsScreen()
-        chatsScreen()
+        chatsScreen(
+            navigateToChat = navController::navigateToChat,
+        )
         searchScreen(
+            navigatePopBack = navController::popBackStack,
             navigateToUser = navController::navigateToUser,
-            navigatePopBack = navController::popBackStack
+            navigateToChat = navController::navigateToChat,
         )
     }
 }

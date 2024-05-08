@@ -32,9 +32,10 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
+import com.tynkovski.apps.messenger.core.designsystem.component.DefaultButton
+import com.tynkovski.apps.messenger.core.designsystem.component.DefaultOutlinedButton
 import com.tynkovski.apps.messenger.core.designsystem.component.MessengerTopAppBar
 import com.tynkovski.apps.messenger.core.designsystem.component.ThemePreviews
 import com.tynkovski.apps.messenger.core.designsystem.component.TransparentIconButton
@@ -47,6 +48,7 @@ import java.time.LocalDateTime
 internal fun SearchRoute(
     navigatePopBack: () -> Unit,
     navigateToUser: (Long) -> Unit,
+    navigateToChat: (Long) -> Unit,
     modifier: Modifier = Modifier,
     viewModel: SearchViewModel = hiltViewModel(),
 ) {
@@ -59,7 +61,8 @@ internal fun SearchRoute(
         queryChanged = viewModel::setQuery,
         modifier = modifier,
         navigateToUser = navigateToUser,
-        navigatePopBack = navigatePopBack
+        navigatePopBack = navigatePopBack,
+        createChatWithUser = {} ,
     )
 }
 
@@ -70,6 +73,7 @@ internal fun SearchScreen(
     query: String,
     queryChanged: (String) -> Unit,
     navigateToUser: (Long) -> Unit,
+    createChatWithUser: (Long) -> Unit,
     navigatePopBack: () -> Unit,
     modifier: Modifier = Modifier,
 ) {
@@ -158,7 +162,8 @@ internal fun SearchScreen(
                 is SearchUiState.Success -> {
                     SuccessUserSearch(
                         user = state.user,
-                        navigateToUserButtonClick = { navigateToUser(state.user.id) }
+                        navigateToUserButtonClick = { navigateToUser(state.user.id) },
+                        createChatWithUser = { createChatWithUser(state.user.id) },
                     )
                 }
             }
@@ -169,7 +174,8 @@ internal fun SearchScreen(
 @Composable
 private fun SuccessUserSearch(
     user: User,
-    navigateToUserButtonClick: () -> Unit
+    navigateToUserButtonClick: () -> Unit,
+    createChatWithUser: () -> Unit
 ) {
     Column(
         modifier = Modifier
@@ -185,6 +191,20 @@ private fun SuccessUserSearch(
             UserNode("ID", id.toString())
             UserNode("login", login)
             name?.let { UserNode("name", it) }
+        }
+        Spacer(modifier = Modifier.height(8.dp))
+        Row(modifier = Modifier.fillMaxWidth()) {
+            DefaultButton(
+                modifier = Modifier.weight(1f),
+                onClick = createChatWithUser,
+                text = "Chat"
+            )
+            Spacer(modifier = Modifier.width(8.dp))
+            DefaultOutlinedButton(
+                modifier = Modifier.weight(1f),
+                onClick = navigateToUserButtonClick,
+                text = "Profile"
+            )
         }
     }
 }
@@ -224,7 +244,8 @@ private fun SuccessUserSearchPreview() {
                 createdAt = LocalDateTime.now(),
                 isDeleted = false
             ),
-            navigateToUserButtonClick = {}
+            navigateToUserButtonClick = {},
+            createChatWithUser = {}
         )
     }
 }

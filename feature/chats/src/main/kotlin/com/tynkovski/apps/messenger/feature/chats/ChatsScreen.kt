@@ -14,6 +14,7 @@ import androidx.hilt.navigation.compose.hiltViewModel
 
 @Composable
 internal fun ChatsRoute(
+    navigateToChat: (Long) -> Unit,
     modifier: Modifier = Modifier,
     viewModel: ChatsViewModel = hiltViewModel(),
 ) {

@@ -12,7 +12,8 @@ fun NavController.navigateToSearch() = navigate(SEARCH_ROUTE)
 
 fun NavGraphBuilder.searchScreen(
     navigatePopBack: () -> Unit,
-    navigateToUser: (Long) -> Unit
+    navigateToUser: (Long) -> Unit,
+    navigateToChat: (Long) -> Unit,
 ) {
     composable(
         route = SEARCH_ROUTE,
@@ -20,7 +21,8 @@ fun NavGraphBuilder.searchScreen(
     ) {
         SearchRoute(
             navigateToUser = navigateToUser,
-            navigatePopBack = navigatePopBack
+            navigatePopBack = navigatePopBack,
+            navigateToChat = navigateToChat
         )
     }
 }
