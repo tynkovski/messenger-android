@@ -6,9 +6,9 @@ import com.tynkovski.apps.messenger.core.model.data.User
 import kotlinx.coroutines.flow.Flow
 
 interface ContactsRepository : Syncable {
-    fun getContacts(): Flow<Result<List<User>>>
+    fun getContacts(): Flow<List<User>>
 
-    fun addContact(userId: Long): Flow<Result<Unit>>
+    fun addContact(userId: Long): Flow<Unit>
 
-    fun removeContact(userId: Long): Flow<Result<Unit>>
+    fun removeContact(userId: Long): Flow<Unit>
 }

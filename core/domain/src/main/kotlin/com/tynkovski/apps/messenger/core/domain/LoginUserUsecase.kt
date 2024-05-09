@@ -7,5 +7,4 @@ class LoginUserUsecase @Inject constructor(
     private val authRepository: AuthRepository
 ) {
     operator fun invoke(login: String, password: String) = authRepository.signIn(login, password)
-
 }

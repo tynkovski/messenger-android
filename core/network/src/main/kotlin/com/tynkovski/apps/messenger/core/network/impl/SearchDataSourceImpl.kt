@@ -2,13 +2,10 @@ package com.tynkovski.apps.messenger.core.network.impl
 
 import androidx.tracing.trace
 import com.jakewharton.retrofit2.converter.kotlinx.serialization.asConverterFactory
-import com.tynkovski.apps.messenger.core.model.NetResult
 import com.tynkovski.apps.messenger.core.network.BuildConfig
 import com.tynkovski.apps.messenger.core.network.SearchDataSource
-import com.tynkovski.apps.messenger.core.network.model.ErrorResponse
 import com.tynkovski.apps.messenger.core.network.model.UserResponse
 import com.tynkovski.apps.messenger.core.network.retrofit.SearchNetworkApi
-import com.tynkovski.apps.messenger.core.network.util.asNetResult
 import kotlinx.serialization.json.Json
 import okhttp3.Call
 import okhttp3.MediaType.Companion.toMediaType

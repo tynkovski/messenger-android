@@ -57,7 +57,9 @@ internal object NetworkModule {
             .components { add(SvgDecoder.Factory()) }
             .respectCacheHeaders(false)
             .apply {
-                if (BuildConfig.DEBUG) { logger(DebugLogger()) }
+                if (BuildConfig.DEBUG) {
+                    logger(DebugLogger())
+                }
             }
             .build()
     }

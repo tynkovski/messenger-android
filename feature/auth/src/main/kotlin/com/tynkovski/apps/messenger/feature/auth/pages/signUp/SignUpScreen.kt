@@ -64,13 +64,13 @@ internal fun SignUpRoute(
 
     SignUpScreen(
         login = login,
-        loginChanged = viewModel::setLoginInputState,
+        loginChanged = viewModel::setLoginInput,
         name = name,
-        nameChanged = viewModel::setNameInputState,
+        nameChanged = viewModel::setNameInput,
         password = password,
-        passwordChanged = viewModel::setPasswordInputState,
+        passwordChanged = viewModel::setPasswordInput,
         passwordRepeat = passwordRepeat,
-        passwordRepeatChanged = viewModel::setPasswordRepeatInputState,
+        passwordRepeatChanged = viewModel::setPasswordRepeatInput,
         buttonState = buttonState,
         signUpButtonClick = viewModel::signUp,
         navigateToSignIn = navigateToSignIn,

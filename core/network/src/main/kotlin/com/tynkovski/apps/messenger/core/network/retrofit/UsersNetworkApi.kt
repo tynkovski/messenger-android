@@ -19,11 +19,11 @@ interface UsersNetworkApi {
     )
 
     @GET(USERS_URL)
-    suspend fun getUser(): Response<UserResponse>
+    suspend fun getUser(): UserResponse
 
     @GET("$USERS_URL/{id}")
-    suspend fun getUserById(@Path(value = "id", encoded = true) id: Long): Response<UserResponse>
+    suspend fun getUserById(@Path(value = "id", encoded = true) id: Long): UserResponse
 
     @POST("$USERS_URL/edit")
-    suspend fun editUser(@Body request: UpdateUserRequest): Response<UserResponse>
+    suspend fun editUser(@Body request: UpdateUserRequest): UserResponse
 }

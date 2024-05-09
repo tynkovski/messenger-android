@@ -10,15 +10,15 @@ import javax.inject.Inject
 internal class ContactsRepositoryImpl @Inject constructor(
     
 ) : ContactsRepository {
-    override fun getContacts(): Flow<Result<List<User>>> {
+    override fun getContacts(): Flow<List<User>> {
         TODO("Not yet implemented")
     }
 
-    override fun addContact(userId: Long): Flow<Result<Unit>> {
+    override fun addContact(userId: Long): Flow<Unit> {
         TODO("Not yet implemented")
     }
 
-    override fun removeContact(userId: Long): Flow<Result<Unit>> {
+    override fun removeContact(userId: Long): Flow<Unit> {
         TODO("Not yet implemented")
     }
 

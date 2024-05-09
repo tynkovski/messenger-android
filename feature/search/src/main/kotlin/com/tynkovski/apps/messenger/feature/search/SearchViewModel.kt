@@ -5,11 +5,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.tynkovski.apps.messenger.core.domain.CreateChatUsecase
 import com.tynkovski.apps.messenger.core.domain.FindUserUsecase
-import com.tynkovski.apps.messenger.core.model.Result
 import com.tynkovski.apps.messenger.core.model.data.User
-import com.tynkovski.apps.messenger.core.model.onError
-import com.tynkovski.apps.messenger.core.model.onLoading
-import com.tynkovski.apps.messenger.core.model.onSuccess
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
@@ -22,7 +18,7 @@ import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
-private const val SEARCH_QUERY = "searchQuery"
+private const val SEARCH_QUERY = "search_query"
 
 @HiltViewModel
 class SearchViewModel @Inject constructor(
@@ -30,7 +26,7 @@ class SearchViewModel @Inject constructor(
     private val findUserUsecase: FindUserUsecase,
     private val savedStateHandle: SavedStateHandle,
 ) : ViewModel() {
-    val queryState = savedStateHandle.getStateFlow(key = SEARCH_QUERY, initialValue = "")
+    val queryState = savedStateHandle.getStateFlow(SEARCH_QUERY, "")
 
     fun setQuery(value: String) {
         savedStateHandle[SEARCH_QUERY] = value
@@ -47,14 +43,9 @@ class SearchViewModel @Inject constructor(
             flowOf(SearchUiState.EmptyQuery)
         } else {
             findUserUsecase(query)
-                .onStart {
-                    SearchUiState.Loading
-                }
-                .map<User, SearchUiState> {
-                    SearchUiState.Success(it)
-                }.catch {
-                    emit(SearchUiState.LoadFailed)
-                }
+                .map<User, SearchUiState> { SearchUiState.Success(it) }
+                .onStart { SearchUiState.Loading }
+                .catch { emit(SearchUiState.LoadFailed) }
         }
     }.stateIn(
         scope = viewModelScope,

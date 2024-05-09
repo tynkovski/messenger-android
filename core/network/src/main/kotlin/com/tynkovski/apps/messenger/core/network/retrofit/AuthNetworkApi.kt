@@ -20,14 +20,14 @@ interface AuthNetworkApi {
     data class RefreshTokenRequest(val refreshToken: String)
 
     @POST("${AUTH_URL}/signUp")
-    suspend fun signUp(@Body request: SignUpRequest): Response<TokenResponse>
+    suspend fun signUp(@Body request: SignUpRequest): TokenResponse
 
     @POST("${AUTH_URL}/signIn")
-    suspend fun signIn(@Body request: SignInRequest): Response<TokenResponse>
+    suspend fun signIn(@Body request: SignInRequest): TokenResponse
 
     @POST("${AUTH_URL}/refreshToken")
-    suspend fun refreshToken(@Body request: RefreshTokenRequest): Response<AccessResponse>
+    suspend fun refreshToken(@Body request: RefreshTokenRequest): AccessResponse
 
     @POST("${AUTH_URL}/logout")
-    suspend fun logout(@Body request: RefreshTokenRequest): Response<Unit>
+    suspend fun logout(@Body request: RefreshTokenRequest): Unit
 }

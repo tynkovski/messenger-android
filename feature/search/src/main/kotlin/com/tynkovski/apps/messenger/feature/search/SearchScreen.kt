@@ -197,7 +197,7 @@ private fun SuccessUserSearch(
             DefaultButton(
                 modifier = Modifier.weight(1f),
                 onClick = createChatWithUser,
-                text = "Chat"
+                text = "New Chat"
             )
             Spacer(modifier = Modifier.width(8.dp))
             DefaultOutlinedButton(

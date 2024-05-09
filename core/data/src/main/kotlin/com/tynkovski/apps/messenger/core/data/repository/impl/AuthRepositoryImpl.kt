@@ -5,11 +5,8 @@ import com.tynkovski.apps.messenger.core.data.util.accessMapper
 import com.tynkovski.apps.messenger.core.data.util.tokenMapper
 import com.tynkovski.apps.messenger.core.data.util.unitMapper
 import com.tynkovski.apps.messenger.core.datastore.TokenHolder
-import com.tynkovski.apps.messenger.core.model.NetResult
-import com.tynkovski.apps.messenger.core.model.Result
 import com.tynkovski.apps.messenger.core.model.data.AccessToken
 import com.tynkovski.apps.messenger.core.model.data.Token
-import com.tynkovski.apps.messenger.core.model.toResult
 import com.tynkovski.apps.messenger.core.network.AuthDataSource
 import com.tynkovski.apps.messenger.core.network.Dispatcher
 import com.tynkovski.apps.messenger.core.network.MessengerDispatchers
@@ -17,6 +14,7 @@ import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.flowOn
+import kotlinx.coroutines.flow.map
 import javax.inject.Inject
 
 internal class AuthRepositoryImpl @Inject constructor(
@@ -24,36 +22,28 @@ internal class AuthRepositoryImpl @Inject constructor(
     private val network: AuthDataSource,
     @Dispatcher(MessengerDispatchers.IO) private val ioDispatcher: CoroutineDispatcher,
 ) : AuthRepository {
-    override fun signUp(name: String?, login: String, password: String): Flow<Result<Token>> =
+    override fun signUp(name: String?, login: String, password: String): Flow<Token> =
         flow {
-            val netResult = network.signUp(name, login, password)
-            if (netResult is NetResult.Success) {
-                tokenHolder.setToken(netResult.value.accessToken, netResult.value.refreshToken)
-            }
-            emit(netResult)
-        }.toResult(tokenMapper).flowOn(ioDispatcher)
+            val response = network.signUp(name, login, password)
+            tokenHolder.setToken(response.accessToken, response.refreshToken)
+            emit(response)
+        }.map(tokenMapper).flowOn(ioDispatcher)
 
-    override fun signIn(login: String, password: String): Flow<Result<Token>> = flow {
-        val netResult = network.signIn(login, password)
-        if (netResult is NetResult.Success) {
-            tokenHolder.setToken(netResult.value.accessToken, netResult.value.refreshToken)
-        }
-        emit(netResult)
-    }.toResult(tokenMapper).flowOn(ioDispatcher)
+    override fun signIn(login: String, password: String): Flow<Token> = flow {
+        val response = network.signIn(login, password)
+        tokenHolder.setToken(response.accessToken, response.refreshToken)
+        emit(response)
+    }.map(tokenMapper).flowOn(ioDispatcher)
 
-    override fun refreshToken(refreshToken: String): Flow<Result<AccessToken>> = flow {
-        val netResult = network.refreshToken(refreshToken)
-        if (netResult is NetResult.Success) {
-            tokenHolder.setAccessToken(netResult.value.accessToken)
-        }
-        emit(netResult)
-    }.toResult(accessMapper).flowOn(ioDispatcher)
+    override fun refreshToken(refreshToken: String): Flow<AccessToken> = flow {
+        val response = network.refreshToken(refreshToken)
+        tokenHolder.setAccessToken(response.accessToken)
+        emit(response)
+    }.map(accessMapper).flowOn(ioDispatcher)
 
-    override fun logout(refreshToken: String): Flow<Result<Unit>> = flow {
-        val netResult = network.logout(refreshToken)
-        if (netResult is NetResult.Success) {
-            tokenHolder.logout()
-        }
-        emit(netResult)
-    }.toResult(unitMapper).flowOn(ioDispatcher)
+    override fun logout(refreshToken: String): Flow<Unit> = flow {
+        val response = network.logout(refreshToken)
+        tokenHolder.logout()
+        emit(response)
+    }.map(unitMapper).flowOn(ioDispatcher)
 }

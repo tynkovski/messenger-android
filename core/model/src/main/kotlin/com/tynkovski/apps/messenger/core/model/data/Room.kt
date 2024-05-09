@@ -8,8 +8,8 @@ data class Room(
     val image: String?,
     val users: Set<Long>,
     val moderators: Set<Long>,
-    val lastAction: LastAction?,
     val isDeleted: Boolean,
+    val lastAction: LastAction?,
     val createdAt: LocalDateTime,
 ) {
     data class LastAction(
@@ -26,7 +26,20 @@ data class Room(
             USER_KICK_USER,
             USER_QUIT,
             USER_JOINED,
-            MAKE_MODERATOR
+            MAKE_MODERATOR;
+            companion object {
+                fun fromString(string: String) = when (string) {
+                    "USER_CREATE_ROOM" -> USER_CREATE_ROOM
+                    "USER_RENAME_ROOM" -> USER_RENAME_ROOM
+                    "USER_SENT_MESSAGE" -> USER_SENT_MESSAGE
+                    "USER_INVITE_USER" -> USER_INVITE_USER
+                    "USER_KICK_USER" -> USER_KICK_USER
+                    "USER_QUIT" -> USER_QUIT
+                    "USER_JOINED" -> USER_JOINED
+                    "MAKE_MODERATOR" -> MAKE_MODERATOR
+                    else -> USER_CREATE_ROOM
+                }
+            }
         }
     }
 }

@@ -60,9 +60,9 @@ internal fun SignInRoute(
 
     SignInScreen(
         login = login,
-        loginChanged = viewModel::setLoginInputState,
+        loginChanged = viewModel::setLoginInput,
         password = password,
-        passwordChanged = viewModel::setPasswordInputState,
+        passwordChanged = viewModel::setPasswordInput,
         buttonState = buttonState,
         signInButtonClick = viewModel::signIn,
         navigateToSignUp = navigateToSignUp,

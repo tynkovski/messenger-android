@@ -23,25 +23,7 @@ val userMapper: (UserResponse) -> User = {
 }
 
 val roomMapper: (RoomResponse) -> Room = {
-    val actionMapper: (RoomLastActionResponse) -> Room.LastAction = {
-        Room.LastAction(
-            applicantId = it.authorId,
-            actionType = it.actionType,
-            description = it.description,
-            actionDateTime = it.actionDateTime
-        )
-    }
-
-    Room(
-        id = it.id,
-        name = it.name,
-        image = it.image,
-        users = it.users,
-        moderators = it.moderators,
-        lastAction = it.lastAction,
-        deletedAt = it.deletedAt,
-        createdAt = it.createdAt
-    )
+    TODO("create room mapper")
 }
 
 val tokenMapper: (TokenResponse) -> Token = {
