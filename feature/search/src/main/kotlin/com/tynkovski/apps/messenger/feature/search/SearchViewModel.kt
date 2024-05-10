@@ -1,14 +1,18 @@
 package com.tynkovski.apps.messenger.feature.search
 
+import android.util.Log
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.tynkovski.apps.messenger.core.domain.CreateChatUsecase
 import com.tynkovski.apps.messenger.core.domain.FindUserUsecase
+import com.tynkovski.apps.messenger.core.model.collector
 import com.tynkovski.apps.messenger.core.model.data.User
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.asSharedFlow
 import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.flatMapLatest
 import kotlinx.coroutines.flow.flowOf
@@ -26,6 +30,9 @@ class SearchViewModel @Inject constructor(
     private val findUserUsecase: FindUserUsecase,
     private val savedStateHandle: SavedStateHandle,
 ) : ViewModel() {
+    private val mSharedFlow = MutableSharedFlow<Long>()
+    val sideEffect = mSharedFlow.asSharedFlow()
+
     val queryState = savedStateHandle.getStateFlow(SEARCH_QUERY, "")
 
     fun setQuery(value: String) {
@@ -34,7 +41,14 @@ class SearchViewModel @Inject constructor(
 
     fun createRoom(collocutorId: Long) {
         viewModelScope.launch {
-
+            createChatUsecase(collocutorId).collector(
+                onLoading = { Log.d("createRoom", "loading") },
+                onSuccess = {
+                    Log.d("createRoom", "success ${it.id}")
+                    mSharedFlow.emit(it.id)
+                },
+                onError = { Log.d("createRoom", "error") }
+            )
         }
     }
 

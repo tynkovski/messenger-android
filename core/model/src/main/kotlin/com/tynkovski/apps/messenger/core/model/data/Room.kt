@@ -9,7 +9,7 @@ data class Room(
     val users: Set<Long>,
     val moderators: Set<Long>,
     val isDeleted: Boolean,
-    val lastAction: LastAction?,
+    val lastAction: LastAction,
     val createdAt: LocalDateTime,
 ) {
     data class LastAction(

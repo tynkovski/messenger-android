@@ -4,8 +4,8 @@ import androidx.tracing.trace
 import com.jakewharton.retrofit2.converter.kotlinx.serialization.asConverterFactory
 import com.tynkovski.apps.messenger.core.network.AuthDataSource
 import com.tynkovski.apps.messenger.core.network.BuildConfig
-import com.tynkovski.apps.messenger.core.network.model.AccessResponse
-import com.tynkovski.apps.messenger.core.network.model.TokenResponse
+import com.tynkovski.apps.messenger.core.network.model.response.AccessResponse
+import com.tynkovski.apps.messenger.core.network.model.response.TokenResponse
 import com.tynkovski.apps.messenger.core.network.retrofit.AuthNetworkApi
 import kotlinx.serialization.json.Json
 import okhttp3.Call

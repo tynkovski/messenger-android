@@ -15,7 +15,7 @@ import java.net.URLEncoder
 private val URL_CHARACTER_ENCODING = Charsets.UTF_8.name()
 
 @VisibleForTesting
-internal const val CHAT_ID_ARG = "room_id"
+internal const val CHAT_ID_ARG = "chatId"
 const val CHAT_ROUTE = "chat_route"
 
 internal class ChatArgs(

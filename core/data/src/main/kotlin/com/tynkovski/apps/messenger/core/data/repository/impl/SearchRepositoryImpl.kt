@@ -1,7 +1,7 @@
 package com.tynkovski.apps.messenger.core.data.repository.impl
 
 import com.tynkovski.apps.messenger.core.data.repository.SearchRepository
-import com.tynkovski.apps.messenger.core.data.util.userMapper
+import com.tynkovski.apps.messenger.core.data.util.UserMapper
 import com.tynkovski.apps.messenger.core.model.data.User
 import com.tynkovski.apps.messenger.core.network.Dispatcher
 import com.tynkovski.apps.messenger.core.network.MessengerDispatchers
@@ -19,5 +19,5 @@ internal class SearchRepositoryImpl @Inject constructor(
 ) : SearchRepository {
     override fun getUser(login: String): Flow<User> = flow {
         emit(searchDataSource.getUser(login))
-    }.map(userMapper).flowOn(ioDispatcher)
+    }.map(UserMapper.responseToEntry).flowOn(ioDispatcher)
 }

@@ -26,6 +26,7 @@ import androidx.compose.material3.OutlinedTextFieldDefaults
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.derivedStateOf
 import androidx.compose.runtime.getValue
@@ -42,6 +43,8 @@ import com.tynkovski.apps.messenger.core.designsystem.component.TransparentIconB
 import com.tynkovski.apps.messenger.core.designsystem.icon.MessengerIcons
 import com.tynkovski.apps.messenger.core.designsystem.theme.MessengerTheme
 import com.tynkovski.apps.messenger.core.model.data.User
+import kotlinx.coroutines.flow.collect
+import kotlinx.coroutines.flow.onEach
 import java.time.LocalDateTime
 
 @Composable
@@ -55,6 +58,12 @@ internal fun SearchRoute(
     val query by viewModel.queryState.collectAsState()
     val state by viewModel.searchResultUiState.collectAsState()
 
+    LaunchedEffect(Unit) {
+        viewModel.sideEffect.onEach {
+            navigateToChat(it)
+        }.collect()
+    }
+
     SearchScreen(
         state = state,
         query = query,
@@ -62,7 +71,7 @@ internal fun SearchRoute(
         modifier = modifier,
         navigateToUser = navigateToUser,
         navigatePopBack = navigatePopBack,
-        createChatWithUser = {} ,
+        createChatWithUser = viewModel::createRoom,
     )
 }
 

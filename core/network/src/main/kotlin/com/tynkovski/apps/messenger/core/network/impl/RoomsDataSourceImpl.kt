@@ -3,23 +3,21 @@ package com.tynkovski.apps.messenger.core.network.impl
 import androidx.tracing.trace
 import com.jakewharton.retrofit2.converter.kotlinx.serialization.asConverterFactory
 import com.tynkovski.apps.messenger.core.network.BuildConfig
+import com.tynkovski.apps.messenger.core.network.Dispatcher
+import com.tynkovski.apps.messenger.core.network.MessengerDispatchers
 import com.tynkovski.apps.messenger.core.network.RoomsDataSource
-import com.tynkovski.apps.messenger.core.network.model.RoomResponse
+import com.tynkovski.apps.messenger.core.network.model.request.CreateRoomRequest
+import com.tynkovski.apps.messenger.core.network.model.response.RoomResponse
+import com.tynkovski.apps.messenger.core.network.model.response.RoomsPagingResponse
 import com.tynkovski.apps.messenger.core.network.retrofit.RoomsNetworkApi
-import com.tynkovski.apps.messenger.core.network.websocket.RoomsWebsocketListener
+import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.serialization.json.Json
 import okhttp3.Call
 import okhttp3.MediaType.Companion.toMediaType
-import okhttp3.OkHttpClient
-import okhttp3.Request
-import okhttp3.WebSocket
-import okhttp3.WebSocketListener
 import retrofit2.Retrofit
-import java.util.concurrent.TimeUnit
 import javax.inject.Inject
 
 private const val BASE_URL = BuildConfig.BACKEND_URL
-private const val BASE_WS_URL = "ws://$BASE_URL/room"
 
 class RoomsDataSourceImpl @Inject constructor(
     networkJson: Json,
@@ -36,22 +34,25 @@ class RoomsDataSourceImpl @Inject constructor(
             .create(RoomsNetworkApi::class.java)
     }
 
-    private val websocketClient: WebSocket = trace("WebsocketClient") {
-        val client = OkHttpClient
-            .Builder()
-            .readTimeout(0, TimeUnit.MILLISECONDS)
-            .build()
-
-        val request = Request.Builder()
-            .url(BASE_WS_URL)
-            .build()
-
-        client.newWebSocket(request, roomsWebsocketListener)
+    override suspend fun createRoom(
+        collocutorId: Long,
+        name: String?,
+        image: String?,
+    ): RoomResponse {
+        val request = CreateRoomRequest(
+            name = name,
+            image = image,
+            users = listOf(collocutorId)
+        )
+        return api.createRoom(request)
     }
 
-    override fun createRoom(collocutorId: Long): RoomResponse {
-        TODO("Not yet implemented")
+    override suspend fun getRoom(roomId: Long): RoomResponse {
+        return api.getRoom(roomId)
     }
 
-    val flow = roomsWebsocketListener.flow
+    override suspend fun getRoomsPaged(page: Long, pageSize: Int): RoomsPagingResponse {
+        return api.getRoomsPaged(page, pageSize)
+    }
+
 }

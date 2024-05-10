@@ -1,6 +1,6 @@
 package com.tynkovski.apps.messenger.core.network.retrofit
 
-import com.tynkovski.apps.messenger.core.network.model.UserResponse
+import com.tynkovski.apps.messenger.core.network.model.response.UserResponse
 import retrofit2.http.GET
 import retrofit2.http.Query
 

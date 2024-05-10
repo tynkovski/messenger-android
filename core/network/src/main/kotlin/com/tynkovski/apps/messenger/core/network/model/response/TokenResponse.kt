@@ -1,4 +1,4 @@
-package com.tynkovski.apps.messenger.core.network.model
+package com.tynkovski.apps.messenger.core.network.model.response
 
 import com.tynkovski.apps.messenger.core.model.data.Token
 import kotlinx.serialization.Serializable

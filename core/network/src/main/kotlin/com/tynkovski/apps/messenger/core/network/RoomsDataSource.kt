@@ -1,7 +1,19 @@
 package com.tynkovski.apps.messenger.core.network
 
-import com.tynkovski.apps.messenger.core.network.model.RoomResponse
+import com.tynkovski.apps.messenger.core.network.model.response.RoomResponse
+import com.tynkovski.apps.messenger.core.network.model.response.RoomsPagingResponse
 
 interface RoomsDataSource {
-    fun createRoom(collocutorId: Long): RoomResponse
+    suspend fun getRoom(roomId: Long): RoomResponse
+
+    suspend fun getRoomsPaged(
+        page: Long,
+        pageSize: Int
+    ): RoomsPagingResponse
+
+    suspend fun createRoom(
+        collocutorId: Long,
+        name: String? = null,
+        image: String? = null
+    ): RoomResponse
 }

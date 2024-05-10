@@ -1,8 +1,7 @@
 package com.tynkovski.apps.messenger.core.data.repository.impl
 
 import com.tynkovski.apps.messenger.core.data.repository.AuthRepository
-import com.tynkovski.apps.messenger.core.data.util.accessMapper
-import com.tynkovski.apps.messenger.core.data.util.tokenMapper
+import com.tynkovski.apps.messenger.core.data.util.TokenMapper
 import com.tynkovski.apps.messenger.core.data.util.unitMapper
 import com.tynkovski.apps.messenger.core.datastore.TokenHolder
 import com.tynkovski.apps.messenger.core.model.data.AccessToken
@@ -27,19 +26,19 @@ internal class AuthRepositoryImpl @Inject constructor(
             val response = network.signUp(name, login, password)
             tokenHolder.setToken(response.accessToken, response.refreshToken)
             emit(response)
-        }.map(tokenMapper).flowOn(ioDispatcher)
+        }.map(TokenMapper.tokenMapper).flowOn(ioDispatcher)
 
     override fun signIn(login: String, password: String): Flow<Token> = flow {
         val response = network.signIn(login, password)
         tokenHolder.setToken(response.accessToken, response.refreshToken)
         emit(response)
-    }.map(tokenMapper).flowOn(ioDispatcher)
+    }.map(TokenMapper.tokenMapper).flowOn(ioDispatcher)
 
     override fun refreshToken(refreshToken: String): Flow<AccessToken> = flow {
         val response = network.refreshToken(refreshToken)
         tokenHolder.setAccessToken(response.accessToken)
         emit(response)
-    }.map(accessMapper).flowOn(ioDispatcher)
+    }.map(TokenMapper.accessMapper).flowOn(ioDispatcher)
 
     override fun logout(refreshToken: String): Flow<Unit> = flow {
         val response = network.logout(refreshToken)

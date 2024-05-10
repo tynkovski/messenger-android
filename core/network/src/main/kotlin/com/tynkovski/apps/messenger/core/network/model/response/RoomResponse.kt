@@ -1,4 +1,4 @@
-package com.tynkovski.apps.messenger.core.network.model
+package com.tynkovski.apps.messenger.core.network.model.response
 
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
@@ -12,7 +12,7 @@ data class RoomResponse(
     @SerialName("moderators") val moderators: List<Long>,
     @SerialName("isDeleted") val isDeleted: Boolean,
     @SerialName("createdAt") val createdAt: String,
-    @SerialName("lastAction") val lastAction: RoomLastActionResponse?,
+    @SerialName("lastAction") val lastAction: RoomLastActionResponse,
 )
 
 @Serializable

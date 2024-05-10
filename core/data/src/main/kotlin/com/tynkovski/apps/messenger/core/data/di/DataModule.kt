@@ -16,6 +16,8 @@ import com.tynkovski.apps.messenger.core.data.util.ConnectivityManagerNetworkMon
 import com.tynkovski.apps.messenger.core.data.util.NetworkMonitor
 import com.tynkovski.apps.messenger.core.data.util.TimeZoneBroadcastMonitor
 import com.tynkovski.apps.messenger.core.data.util.TimeZoneMonitor
+import com.tynkovski.apps.messenger.core.data.websockets.RoomsWebsocketClient
+import com.tynkovski.apps.messenger.core.data.websockets.impl.RoomsWebsocketClientImpl
 import dagger.Binds
 import dagger.Module
 import dagger.hilt.InstallIn
@@ -33,11 +35,15 @@ abstract class DataModule {
     @Binds
     internal abstract fun bindsMessagesRepository(messagesRepositoryImpl: MessagesRepositoryImpl): MessagesRepository
 
-    @Binds
-    internal abstract fun bindsContactsRepository(contactsRepositoryImpl: ContactsRepositoryImpl): ContactsRepository
 
     @Binds
     internal abstract fun bindsRoomsRepository(roomsRepositoryImpl: RoomsRepositoryImpl): RoomsRepository
+
+    @Binds
+    internal abstract fun bindsRoomsWebsocketClient(impl: RoomsWebsocketClientImpl): RoomsWebsocketClient
+
+    @Binds
+    internal abstract fun bindsContactsRepository(contactsRepositoryImpl: ContactsRepositoryImpl): ContactsRepository
 
     @Binds
     internal abstract fun bindsSearchRepository(searchRepositoryImpl: SearchRepositoryImpl): SearchRepository

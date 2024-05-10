@@ -6,5 +6,5 @@ import javax.inject.Inject
 class CreateChatUsecase @Inject constructor(
     val roomsRepository: RoomsRepository
 ) {
-    operator fun invoke(collocutorId: Long) = roomsRepository.createRoom(collocutorId)
+    operator fun invoke(collocutorId: Long) = roomsRepository.createRoom(collocutorId, "New Chat")
 }

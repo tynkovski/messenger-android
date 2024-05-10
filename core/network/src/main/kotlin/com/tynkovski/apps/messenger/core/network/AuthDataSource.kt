@@ -1,7 +1,7 @@
 package com.tynkovski.apps.messenger.core.network
 
-import com.tynkovski.apps.messenger.core.network.model.AccessResponse
-import com.tynkovski.apps.messenger.core.network.model.TokenResponse
+import com.tynkovski.apps.messenger.core.network.model.response.AccessResponse
+import com.tynkovski.apps.messenger.core.network.model.response.TokenResponse
 
 interface AuthDataSource {
     suspend fun signUp(name: String?, login: String, password: String): TokenResponse
