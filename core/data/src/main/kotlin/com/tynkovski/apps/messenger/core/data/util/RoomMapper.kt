@@ -11,7 +11,7 @@ object RoomMapper {
     val localToEntry: (RoomEntity) -> Room = { room ->
         val actionMapper: (LastActionEntity) -> Room.LastAction = { action ->
             Room.LastAction(
-                applicantId = action.applicantId,
+                authorId = action.applicantId,
                 actionType = Room.LastAction.ActionType.fromString(action.actionType),
                 description = action.description,
                 actionDateTime = action.actionDateTime
@@ -43,7 +43,7 @@ object RoomMapper {
         val actionMapper: (Room.LastAction) -> LastActionEntity = { action ->
             LastActionEntity(
                 lastActionId = room.id,
-                applicantId = action.applicantId,
+                applicantId = action.authorId,
                 actionType = action.actionType.toString(),
                 description = action.description,
                 actionDateTime = action.actionDateTime
@@ -64,7 +64,7 @@ object RoomMapper {
     val remoteToEntry: (RoomResponse) -> Room = { room ->
         val actionMapper: (RoomLastActionResponse) -> Room.LastAction = { action ->
             Room.LastAction(
-                applicantId = action.authorId,
+                authorId = action.authorId,
                 actionType = Room.LastAction.ActionType.fromString(action.actionType),
                 description = action.description,
                 actionDateTime = LocalDateTime.parse(action.actionDateTime, timeFormatter)
@@ -86,7 +86,7 @@ object RoomMapper {
     val entryToRemote: (Room) -> RoomResponse = { room ->
         val actionMapper: (Room.LastAction) -> RoomLastActionResponse = { action ->
             RoomLastActionResponse(
-                authorId = action.applicantId,
+                authorId = action.authorId,
                 actionType = action.actionType.toString(),
                 description = action.description,
                 actionDateTime = timeFormatter.format(action.actionDateTime)

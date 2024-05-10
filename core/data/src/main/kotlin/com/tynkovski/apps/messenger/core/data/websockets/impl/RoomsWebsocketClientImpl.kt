@@ -1,12 +1,10 @@
 package com.tynkovski.apps.messenger.core.data.websockets.impl
 
 import android.util.Log
-import androidx.tracing.trace
 import com.tynkovski.apps.messenger.core.data.util.RoomMapper
 import com.tynkovski.apps.messenger.core.data.websockets.RoomsWebsocketClient
 import com.tynkovski.apps.messenger.core.database.dao.RoomsDao
 import com.tynkovski.apps.messenger.core.datastore.TokenHolder
-import com.tynkovski.apps.messenger.core.model.data.Room
 import com.tynkovski.apps.messenger.core.network.BuildConfig
 import com.tynkovski.apps.messenger.core.network.Dispatcher
 import com.tynkovski.apps.messenger.core.network.MessengerDispatchers
@@ -14,9 +12,7 @@ import com.tynkovski.apps.messenger.core.network.model.request.CreateRoomRequest
 import com.tynkovski.apps.messenger.core.network.model.response.RoomResponse
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
-import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.launch
 import kotlinx.serialization.json.Json
 import kotlinx.serialization.json.encodeToJsonElement
@@ -25,6 +21,7 @@ import okhttp3.Request
 import okhttp3.Response
 import okhttp3.WebSocket
 import okhttp3.WebSocketListener
+import okhttp3.logging.HttpLoggingInterceptor
 import java.util.concurrent.TimeUnit
 import javax.inject.Inject
 
@@ -39,23 +36,32 @@ private const val QUIT_FROM_ROOM = "quit_from_room"
 private const val MAKE_MODERATOR = "make_moderator"
 
 class RoomsWebsocketClientImpl @Inject constructor(
-    private val tokenHolder: TokenHolder,
     private val dao: RoomsDao,
+    private val tokenHolder: TokenHolder,
     @Dispatcher(MessengerDispatchers.IO) private val dispatcher: CoroutineDispatcher,
 ) : RoomsWebsocketClient {
-    private lateinit var webSocketClient : WebSocket
+    private lateinit var webSocketClient: WebSocket
 
     override fun start() {
-        val token = tokenHolder.getToken()?.accessToken
+        val loggingInterceptor = HttpLoggingInterceptor().apply {
+            if (BuildConfig.DEBUG) {
+                setLevel(HttpLoggingInterceptor.Level.BODY)
+            }
+        }
+
+        val accessToken = tokenHolder.getToken()?.accessToken
 
         val client = OkHttpClient
             .Builder()
+            .addInterceptor(loggingInterceptor)
+//            .addInterceptor(tokenInterceptor)
+//            .addInterceptor(refreshInterceptor)
             .readTimeout(0, TimeUnit.MILLISECONDS)
             .build()
 
         val request = Request.Builder()
             .url(ROOM_WS_URL)
-            .apply { token?.let { header("Authorization", "Bearer $it")  } }
+            .apply { accessToken?.let { header("Authorization", "Bearer $it") } }
             .build()
 
         webSocketClient = client.newWebSocket(request, listener)

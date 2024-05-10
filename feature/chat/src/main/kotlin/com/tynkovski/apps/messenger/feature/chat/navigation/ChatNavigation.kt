@@ -39,14 +39,14 @@ fun NavController.navigateToChat(
 }
 
 fun NavGraphBuilder.chatScreen(
-    onBackClick: () -> Unit,
+    navigatePopBack: () -> Unit,
 ) {
     composable(
         route = "$CHAT_ROUTE/{$CHAT_ID_ARG}",
         arguments = listOf(navArgument(CHAT_ID_ARG) { type = NavType.LongType })
     ) {
         ChatRoute(
-            onBackClick = onBackClick
+            navigatePopBack = navigatePopBack
         )
     }
 }

@@ -13,7 +13,7 @@ data class Room(
     val createdAt: LocalDateTime,
 ) {
     data class LastAction(
-        val applicantId: Long,
+        val authorId: Long,
         val actionType: ActionType,
         val description: String?,
         val actionDateTime: LocalDateTime,
