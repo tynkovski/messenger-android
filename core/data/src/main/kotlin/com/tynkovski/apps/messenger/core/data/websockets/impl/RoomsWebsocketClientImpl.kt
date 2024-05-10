@@ -8,6 +8,8 @@ import com.tynkovski.apps.messenger.core.datastore.TokenHolder
 import com.tynkovski.apps.messenger.core.network.BuildConfig
 import com.tynkovski.apps.messenger.core.network.Dispatcher
 import com.tynkovski.apps.messenger.core.network.MessengerDispatchers
+import com.tynkovski.apps.messenger.core.network.interceptors.RefreshTokenInterceptor
+import com.tynkovski.apps.messenger.core.network.interceptors.TokenInterceptor
 import com.tynkovski.apps.messenger.core.network.model.request.CreateRoomRequest
 import com.tynkovski.apps.messenger.core.network.model.response.RoomResponse
 import kotlinx.coroutines.CoroutineDispatcher
@@ -37,7 +39,8 @@ private const val MAKE_MODERATOR = "make_moderator"
 
 class RoomsWebsocketClientImpl @Inject constructor(
     private val dao: RoomsDao,
-    private val tokenHolder: TokenHolder,
+    private val tokenInterceptor: TokenInterceptor,
+    private val refreshInterceptor: RefreshTokenInterceptor,
     @Dispatcher(MessengerDispatchers.IO) private val dispatcher: CoroutineDispatcher,
 ) : RoomsWebsocketClient {
     private lateinit var webSocketClient: WebSocket
@@ -49,19 +52,17 @@ class RoomsWebsocketClientImpl @Inject constructor(
             }
         }
 
-        val accessToken = tokenHolder.getToken()?.accessToken
-
         val client = OkHttpClient
             .Builder()
             .addInterceptor(loggingInterceptor)
-//            .addInterceptor(tokenInterceptor)
-//            .addInterceptor(refreshInterceptor)
+            .addInterceptor(tokenInterceptor)
+            .addInterceptor(refreshInterceptor)
             .readTimeout(0, TimeUnit.MILLISECONDS)
             .build()
 
         val request = Request.Builder()
             .url(ROOM_WS_URL)
-            .apply { accessToken?.let { header("Authorization", "Bearer $it") } }
+            ///.apply { accessToken?.let { header("Authorization", "Bearer $it") } }
             .build()
 
         webSocketClient = client.newWebSocket(request, listener)

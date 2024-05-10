@@ -2,6 +2,7 @@ package com.tynkovski.apps.messenger.feature.chats
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.tynkovski.apps.messenger.core.data.repository.MessagesRepository
 import com.tynkovski.apps.messenger.core.data.repository.RoomsRepository
 import com.tynkovski.apps.messenger.core.data.repository.UsersRepository
 import com.tynkovski.apps.messenger.core.data.websockets.RoomsWebsocketClient
@@ -11,12 +12,14 @@ import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.catch
+import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.stateIn
 import javax.inject.Inject
 
 @HiltViewModel
 class ChatsViewModel @Inject constructor(
+    private val messagesRepository: MessagesRepository,
     private val usersRepository: UsersRepository,
     private val roomsRepository: RoomsRepository,
     private val roomsWebsocketClient: RoomsWebsocketClient,
@@ -29,11 +32,9 @@ class ChatsViewModel @Inject constructor(
         .observeRooms()
         .map<List<Room>, Result<List<RoomUi>>> { list ->
             val uiItems = list.map {
-                val senderName = "user-${it.lastAction.authorId}"
+                val user = usersRepository.getUser(it.lastAction.authorId).first()
+                val senderName = user.name ?: user.login
                 val unread = 0
-                // todo add unread indication and user name/login
-                // val senderName = usersRepository.getUser(lastAction.applicantId).let { it?.name ?: it.login }
-                // val unread = messagesRepository.getUnreadMessagesCount(roomId)
                 RoomUi.fromRoom(it, senderName, unread)
             }
             Result.Success(uiItems)

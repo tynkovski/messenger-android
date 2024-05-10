@@ -35,7 +35,6 @@ abstract class DataModule {
     @Binds
     internal abstract fun bindsMessagesRepository(messagesRepositoryImpl: MessagesRepositoryImpl): MessagesRepository
 
-
     @Binds
     internal abstract fun bindsRoomsRepository(roomsRepositoryImpl: RoomsRepositoryImpl): RoomsRepository
 
