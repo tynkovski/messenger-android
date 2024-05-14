@@ -8,15 +8,21 @@ import com.tynkovski.apps.messenger.feature.search.SearchRoute
 
 const val SEARCH_ROUTE = "search_route"
 
-fun NavController.navigateToSearch(navOptions: NavOptions) = navigate(SEARCH_ROUTE, navOptions)
+fun NavController.navigateToSearch() = navigate(SEARCH_ROUTE)
 
 fun NavGraphBuilder.searchScreen(
-
+    navigatePopBack: () -> Unit,
+    navigateToUser: (Long) -> Unit,
+    navigateToChat: (Long) -> Unit,
 ) {
     composable(
         route = SEARCH_ROUTE,
         arguments = listOf(),
     ) {
-        SearchRoute()
+        SearchRoute(
+            navigateToUser = navigateToUser,
+            navigatePopBack = navigatePopBack,
+            navigateToChat = navigateToChat
+        )
     }
 }

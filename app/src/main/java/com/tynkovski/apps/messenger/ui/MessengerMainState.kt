@@ -14,6 +14,7 @@ import com.tynkovski.apps.messenger.feature.chats.navigation.CHATS_ROUTE
 import com.tynkovski.apps.messenger.feature.chats.navigation.navigateToChats
 import com.tynkovski.apps.messenger.feature.contacts.navigation.CONTACTS_ROUTE
 import com.tynkovski.apps.messenger.feature.contacts.navigation.navigateToContacts
+import com.tynkovski.apps.messenger.feature.search.navigation.navigateToSearch
 import com.tynkovski.apps.messenger.feature.settings.navigation.SETTINGS_ROUTE
 import com.tynkovski.apps.messenger.feature.settings.navigation.navigateToSettings
 import com.tynkovski.apps.messenger.navigation.TopLevelDestination
@@ -60,4 +61,6 @@ class MessengerMainState(
             }
         }
     }
+
+    fun navigateToSearch() = navController.navigateToSearch()
 }

@@ -1,9 +1,8 @@
 package com.tynkovski.apps.messenger.core.network.retrofit
 
-import com.tynkovski.apps.messenger.core.network.model.UserResponse
+import com.tynkovski.apps.messenger.core.network.model.response.UserResponse
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
-import retrofit2.Response
 import retrofit2.http.Body
 import retrofit2.http.GET
 import retrofit2.http.POST
@@ -19,11 +18,11 @@ interface UsersNetworkApi {
     )
 
     @GET(USERS_URL)
-    suspend fun getUser(): Response<UserResponse>
+    suspend fun getUser(): UserResponse
 
     @GET("$USERS_URL/{id}")
-    suspend fun getUserById(@Path(value = "id", encoded = true) id: Long): Response<UserResponse>
+    suspend fun getUserById(@Path(value = "id", encoded = true) id: Long): UserResponse
 
     @POST("$USERS_URL/edit")
-    suspend fun editUser(@Body request: UpdateUserRequest): Response<UserResponse>
+    suspend fun editUser(@Body request: UpdateUserRequest): UserResponse
 }

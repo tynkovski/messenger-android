@@ -29,21 +29,23 @@ internal object NetworkModule {
     }
 
     @Provides
+    fun providesLoggingInterceptor(): HttpLoggingInterceptor = HttpLoggingInterceptor().apply {
+        if (BuildConfig.DEBUG) {
+            setLevel(HttpLoggingInterceptor.Level.BODY)
+        }
+    }
+
+    @Provides
     @Singleton
     fun okHttpCallFactory(
+        loggingInterceptor: HttpLoggingInterceptor,
         tokenInterceptor: TokenInterceptor,
         refreshTokenInterceptor: RefreshTokenInterceptor
     ): Call.Factory = trace("OkHttpClient") {
         OkHttpClient.Builder()
             .addInterceptor(tokenInterceptor)
             .addInterceptor(refreshTokenInterceptor)
-            .addInterceptor(
-                HttpLoggingInterceptor().apply {
-                    if (BuildConfig.DEBUG) {
-                        setLevel(HttpLoggingInterceptor.Level.BODY)
-                    }
-                }
-            )
+            .addInterceptor(loggingInterceptor)
             .build()
     }
 
@@ -58,7 +60,9 @@ internal object NetworkModule {
             .components { add(SvgDecoder.Factory()) }
             .respectCacheHeaders(false)
             .apply {
-                if (BuildConfig.DEBUG) { logger(DebugLogger()) }
+                if (BuildConfig.DEBUG) {
+                    logger(DebugLogger())
+                }
             }
             .build()
     }

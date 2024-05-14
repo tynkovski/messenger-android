@@ -2,7 +2,6 @@ package com.tynkovski.apps.messenger.core.network.interceptors
 
 import android.util.Log
 import com.tynkovski.apps.messenger.core.datastore.TokenHolder
-import com.tynkovski.apps.messenger.core.model.NetResult
 import com.tynkovski.apps.messenger.core.network.AuthDataSource
 import kotlinx.coroutines.runBlocking
 import okhttp3.Interceptor
@@ -20,6 +19,7 @@ class RefreshTokenInterceptor @Inject constructor(
                 response.close()
                 val newToken = refreshToken()
                 if (newToken.isNullOrBlank()) {
+                    Log.d("JWT.Logout", "logout")
                     logout()
                     return@synchronized
                 } else {
@@ -32,18 +32,18 @@ class RefreshTokenInterceptor @Inject constructor(
     }
 
     private fun refreshToken(): String? = runBlocking {
-        tokenHolder.getToken()?.refreshToken?.let {
-            val response = authDataSource.refreshToken(it)
-            val accessResponse = (response as? NetResult.Success)?.value
-            accessResponse?.accessToken
-        }
+        runCatching {
+            val refreshToken = tokenHolder.getToken()!!.refreshToken
+            val response = authDataSource.refreshToken(refreshToken)
+            response.accessToken
+        }.getOrNull()
     }
 
     private fun newRequest(chain: Interceptor.Chain, newToken: String): Response {
-        Log.d("JWT.Access", newToken)
+        Log.d("JWT.RefreshedAccess", newToken)
         val newRequest = chain.request()
             .newBuilder()
-            .addHeader("Authorization", "Bearer $newToken")
+            .header("Authorization", "Bearer $newToken")
             .build()
         return chain.proceed(newRequest)
     }

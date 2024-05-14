@@ -2,14 +2,11 @@ package com.tynkovski.apps.messenger.core.network.impl
 
 import androidx.tracing.trace
 import com.jakewharton.retrofit2.converter.kotlinx.serialization.asConverterFactory
-import com.tynkovski.apps.messenger.core.model.NetResult
 import com.tynkovski.apps.messenger.core.network.AuthDataSource
 import com.tynkovski.apps.messenger.core.network.BuildConfig
-import com.tynkovski.apps.messenger.core.network.model.AccessResponse
-import com.tynkovski.apps.messenger.core.network.model.ErrorResponse
-import com.tynkovski.apps.messenger.core.network.model.TokenResponse
+import com.tynkovski.apps.messenger.core.network.model.response.AccessResponse
+import com.tynkovski.apps.messenger.core.network.model.response.TokenResponse
 import com.tynkovski.apps.messenger.core.network.retrofit.AuthNetworkApi
-import com.tynkovski.apps.messenger.core.network.util.asNetResult
 import kotlinx.serialization.json.Json
 import okhttp3.Call
 import okhttp3.MediaType.Companion.toMediaType
@@ -38,22 +35,22 @@ class AuthDataSourceImpl @Inject constructor(
         name: String?,
         login: String,
         password: String
-    ): NetResult<TokenResponse, ErrorResponse> {
-        return api.signUp(AuthNetworkApi.SignUpRequest(login, password, name, null)).asNetResult()
+    ): TokenResponse {
+        return api.signUp(AuthNetworkApi.SignUpRequest(login, password, name, null))
     }
 
     override suspend fun signIn(
         login: String,
         password: String
-    ): NetResult<TokenResponse, ErrorResponse> {
-        return api.signIn(AuthNetworkApi.SignInRequest(login, password)).asNetResult()
+    ): TokenResponse {
+        return api.signIn(AuthNetworkApi.SignInRequest(login, password))
     }
 
-    override suspend fun refreshToken(refreshToken: String): NetResult<AccessResponse, ErrorResponse> {
-        return api.refreshToken(AuthNetworkApi.RefreshTokenRequest(refreshToken)).asNetResult()
+    override suspend fun refreshToken(refreshToken: String): AccessResponse {
+        return api.refreshToken(AuthNetworkApi.RefreshTokenRequest(refreshToken))
     }
 
-    override suspend fun logout(refreshToken: String): NetResult<Unit, ErrorResponse> {
-        return api.logout(AuthNetworkApi.RefreshTokenRequest(refreshToken)).asNetResult()
+    override suspend fun logout(refreshToken: String): Unit {
+        return api.logout(AuthNetworkApi.RefreshTokenRequest(refreshToken))
     }
 }

@@ -4,52 +4,50 @@ import androidx.annotation.VisibleForTesting
 import androidx.lifecycle.SavedStateHandle
 import androidx.navigation.NavController
 import androidx.navigation.NavGraphBuilder
-import androidx.navigation.NavOptions
 import androidx.navigation.NavOptionsBuilder
 import androidx.navigation.NavType
 import androidx.navigation.compose.composable
 import androidx.navigation.navArgument
 import com.tynkovski.apps.messenger.feature.user.UserRoute
-import java.net.URLDecoder
-import java.net.URLEncoder
 
 private val URL_CHARACTER_ENCODING = Charsets.UTF_8.name()
 
 @VisibleForTesting
-internal const val USER_ID_ARG = "room_id"
+internal const val USER_ID_ARG = "user_id"
 
 const val USER_ROUTE = "user_route"
 
 internal class UserArgs(
-    val userId: String
+    val userId: Long
 ) {
     constructor(
         savedStateHandle: SavedStateHandle
     ) : this(
-        URLDecoder.decode(checkNotNull(savedStateHandle[USER_ID_ARG]), URL_CHARACTER_ENCODING)
+        checkNotNull(savedStateHandle.get<Long>(USER_ID_ARG))
     )
 }
 
 fun NavController.navigateToUser(
-    userId: String,
+    userId: Long,
     navOptions: NavOptionsBuilder.() -> Unit = {}
 ) {
-    val encodedId = URLEncoder.encode(userId, URL_CHARACTER_ENCODING)
-    val newRoute = "$USER_ROUTE/$encodedId"
+    val newRoute = "$USER_ROUTE/$userId"
     navigate(newRoute) {
         navOptions()
     }
 }
 
 fun NavGraphBuilder.userScreen(
-    onBackClick: () -> Unit,
+    navigatePopBack: () -> Unit,
+    navigateToChat: (Long) -> Unit,
 ) {
     composable(
         route = "$USER_ROUTE/{$USER_ID_ARG}",
-        arguments = listOf(navArgument(USER_ID_ARG) { type = NavType.StringType })
+        arguments = listOf(navArgument(USER_ID_ARG) { type = NavType.LongType })
     ) {
         UserRoute(
-            onBackClick = onBackClick
+            navigatePopBack = navigatePopBack,
+            navigateToChat = navigateToChat
         )
     }
 }

@@ -12,7 +12,6 @@ import kotlinx.coroutines.runBlocking
 import javax.inject.Inject
 
 class TokenHolderImpl @Inject constructor(
-    @ApplicationScope private val scope: CoroutineScope,
     private val messengerPreferencesDataSource: MessengerPreferencesDataSource,
 ) : TokenHolder {
 

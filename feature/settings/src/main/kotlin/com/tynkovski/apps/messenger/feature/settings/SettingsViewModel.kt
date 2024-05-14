@@ -6,6 +6,7 @@ import androidx.lifecycle.viewModelScope
 import com.tynkovski.apps.messenger.core.data.repository.UsersRepository
 import com.tynkovski.apps.messenger.core.datastore.TokenHolder
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.launch
@@ -17,11 +18,18 @@ class SettingsViewModel @Inject constructor(
     private val usersRepository: UsersRepository
 ) : ViewModel() {
     init {
+
+    }
+
+    fun getUser() {
         viewModelScope.launch {
             usersRepository
                 .getUser()
                 .onEach {
-                    Log.d("SettingsViewModel.init", it.toString())
+                    Log.d("ViewModel.getUser", it.toString())
+                }
+                .catch {
+                    Log.d("ViewModel.getUser", it.message.toString())
                 }
                 .collect()
         }

@@ -6,10 +6,15 @@ import androidx.compose.animation.fadeOut
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.navigation.compose.NavHost
+import com.tynkovski.apps.messenger.feature.chat.navigation.chatScreen
+import com.tynkovski.apps.messenger.feature.chat.navigation.navigateToChat
 import com.tynkovski.apps.messenger.feature.chats.navigation.CHATS_ROUTE
 import com.tynkovski.apps.messenger.feature.chats.navigation.chatsScreen
 import com.tynkovski.apps.messenger.feature.contacts.navigation.contactsScreen
+import com.tynkovski.apps.messenger.feature.search.navigation.searchScreen
 import com.tynkovski.apps.messenger.feature.settings.navigation.settingsScreen
+import com.tynkovski.apps.messenger.feature.user.navigation.navigateToUser
+import com.tynkovski.apps.messenger.feature.user.navigation.userScreen
 import com.tynkovski.apps.messenger.ui.MessengerMainState
 
 @Composable
@@ -26,12 +31,28 @@ fun MainNavHost(
         modifier = modifier,
         enterTransition = { fadeIn(animationSpec = tween(200)) },
         exitTransition = { fadeOut(animationSpec = tween(200)) },
-        popEnterTransition =  { fadeIn(animationSpec = tween(200)) },
+        popEnterTransition = { fadeIn(animationSpec = tween(200)) },
         popExitTransition = { fadeOut(animationSpec = tween(200)) },
-
     ) {
-        contactsScreen()
-        chatsScreen()
         settingsScreen()
-   }
+        contactsScreen(
+            onUserClick = navController::navigateToUser,
+        )
+        chatsScreen(
+            navigateToChat = navController::navigateToChat,
+        )
+        chatScreen(
+            navigatePopBack = navController::popBackStack,
+            navigateToUser = navController::navigateToUser,
+        )
+        searchScreen(
+            navigatePopBack = navController::popBackStack,
+            navigateToUser = navController::navigateToUser,
+            navigateToChat = navController::navigateToChat,
+        )
+        userScreen(
+            navigatePopBack = navController::popBackStack,
+            navigateToChat = navController::navigateToChat,
+        )
+    }
 }

@@ -5,6 +5,7 @@ import androidx.datastore.core.DataStore
 import androidx.datastore.preferences.core.Preferences
 import androidx.datastore.preferences.core.edit
 import androidx.datastore.preferences.core.emptyPreferences
+import androidx.datastore.preferences.core.longPreferencesKey
 import androidx.datastore.preferences.core.stringPreferencesKey
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.catch
@@ -19,12 +20,29 @@ class MessengerPreferencesDataSource @Inject constructor(
         const val DATA_STORE_NAME = "preferences"
         val ACCESS_TOKEN = stringPreferencesKey("access_token")
         val REFRESH_TOKEN = stringPreferencesKey("refresh_token")
+        val USER_ID = longPreferencesKey("user_id")
     }
 
     data class TokenPreferences(
         val accessToken: String,
         val refreshToken: String
     )
+
+    data class UserPreferences(
+        val userId: Long
+    )
+
+    val userPreferencesFlow: Flow<UserPreferences> = dataStore.data
+        .catch { exception ->
+            if (exception is IOException) {
+                Log.e(DATA_STORE_NAME, "Error reading preferences.", exception)
+                emit(emptyPreferences())
+            } else {
+                throw exception
+            }
+        }.map { preferences ->
+            getUserPreferences(preferences)
+        }
 
     val tokenPreferencesFlow: Flow<TokenPreferences> = dataStore.data
         .catch { exception ->
@@ -37,12 +55,6 @@ class MessengerPreferencesDataSource @Inject constructor(
         }.map { preferences ->
             getTokenPreferences(preferences)
         }
-
-    private fun getTokenPreferences(preferences: Preferences): TokenPreferences {
-        val accessToken = preferences[ACCESS_TOKEN] ?: ""
-        val refreshToken = preferences[REFRESH_TOKEN] ?: ""
-        return TokenPreferences(accessToken, refreshToken)
-    }
 
     suspend fun clear() {
         try {
@@ -64,7 +76,7 @@ class MessengerPreferencesDataSource @Inject constructor(
         }
     }
 
-    suspend fun setRefreshToken(refreshToken: String)  {
+    suspend fun setRefreshToken(refreshToken: String) {
         try {
             dataStore.edit { preferences ->
                 preferences[REFRESH_TOKEN] = refreshToken
@@ -72,5 +84,26 @@ class MessengerPreferencesDataSource @Inject constructor(
         } catch (ioException: IOException) {
             Log.e(DATA_STORE_NAME, "Failed to update token preferences", ioException)
         }
+    }
+
+    suspend fun setUserId(userId: Long) {
+        try {
+            dataStore.edit { preferences ->
+                preferences[USER_ID] = userId
+            }
+        } catch (ioException: IOException) {
+            Log.e(DATA_STORE_NAME, "Failed to update token preferences", ioException)
+        }
+    }
+
+    private fun getTokenPreferences(preferences: Preferences): TokenPreferences {
+        val accessToken = preferences[ACCESS_TOKEN] ?: ""
+        val refreshToken = preferences[REFRESH_TOKEN] ?: ""
+        return TokenPreferences(accessToken, refreshToken)
+    }
+
+    private fun getUserPreferences(preferences: Preferences): UserPreferences {
+        val userId = preferences[USER_ID] ?: 0
+        return UserPreferences(userId)
     }
 }
