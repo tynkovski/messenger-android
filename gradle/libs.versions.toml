@@ -60,6 +60,7 @@ room = "2.6.1"
 secrets = "2.0.1"
 truth = "1.4.2"
 turbine = "1.0.0"
+paging = "3.2.1"
 
 [libraries]
 accompanist-permissions = { group = "com.google.accompanist", name = "accompanist-permissions", version.ref = "accompanist" }
@@ -95,6 +96,7 @@ androidx-lifecycle-viewModelCompose = { group = "androidx.lifecycle", name = "li
 androidx-metrics = { group = "androidx.metrics", name = "metrics-performance", version.ref = "androidxMetrics" }
 androidx-navigation-compose = { group = "androidx.navigation", name = "navigation-compose", version.ref = "androidxNavigation" }
 androidx-navigation-testing = { group = "androidx.navigation", name = "navigation-testing", version.ref = "androidxNavigation" }
+androidx-paging = {group = "androidx.paging", name = "paging-runtime", version.ref="paging"}
 androidx-profileinstaller = { group = "androidx.profileinstaller", name = "profileinstaller", version.ref = "androidxProfileinstaller" }
 androidx-test-core = { group = "androidx.test", name = "core", version.ref = "androidxTestCore" }
 androidx-test-espresso-core = { group = "androidx.test.espresso", name = "espresso-core", version.ref = "androidxEspresso" }
@@ -188,19 +190,3 @@ messenger-android-lint = { id = "messenger.android.lint", version = "unspecified
 messenger-android-room = { id = "messenger.android.room", version = "unspecified" }
 messenger-android-test = { id = "messenger.android.test", version = "unspecified" }
 messenger-jvm-library = { id = "messenger.jvm.library", version = "unspecified" }
-
-# old todo delete
-#messenger-android-application          = { id = "messenger.android.application",          version = "unspecified" }
-#messenger-android-application-compose  = { id = "messenger.android.application.compose",  version = "unspecified" }
-#messenger-android-application-flavors  = { id = "messenger.android.application.flavors",  version = "unspecified" }
-#messenger-android-application-jacoco   = { id = "messenger.android.application.jacoco",   version = "unspecified" }
-#messenger-android-feature              = { id = "messenger.android.feature",              version = "unspecified" }
-#messenger-android-hilt                 = { id = "messenger.android.hilt",                 version = "unspecified" }
-#messenger-android-library              = { id = "messenger.android.library",              version = "unspecified" }
-#messenger-android-library-compose      = { id = "messenger.android.library.compose",      version = "unspecified" }
-#messenger-android-library-jacoco       = { id = "messenger.android.library.jacoco",       version = "unspecified" }
-#messenger-android-room                 = { id = "messenger.android.room",                 version = "unspecified" }
-#messenger-jvm-library                  = { id = "messenger.jvm.library",                  version = "unspecified" }
-#messenger-android-test                 = { id = "messenger.android.test",                 version = "unspecified" }
-## messenger-android-lint                 = { id = "messenger.android.lint",                 version = "unspecified" }
-## messenger-android-application-firebase = { id = "messenger.android.application.firebase", version = "unspecified" }

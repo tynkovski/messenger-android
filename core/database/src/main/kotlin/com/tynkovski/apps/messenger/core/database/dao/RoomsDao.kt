@@ -17,10 +17,13 @@ interface RoomsDao {
     @Upsert
     suspend fun upsert(entity: RoomEntity)
 
+    @Upsert
+    suspend fun upsert(entity: List<RoomEntity>)
+
     @Delete
     suspend fun delete(entity: RoomEntity)
 
-    @Query("SELECT * FROM rooms ORDER by actionDateTime DESC")
+    @Query("SELECT * FROM rooms WHERE isDeleted = 0 ORDER by actionDateTime DESC")
     fun getRooms(): Flow<List<RoomEntity>>
 
     @Query("SELECT * FROM rooms where id LIKE :roomId")

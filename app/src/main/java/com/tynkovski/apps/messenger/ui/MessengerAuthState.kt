@@ -27,8 +27,6 @@ fun rememberMessengerAuthState(
 
 @Stable
 class MessengerAuthState(val navController: NavHostController) {
-
-
     val destinations: List<AuthDestination> = AuthDestination.entries
 
     val currentTopLevelDestination: AuthDestination?

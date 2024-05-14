@@ -63,16 +63,14 @@ fun MessengerApp(
                 label = "AnimatedContent Main Auth Screen",
             ) {
                 if (it) {
-                    val appState = rememberMessengerMainState()
                     MainScreen(
-                        appState = appState,
+                        appState = rememberMessengerMainState(),
                         snackbarHostState = snackbarHostState,
                         modifier = Modifier.fillMaxSize(),
                     )
                 } else {
-                    val authState = rememberMessengerAuthState()
                     AuthScreen(
-                        authState = authState,
+                        authState = rememberMessengerAuthState(),
                         snackbarHostState = snackbarHostState,
                         modifier = Modifier.fillMaxSize(),
                     )

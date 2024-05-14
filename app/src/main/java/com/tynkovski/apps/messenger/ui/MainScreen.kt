@@ -48,6 +48,7 @@ fun MainScreen(
     modifier: Modifier = Modifier
 ) {
     val destination = appState.currentTopLevelDestination
+    val shouldShowTopAppBar = destination != null
 
     Scaffold(
         modifier = modifier,
@@ -55,6 +56,35 @@ fun MainScreen(
         contentColor = MaterialTheme.colorScheme.onBackground,
         contentWindowInsets = WindowInsets(0, 0, 0, 0),
         snackbarHost = { SnackbarHost(snackbarHostState) },
+        topBar = {
+            when (destination) {
+                TopLevelDestination.CONTACTS -> {
+                    MessengerTopAppBar(
+                        titleRes = destination.titleTextId,
+                        actions = {
+                            TransparentIconButton(
+                                imageVector = MessengerIcons.Search,
+                                onClick = appState::navigateToSearch
+                            )
+                        }
+                    )
+                }
+
+                TopLevelDestination.CHATS -> {
+                    MessengerTopAppBar(
+                        titleRes = destination.titleTextId
+                    )
+                }
+
+                TopLevelDestination.SETTINGS -> {
+                    MessengerTopAppBar(
+                        titleRes = destination.titleTextId
+                    )
+                }
+
+                null -> Unit
+            }
+        },
         bottomBar = {
             AnimatedVisibility(
                 visible = destination != null,
@@ -70,61 +100,19 @@ fun MainScreen(
             }
         }
     ) { padding ->
-        Column(
-            Modifier
+        MainNavHost(
+            modifier= Modifier
                 .fillMaxSize()
-                .padding(padding)
-        ) {
-
-            val shouldShowTopAppBar = destination != null
-
-            val boxModifier = if (shouldShowTopAppBar) {
-                Modifier.consumeWindowInsets(
-                    WindowInsets.safeDrawing.only(WindowInsetsSides.Top),
-                )
-            } else Modifier
-
-            when (destination) {
-                TopLevelDestination.CONTACTS -> {
-                    MessengerTopAppBar(
-                        titleRes = destination.titleTextId
-                    )
-                }
-
-                TopLevelDestination.CHATS -> {
-                    MessengerTopAppBar(
-                        titleRes = destination.titleTextId,
-                        actions = {
-                            TransparentIconButton(
-                                imageVector = MessengerIcons.Search,
-                                onClick = appState::navigateToSearch
-                            )
-                        }
-                    )
-                }
-
-                TopLevelDestination.SETTINGS -> {
-                    MessengerTopAppBar(
-                        titleRes = destination.titleTextId
-                    )
-                }
-
-                null -> Unit
+                .padding(padding),
+            appState = appState,
+            onShowSnackbar = { message, action ->
+                snackbarHostState.showSnackbar(
+                    message = message,
+                    actionLabel = action,
+                    duration = SnackbarDuration.Short,
+                ) == SnackbarResult.ActionPerformed
             }
-
-            Box(boxModifier) {
-                MainNavHost(
-                    appState = appState,
-                    onShowSnackbar = { message, action ->
-                        snackbarHostState.showSnackbar(
-                            message = message,
-                            actionLabel = action,
-                            duration = SnackbarDuration.Short,
-                        ) == SnackbarResult.ActionPerformed
-                    }
-                )
-            }
-        }
+        )
     }
 }
 

@@ -26,7 +26,6 @@ import androidx.compose.material3.OutlinedTextFieldDefaults
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.derivedStateOf
 import androidx.compose.runtime.getValue
@@ -35,16 +34,14 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
-import com.tynkovski.apps.messenger.core.designsystem.component.DefaultButton
-import com.tynkovski.apps.messenger.core.designsystem.component.DefaultOutlinedButton
+import com.tynkovski.apps.messenger.core.designsystem.component.DefaultIconButton
 import com.tynkovski.apps.messenger.core.designsystem.component.MessengerTopAppBar
 import com.tynkovski.apps.messenger.core.designsystem.component.ThemePreviews
 import com.tynkovski.apps.messenger.core.designsystem.component.TransparentIconButton
 import com.tynkovski.apps.messenger.core.designsystem.icon.MessengerIcons
 import com.tynkovski.apps.messenger.core.designsystem.theme.MessengerTheme
 import com.tynkovski.apps.messenger.core.model.data.User
-import kotlinx.coroutines.flow.collect
-import kotlinx.coroutines.flow.onEach
+import com.tynkovski.apps.messenger.core.ui.collectAsSideEffect
 import java.time.LocalDateTime
 
 @Composable
@@ -56,12 +53,13 @@ internal fun SearchRoute(
     viewModel: SearchViewModel = hiltViewModel(),
 ) {
     val query by viewModel.queryState.collectAsState()
-    val state by viewModel.searchResultUiState.collectAsState()
+    val state by viewModel.searchState.collectAsState()
 
-    LaunchedEffect(Unit) {
-        viewModel.sideEffect.onEach {
-            navigateToChat(it)
-        }.collect()
+    viewModel.sideEffect.collectAsSideEffect {
+        when (it) {
+            is SearchSideEffect.NavigateToChat -> navigateToChat(it.chatId)
+            is SearchSideEffect.NavigateToUser -> navigateToUser(it.userId)
+        }
     }
 
     SearchScreen(
@@ -72,6 +70,8 @@ internal fun SearchRoute(
         navigateToUser = navigateToUser,
         navigatePopBack = navigatePopBack,
         createChatWithUser = viewModel::createRoom,
+        addToContacts = viewModel::addToContacts,
+        removeFromContacts = viewModel::removeFromContacts
     )
 }
 
@@ -83,6 +83,8 @@ internal fun SearchScreen(
     queryChanged: (String) -> Unit,
     navigateToUser: (Long) -> Unit,
     createChatWithUser: (Long) -> Unit,
+    addToContacts: (Long) -> Unit,
+    removeFromContacts: (Long) -> Unit,
     navigatePopBack: () -> Unit,
     modifier: Modifier = Modifier,
 ) {
@@ -171,8 +173,11 @@ internal fun SearchScreen(
                 is SearchUiState.Success -> {
                     SuccessUserSearch(
                         user = state.user,
-                        navigateToUserButtonClick = { navigateToUser(state.user.id) },
+                        inContacts = state.inContacts,
+                        navigateToUser = { navigateToUser(state.user.id) },
                         createChatWithUser = { createChatWithUser(state.user.id) },
+                        addToContacts = { addToContacts(state.user.id) },
+                        removeFromContacts = { removeFromContacts(state.user.id) }
                     )
                 }
             }
@@ -183,10 +188,13 @@ internal fun SearchScreen(
 @Composable
 private fun SuccessUserSearch(
     user: User,
-    navigateToUserButtonClick: () -> Unit,
-    createChatWithUser: () -> Unit
+    inContacts: Boolean,
+    navigateToUser: () -> Unit,
+    createChatWithUser: () -> Unit,
+    addToContacts: () -> Unit,
+    removeFromContacts: () -> Unit,
 ) {
-    Column(
+    Row(
         modifier = Modifier
             .fillMaxWidth()
             .background(
@@ -194,25 +202,35 @@ private fun SuccessUserSearch(
                 shape = RoundedCornerShape(12.dp)
             )
             .padding(vertical = 8.dp, horizontal = 12.dp),
-        verticalArrangement = Arrangement.spacedBy(2.dp)
+        verticalAlignment = Alignment.CenterVertically
     ) {
-        with(user) {
-            UserNode("ID", id.toString())
-            UserNode("login", login)
-            name?.let { UserNode("name", it) }
+        Column(
+            modifier = Modifier.weight(1f),
+            verticalArrangement = Arrangement.spacedBy(2.dp)
+        ) {
+            with(user) {
+                UserNode("ID", id.toString())
+                UserNode("login", login)
+                name?.let { UserNode("name", it) }
+            }
         }
-        Spacer(modifier = Modifier.height(8.dp))
-        Row(modifier = Modifier.fillMaxWidth()) {
-            DefaultButton(
-                modifier = Modifier.weight(1f),
-                onClick = createChatWithUser,
-                text = "New Chat"
+        Column(modifier = Modifier) {
+            DefaultIconButton(
+                imageVector = if (inContacts) MessengerIcons.RemoveFromContacts else MessengerIcons.AddToContacts,
+                onClick = if (inContacts) removeFromContacts else addToContacts
+            )
+
+            Spacer(modifier = Modifier.width(8.dp))
+
+            DefaultIconButton(
+                imageVector = MessengerIcons.NewChat,
+                onClick = createChatWithUser
             )
             Spacer(modifier = Modifier.width(8.dp))
-            DefaultOutlinedButton(
-                modifier = Modifier.weight(1f),
-                onClick = navigateToUserButtonClick,
-                text = "Profile"
+
+            DefaultIconButton(
+                imageVector = MessengerIcons.Profile,
+                onClick = navigateToUser
             )
         }
     }
@@ -253,8 +271,11 @@ private fun SuccessUserSearchPreview() {
                 createdAt = LocalDateTime.now(),
                 isDeleted = false
             ),
-            navigateToUserButtonClick = {},
-            createChatWithUser = {}
+            navigateToUser = {},
+            createChatWithUser = {},
+            addToContacts = {},
+            inContacts = true,
+            removeFromContacts = {}
         )
     }
 }

@@ -14,12 +14,6 @@ import okhttp3.MediaType.Companion.toMediaType
 import retrofit2.Retrofit
 import javax.inject.Inject
 
-private const val SEND_MESSAGE = "send_message"
-private const val EDIT_MESSAGE = "edit_message"
-private const val DELETE_MESSAGE = "delete_message"
-private const val READ_MESSAGE = "read_message"
-private const val UNKNOWN = "unknown"
-
 private const val BASE_URL = BuildConfig.BACKEND_URL
 
 class MessagesDataSourceImpl @Inject constructor(

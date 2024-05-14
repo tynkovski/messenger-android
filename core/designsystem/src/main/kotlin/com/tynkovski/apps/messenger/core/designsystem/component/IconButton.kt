@@ -4,6 +4,7 @@ import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material3.FilledTonalIconButton
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
+import androidx.compose.material3.IconButtonColors
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
@@ -17,7 +18,12 @@ fun DefaultIconButton(
     imageVector: ImageVector,
     onClick: () -> Unit,
     modifier: Modifier = Modifier,
-    iconTint: Color = MaterialTheme.colorScheme.onBackground,
+    colors: IconButtonColors = IconButtonColors(
+        containerColor = MaterialTheme.colorScheme.surface,
+        contentColor = MaterialTheme.colorScheme.onBackground,
+        disabledContainerColor = MaterialTheme.colorScheme.surface,
+        disabledContentColor = MaterialTheme.colorScheme.outline,
+    ),
     shape: Shape = CircleShape,
     ignoreMinimumTouch: Boolean = false,
     contentDescription: String? = null
@@ -25,11 +31,10 @@ fun DefaultIconButton(
     FilledTonalIconButton(
         modifier = modifier,
         onClick = onClick,
-        shape = shape,
+        shape = shape, colors = colors
     ) {
         Icon(
             imageVector = imageVector,
-            tint = iconTint,
             contentDescription = contentDescription
         )
     }

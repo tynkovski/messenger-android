@@ -19,9 +19,9 @@ fun <T> Flow<T>.asResult(): Flow<Result<T>> = map<T, Result<T>> { Result.Success
     .catch { emit(Result.Error(it)) }
 
 suspend fun <T> Flow<T>.collector(
-    onLoading: suspend () -> Unit,
     onSuccess: suspend (value: T) -> Unit,
-    onError: suspend (value: Throwable) -> Unit,
+    onLoading: suspend () -> Unit = {},
+    onError: suspend (value: Throwable) -> Unit = {},
 ) = asResult()
     .onEach {
         when (it) {

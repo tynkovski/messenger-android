@@ -4,6 +4,7 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
@@ -97,7 +98,10 @@ private fun Success(
     modifier: Modifier,
 ) {
     LazyColumn(modifier = modifier) {
-        items(chats.size) {
+        items(
+            chats.size,
+            //key = { chats[it].id }
+        ) {
             val chat = chats[it]
             Chat(
                 modifier = Modifier
@@ -216,7 +220,11 @@ private fun Error(
 
         Spacer(modifier = Modifier.height(8.dp))
 
-        DefaultButton(onClick = onRetry, text = "Retry")
+        DefaultButton(
+            onClick = onRetry,
+            text = "Retry",
+            contentPadding = PaddingValues(horizontal = 32.dp)
+        )
     }
 }
 

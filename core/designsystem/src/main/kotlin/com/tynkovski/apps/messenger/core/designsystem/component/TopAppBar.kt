@@ -25,7 +25,7 @@ fun MessengerTopAppBar(
     modifier: Modifier = Modifier,
     navigation: @Composable () -> Unit = {},
     actions: @Composable() (RowScope.() -> Unit) = {},
-    colors: TopAppBarColors = TopAppBarDefaults.centerAlignedTopAppBarColors(containerColor = Color.Transparent),
+    colors: TopAppBarColors = TopAppBarDefaults.centerAlignedTopAppBarColors(),
 ) {
     CenterAlignedTopAppBar(
         title = { Text(text = stringResource(id = titleRes)) },

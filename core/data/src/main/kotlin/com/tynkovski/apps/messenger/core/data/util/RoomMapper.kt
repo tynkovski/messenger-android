@@ -8,6 +8,11 @@ import com.tynkovski.apps.messenger.core.network.model.response.RoomResponse
 import java.time.LocalDateTime
 
 object RoomMapper {
+    private val setMapper: (String) -> Set<Long> = { string ->
+        if (string.isEmpty()) setOf()
+        else string.split(",").map { it.toLong() }.toSet()
+    }
+
     val localToEntry: (RoomEntity) -> Room = { room ->
         val actionMapper: (LastActionEntity) -> Room.LastAction = { action ->
             Room.LastAction(
@@ -16,11 +21,6 @@ object RoomMapper {
                 description = action.description,
                 actionDateTime = action.actionDateTime
             )
-        }
-
-        val setMapper: (String) -> Set<Long> = { string ->
-            if (string.isEmpty()) setOf()
-            else string.split(",").map { it.toLong() }.toSet()
         }
 
         Room(
@@ -61,6 +61,10 @@ object RoomMapper {
         )
     }
 
+    val entryListToLocalList: (List<Room>) -> List<RoomEntity> = { rooms ->
+        rooms.map(entryToLocal)
+    }
+
     val remoteToEntry: (RoomResponse) -> Room = { room ->
         val actionMapper: (RoomLastActionResponse) -> Room.LastAction = { action ->
             Room.LastAction(
@@ -81,6 +85,10 @@ object RoomMapper {
             lastAction = actionMapper(room.lastAction),
             createdAt = LocalDateTime.parse(room.createdAt, timeFormatter)
         )
+    }
+
+    val remoteListToEntryList: (List<RoomResponse>) -> List<Room> = { rooms ->
+        rooms.map(remoteToEntry)
     }
 
     val entryToRemote: (Room) -> RoomResponse = { room ->

@@ -2,6 +2,7 @@ package com.tynkovski.apps.messenger.core.data.util
 
 import com.tynkovski.apps.messenger.core.model.data.User
 import com.tynkovski.apps.messenger.core.network.model.response.UserResponse
+import com.tynkovski.apps.messenger.core.network.model.response.UsersResponse
 import java.time.LocalDateTime
 
 object UserMapper {
@@ -14,6 +15,10 @@ object UserMapper {
             createdAt = LocalDateTime.parse(it.createdAt, timeFormatter),
             isDeleted = it.isDeleted
         )
+    }
+
+    val responseListToEntryList: (UsersResponse) -> List<User> = {
+        it.users.map(responseToEntry)
     }
 }
 

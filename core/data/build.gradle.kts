@@ -24,6 +24,7 @@ dependencies {
 
     implementation(projects.core.notifications)
 
+    implementation(libs.androidx.paging)
     implementation(libs.okhttp.logging)
     implementation(libs.kotlinx.serialization.json)
 
