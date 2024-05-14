@@ -13,4 +13,9 @@ interface RoomsRepository : Syncable {
         image: String? = null
     ): Flow<Room>
 
+    fun findRoom(
+        collocutorId: Long,
+    ): Flow<Room>
+
+
 }

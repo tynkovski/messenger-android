@@ -42,6 +42,8 @@ import com.tynkovski.apps.messenger.core.designsystem.icon.MessengerIcons
 import com.tynkovski.apps.messenger.core.designsystem.theme.MessengerTheme
 import com.tynkovski.apps.messenger.core.model.data.User
 import com.tynkovski.apps.messenger.core.ui.collectAsSideEffect
+import com.tynkovski.apps.messenger.core.ui.error.Error
+import com.tynkovski.apps.messenger.core.ui.loading.Loading
 import java.time.LocalDateTime
 
 @Composable
@@ -71,7 +73,8 @@ internal fun SearchRoute(
         navigatePopBack = navigatePopBack,
         createChatWithUser = viewModel::createRoom,
         addToContacts = viewModel::addToContacts,
-        removeFromContacts = viewModel::removeFromContacts
+        removeFromContacts = viewModel::removeFromContacts,
+        getContacts = viewModel::getContacts
     )
 }
 
@@ -86,6 +89,7 @@ internal fun SearchScreen(
     addToContacts: (Long) -> Unit,
     removeFromContacts: (Long) -> Unit,
     navigatePopBack: () -> Unit,
+    getContacts: () -> Unit,
     modifier: Modifier = Modifier,
 ) {
     Scaffold(
@@ -159,19 +163,25 @@ internal fun SearchScreen(
 
             when (state) {
                 SearchUiState.EmptyQuery -> {
-                    Text("Empty search")
+                    EmptySearch(
+                        modifier = Modifier.fillMaxSize()
+                    )
                 }
 
-                SearchUiState.LoadFailed -> {
-                    Text("Nothing found")
+                is SearchUiState.LoadFailed -> {
+                    Error(
+                        error = state.exception.message.toString(),
+                        onRetry = getContacts,
+                        modifier = Modifier.fillMaxSize()
+                    )
                 }
 
                 SearchUiState.Loading -> {
-                    Text("Loading")
+                    Loading(modifier = Modifier.fillMaxSize())
                 }
 
                 is SearchUiState.Success -> {
-                    SuccessUserSearch(
+                    Success(
                         user = state.user,
                         inContacts = state.inContacts,
                         navigateToUser = { navigateToUser(state.user.id) },
@@ -186,7 +196,7 @@ internal fun SearchScreen(
 }
 
 @Composable
-private fun SuccessUserSearch(
+private fun Success(
     user: User,
     inContacts: Boolean,
     navigateToUser: () -> Unit,
@@ -214,25 +224,39 @@ private fun SuccessUserSearch(
                 name?.let { UserNode("name", it) }
             }
         }
-        Column(modifier = Modifier) {
+        Column(
+            verticalArrangement = Arrangement.spacedBy(8.dp)
+        ) {
             DefaultIconButton(
                 imageVector = if (inContacts) MessengerIcons.RemoveFromContacts else MessengerIcons.AddToContacts,
                 onClick = if (inContacts) removeFromContacts else addToContacts
             )
-
-            Spacer(modifier = Modifier.width(8.dp))
-
             DefaultIconButton(
                 imageVector = MessengerIcons.NewChat,
                 onClick = createChatWithUser
             )
-            Spacer(modifier = Modifier.width(8.dp))
-
             DefaultIconButton(
                 imageVector = MessengerIcons.Profile,
                 onClick = navigateToUser
             )
         }
+    }
+}
+
+@Composable
+private fun EmptySearch(
+    modifier: Modifier = Modifier,
+) {
+    Column(
+        modifier = modifier,
+        horizontalAlignment = Alignment.CenterHorizontally,
+        verticalArrangement = Arrangement.Center
+    ) {
+        Text(text = "Search people", style = MaterialTheme.typography.titleMedium)
+
+        Spacer(modifier = Modifier.height(8.dp))
+
+        Text(text = "Search people", style = MaterialTheme.typography.bodyLarge)
     }
 }
 
@@ -262,7 +286,7 @@ private fun UserNode(
 @Composable
 private fun SuccessUserSearchPreview() {
     MessengerTheme {
-        SuccessUserSearch(
+        Success(
             user = User(
                 id = 6251,
                 login = "blandit",

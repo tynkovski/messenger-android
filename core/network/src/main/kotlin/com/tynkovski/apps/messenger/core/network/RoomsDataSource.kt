@@ -16,4 +16,8 @@ interface RoomsDataSource {
         name: String? = null,
         image: String? = null
     ): RoomResponse
+
+    suspend fun findRoom(
+        collocutorId: Long,
+    ): RoomResponse
 }

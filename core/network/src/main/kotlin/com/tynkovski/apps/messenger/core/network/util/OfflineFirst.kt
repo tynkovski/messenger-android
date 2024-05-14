@@ -22,7 +22,9 @@ inline fun <Entry, Response, Entity> offlineFirst(
 
     val newLocal = entryToLocalMapper(entry)
 
-    saveToDatabase(newLocal)
+    if (localData != newLocal) {
+        saveToDatabase(newLocal)
+    }
 
     emit(entry)
 }

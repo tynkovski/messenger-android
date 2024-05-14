@@ -6,7 +6,9 @@ import androidx.datastore.preferences.core.Preferences
 import androidx.datastore.preferences.preferencesDataStore
 import com.tynkovski.apps.messenger.core.datastore.MessengerPreferencesDataSource
 import com.tynkovski.apps.messenger.core.datastore.TokenHolder
+import com.tynkovski.apps.messenger.core.datastore.UserHolder
 import com.tynkovski.apps.messenger.core.datastore.impl.TokenHolderImpl
+import com.tynkovski.apps.messenger.core.datastore.impl.UserHolderImpl
 import dagger.Binds
 import dagger.Module
 import dagger.Provides
@@ -31,7 +33,9 @@ class DataStoreModule {
 
 @Module
 @InstallIn(SingletonComponent::class)
-interface TokenHolderModule {
+interface HolderModule {
     @Binds
     fun bindsTokenHolder(tokenHolderImpl: TokenHolderImpl): TokenHolder
+    @Binds
+    fun bindsUserHolder(impl: UserHolderImpl): UserHolder
 }

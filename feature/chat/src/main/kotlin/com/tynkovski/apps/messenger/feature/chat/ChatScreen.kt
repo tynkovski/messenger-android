@@ -7,6 +7,7 @@ import androidx.hilt.navigation.compose.hiltViewModel
 @Composable
 internal fun ChatRoute(
     navigatePopBack: () -> Unit,
+    navigateToUser: (Long) -> Unit,
     modifier: Modifier = Modifier,
     viewModel: ChatViewModel = hiltViewModel(),
 ) {

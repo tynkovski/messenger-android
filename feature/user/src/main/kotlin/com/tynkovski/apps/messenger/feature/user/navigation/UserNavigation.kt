@@ -13,7 +13,7 @@ import com.tynkovski.apps.messenger.feature.user.UserRoute
 private val URL_CHARACTER_ENCODING = Charsets.UTF_8.name()
 
 @VisibleForTesting
-internal const val USER_ID_ARG = "room_id"
+internal const val USER_ID_ARG = "user_id"
 
 const val USER_ROUTE = "user_route"
 
@@ -38,14 +38,16 @@ fun NavController.navigateToUser(
 }
 
 fun NavGraphBuilder.userScreen(
-    onBackClick: () -> Unit,
+    navigatePopBack: () -> Unit,
+    navigateToChat: (Long) -> Unit,
 ) {
     composable(
         route = "$USER_ROUTE/{$USER_ID_ARG}",
         arguments = listOf(navArgument(USER_ID_ARG) { type = NavType.LongType })
     ) {
         UserRoute(
-            onBackClick = onBackClick
+            navigatePopBack = navigatePopBack,
+            navigateToChat = navigateToChat
         )
     }
 }

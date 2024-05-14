@@ -14,6 +14,7 @@ import com.tynkovski.apps.messenger.feature.contacts.navigation.contactsScreen
 import com.tynkovski.apps.messenger.feature.search.navigation.searchScreen
 import com.tynkovski.apps.messenger.feature.settings.navigation.settingsScreen
 import com.tynkovski.apps.messenger.feature.user.navigation.navigateToUser
+import com.tynkovski.apps.messenger.feature.user.navigation.userScreen
 import com.tynkovski.apps.messenger.ui.MessengerMainState
 
 @Composable
@@ -32,20 +33,26 @@ fun MainNavHost(
         exitTransition = { fadeOut(animationSpec = tween(200)) },
         popEnterTransition = { fadeIn(animationSpec = tween(200)) },
         popExitTransition = { fadeOut(animationSpec = tween(200)) },
-
-        ) {
-        contactsScreen()
+    ) {
         settingsScreen()
+        contactsScreen(
+            onUserClick = navController::navigateToUser,
+        )
         chatsScreen(
             navigateToChat = navController::navigateToChat,
+        )
+        chatScreen(
+            navigatePopBack = navController::popBackStack,
+            navigateToUser = navController::navigateToUser,
         )
         searchScreen(
             navigatePopBack = navController::popBackStack,
             navigateToUser = navController::navigateToUser,
             navigateToChat = navController::navigateToChat,
         )
-        chatScreen(
+        userScreen(
             navigatePopBack = navController::popBackStack,
+            navigateToChat = navController::navigateToChat,
         )
     }
 }

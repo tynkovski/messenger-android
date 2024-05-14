@@ -43,5 +43,20 @@ internal class RoomsRepositoryImpl @Inject constructor(
         entryToLocalMapper = RoomMapper.entryToLocal
     ).flowOn(dispatcher)
 
+    override fun findRoom(collocutorId: Long): Flow<Room> = offlineFirst(
+        getEntity = {
+            dao.findRoom(collocutorId)
+        },
+        getResponse = {
+            network.findRoom(collocutorId)
+        },
+        saveToDatabase = {
+            dao.upsert(it)
+        },
+        localToEntryMapper = RoomMapper.localToEntry,
+        remoteToEntryMapper = RoomMapper.remoteToEntry,
+        entryToLocalMapper = RoomMapper.entryToLocal
+    ).flowOn(dispatcher)
+
     override suspend fun syncWith(synchronizer: Synchronizer): Boolean = true
 }

@@ -9,8 +9,6 @@ import androidx.navigation.NavType
 import androidx.navigation.compose.composable
 import androidx.navigation.navArgument
 import com.tynkovski.apps.messenger.feature.chat.ChatRoute
-import java.net.URLDecoder
-import java.net.URLEncoder
 
 private val URL_CHARACTER_ENCODING = Charsets.UTF_8.name()
 
@@ -40,13 +38,15 @@ fun NavController.navigateToChat(
 
 fun NavGraphBuilder.chatScreen(
     navigatePopBack: () -> Unit,
+    navigateToUser: (Long) -> Unit,
 ) {
     composable(
         route = "$CHAT_ROUTE/{$CHAT_ID_ARG}",
         arguments = listOf(navArgument(CHAT_ID_ARG) { type = NavType.LongType })
     ) {
         ChatRoute(
-            navigatePopBack = navigatePopBack
+            navigatePopBack = navigatePopBack,
+            navigateToUser = navigateToUser
         )
     }
 }

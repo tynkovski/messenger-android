@@ -13,6 +13,7 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import coil.compose.AsyncImagePainter
 import coil.compose.rememberAsyncImagePainter
@@ -22,6 +23,7 @@ import com.tynkovski.apps.messenger.core.designsystem.R
 fun DefaultAvatar(
     url: String?,
     modifier: Modifier = Modifier,
+    size: Dp = 48.dp,
 ) {
     var isLoading by remember { mutableStateOf(true) }
     var isError by remember { mutableStateOf(false) }
@@ -35,7 +37,7 @@ fun DefaultAvatar(
 
     Image(
         modifier = modifier
-            .size(48.dp)
+            .size(size)
             .background(shape = CircleShape, color = MaterialTheme.colorScheme.outline),
         contentScale = ContentScale.Inside,
         painter = if (isError.not()) {

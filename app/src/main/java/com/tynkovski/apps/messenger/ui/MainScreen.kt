@@ -3,15 +3,10 @@ package com.tynkovski.apps.messenger.ui
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.expandVertically
 import androidx.compose.animation.shrinkVertically
-import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.WindowInsets
-import androidx.compose.foundation.layout.WindowInsetsSides
-import androidx.compose.foundation.layout.consumeWindowInsets
 import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.only
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.safeDrawing
+import androidx.compose.foundation.layout.statusBars
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
@@ -22,7 +17,6 @@ import androidx.compose.material3.SnackbarHostState
 import androidx.compose.material3.SnackbarResult
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.composed
 import androidx.compose.ui.draw.drawWithContent
@@ -41,7 +35,7 @@ import com.tynkovski.apps.messenger.navigation.MainNavHost
 import com.tynkovski.apps.messenger.navigation.TopLevelDestination
 
 @Composable
-@OptIn(ExperimentalMaterial3Api::class, ExperimentalComposeUiApi::class)
+@OptIn(ExperimentalMaterial3Api::class)
 fun MainScreen(
     appState: MessengerMainState,
     snackbarHostState: SnackbarHostState,
@@ -54,7 +48,7 @@ fun MainScreen(
         modifier = modifier,
         containerColor = Color.Transparent,
         contentColor = MaterialTheme.colorScheme.onBackground,
-        contentWindowInsets = WindowInsets(0, 0, 0, 0),
+        contentWindowInsets = if (shouldShowTopAppBar) WindowInsets(0, 0, 0, 0) else WindowInsets.statusBars,
         snackbarHost = { SnackbarHost(snackbarHostState) },
         topBar = {
             when (destination) {
@@ -101,7 +95,7 @@ fun MainScreen(
         }
     ) { padding ->
         MainNavHost(
-            modifier= Modifier
+            modifier = Modifier
                 .fillMaxSize()
                 .padding(padding),
             appState = appState,
@@ -161,7 +155,7 @@ private fun Modifier.notificationDot(): Modifier = composed {
     drawWithContent {
         drawContent()
         drawCircle(
-            tertiaryColor,
+            color = tertiaryColor,
             radius = 5.dp.toPx(),
             center = center + Offset(
                 64.dp.toPx() * .45f,

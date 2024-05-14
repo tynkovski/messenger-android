@@ -47,6 +47,10 @@ class RoomsDataSourceImpl @Inject constructor(
         return api.createRoom(request)
     }
 
+    override suspend fun findRoom(collocutorId: Long): RoomResponse {
+        return api.findRoom(collocutorId)
+    }
+
     override suspend fun getRoom(roomId: Long): RoomResponse {
         return api.getRoom(roomId)
     }

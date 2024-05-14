@@ -2,6 +2,7 @@
 
 package com.tynkovski.apps.messenger.feature.contacts
 
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -11,9 +12,7 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
@@ -23,7 +22,6 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.StrokeCap
 import androidx.compose.ui.input.nestedscroll.nestedScroll
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
@@ -31,11 +29,13 @@ import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.tynkovski.apps.messenger.core.designsystem.component.DefaultAvatar
-import com.tynkovski.apps.messenger.core.designsystem.component.DefaultButton
 import com.tynkovski.apps.messenger.core.designsystem.theme.MessengerTheme
+import com.tynkovski.apps.messenger.core.ui.error.Error
+import com.tynkovski.apps.messenger.core.ui.loading.Loading
 
 @Composable
 internal fun ContactsRoute(
+    onUserClick: (Long) -> Unit,
     modifier: Modifier = Modifier,
     viewModel: ContactsViewModel = hiltViewModel(),
 ) {
@@ -43,7 +43,8 @@ internal fun ContactsRoute(
     ContactsScreen(
         state = state,
         onRetry = viewModel::getContacts,
-        modifier = modifier
+        modifier = modifier,
+        onUserClick = onUserClick
     )
 }
 
@@ -51,6 +52,7 @@ internal fun ContactsRoute(
 internal fun ContactsScreen(
     state: ContactsUiState,
     onRetry: () -> Unit,
+    onUserClick: (Long) -> Unit,
     modifier: Modifier = Modifier,
 ) {
     val refreshState = rememberPullToRefreshState()
@@ -86,7 +88,11 @@ internal fun ContactsScreen(
             }
 
             is ContactsUiState.Success -> {
-                Success(contacts = state.contacts, modifier = Modifier.fillMaxSize())
+                Success(
+                    contacts = state.contacts,
+                    modifier = Modifier.fillMaxSize(),
+                    onContactClick = onUserClick
+                )
             }
         }
     }
@@ -95,6 +101,7 @@ internal fun ContactsScreen(
 @Composable
 private fun Success(
     contacts: List<ContactUi>,
+    onContactClick: (Long) -> Unit,
     modifier: Modifier = Modifier,
 ) {
     LazyColumn(
@@ -108,7 +115,10 @@ private fun Success(
                 contact = contacts[it],
                 modifier = Modifier
                     .fillMaxWidth()
-                    .padding(vertical = 12.dp, horizontal = 16.dp)
+                    .padding(vertical = 12.dp, horizontal = 16.dp),
+                onClick = {
+                    onContactClick(contacts[it].id)
+                }
             )
         }
     }
@@ -117,10 +127,11 @@ private fun Success(
 @Composable
 private fun Contact(
     contact: ContactUi,
+    onClick: () -> Unit,
     modifier: Modifier,
 ) {
     Row(
-        modifier = modifier,
+        modifier = modifier.clickable(onClick = onClick),
         verticalAlignment = Alignment.CenterVertically,
         horizontalArrangement = Arrangement.spacedBy(8.dp)
     ) {
@@ -155,51 +166,6 @@ private fun Contact(
     }
 }
 
-
-@Composable
-private fun Error(
-    error: String,
-    onRetry: () -> Unit,
-    modifier: Modifier = Modifier,
-) {
-    Column(
-        modifier = modifier,
-        horizontalAlignment = Alignment.CenterHorizontally,
-        verticalArrangement = Arrangement.Center
-    ) {
-        Text(text = "Some error occurred", style = MaterialTheme.typography.titleMedium)
-
-        Spacer(modifier = Modifier.height(4.dp))
-
-        Text(text = error)
-
-        Spacer(modifier = Modifier.height(8.dp))
-
-        DefaultButton(onClick = onRetry, text = "Retry")
-    }
-}
-
-@Composable
-private fun Loading(
-    modifier: Modifier = Modifier,
-) {
-    Column(
-        modifier = modifier,
-        horizontalAlignment = Alignment.CenterHorizontally,
-        verticalArrangement = Arrangement.Center
-    ) {
-        Text(text = "Loading", style = MaterialTheme.typography.titleMedium)
-
-        Spacer(modifier = Modifier.height(4.dp))
-
-        CircularProgressIndicator(
-            modifier = Modifier.size(64.dp),
-            color = MaterialTheme.colorScheme.background,
-            strokeCap = StrokeCap.Round
-        )
-    }
-}
-
 @Composable
 private fun Empty(
     modifier: Modifier = Modifier,
@@ -226,7 +192,8 @@ private fun ContactPreview() {
             modifier = Modifier.fillMaxWidth(),
             contact = ContactUi(
                 id = 4553, login = "verear", name = null, image = null
-            )
+            ),
+            onClick = {}
         )
     }
 }
@@ -239,7 +206,8 @@ private fun ContactPreview2() {
             modifier = Modifier.fillMaxWidth(),
             contact = ContactUi(
                 id = 4553, login = "verear", name = "Some name", image = null
-            )
+            ),
+            onClick = {}
         )
     }
 }

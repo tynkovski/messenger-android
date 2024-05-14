@@ -22,6 +22,11 @@ interface RoomsNetworkApi {
         @Path(value = "id", encoded = true) roomId: Long
     ): RoomResponse
 
+    @GET("$ROOMS_API/find/{id}")
+    suspend fun findRoom(
+        @Path(value = "id", encoded = true) collocutorId: Long
+    ): RoomResponse
+
     @GET("$ROOMS_API/paged")
     suspend fun getRoomsPaged(
         @Query("page") page: Long,

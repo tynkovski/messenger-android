@@ -28,4 +28,8 @@ interface RoomsDao {
 
     @Query("SELECT * FROM rooms where id LIKE :roomId")
     fun getRoom(roomId: Long): Flow<RoomEntity>
+
+    @Query("SELECT * FROM rooms WHERE isDeleted = 0 AND users LIKE '%' || :collocutorId || '%'")
+    fun findRoom(collocutorId: Long): RoomEntity
+
 }

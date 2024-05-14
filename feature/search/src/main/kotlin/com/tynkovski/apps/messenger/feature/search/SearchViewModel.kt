@@ -44,7 +44,7 @@ class SearchViewModel @Inject constructor(
 
     val queryState = savedStateHandle.getStateFlow(SEARCH_QUERY, "")
 
-    private val mContactsState: MutableStateFlow<List<User>> = MutableStateFlow(listOf())
+    private val mContactsState: MutableStateFlow<Set<User>> = MutableStateFlow(setOf())
     val contactsState = mContactsState.asStateFlow()
 
     fun setQuery(value: String) {
@@ -65,7 +65,7 @@ class SearchViewModel @Inject constructor(
         viewModelScope.launch {
             addUserToContactsUsecase(userId).collector(
                 onSuccess = {
-                    mContactsState.emit(it)
+                    mContactsState.emit(it.toSet())
                 }
             )
         }
@@ -75,7 +75,7 @@ class SearchViewModel @Inject constructor(
         viewModelScope.launch {
             removeUserFromContactsUsecase(userId).collector(
                 onSuccess = {
-                    mContactsState.emit(it)
+                    mContactsState.emit(it.toSet())
                 }
             )
         }
@@ -85,7 +85,7 @@ class SearchViewModel @Inject constructor(
         viewModelScope.launch {
             getContactsUsecase().collector(
                 onSuccess = {
-                    mContactsState.emit(it)
+                    mContactsState.emit(it.toSet())
                 }
             )
         }
@@ -105,7 +105,7 @@ class SearchViewModel @Inject constructor(
                     SearchUiState.Success(user, inContacts)
                 }
                 .onStart { emit(SearchUiState.Loading) }
-                .catch { emit(SearchUiState.LoadFailed) }
+                .catch { emit(SearchUiState.LoadFailed(it)) }
         }
     }.stateIn(
         scope = viewModelScope,

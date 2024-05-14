@@ -15,8 +15,6 @@ import javax.inject.Inject
 class ContactsViewModel @Inject constructor(
     private val contactsRepository: ContactsRepository
 ) : ViewModel() {
-
-
     private val mContacts: MutableStateFlow<ContactsUiState> = MutableStateFlow(
         value = ContactsUiState.Loading
     )
