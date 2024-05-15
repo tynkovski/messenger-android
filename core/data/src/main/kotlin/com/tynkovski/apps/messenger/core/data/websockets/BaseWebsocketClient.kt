@@ -3,7 +3,6 @@ package com.tynkovski.apps.messenger.core.data.websockets
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
 import kotlinx.serialization.json.Json
 import kotlinx.serialization.json.encodeToJsonElement
@@ -14,7 +13,7 @@ import okhttp3.WebSocketListener
 abstract class BaseWebsocketClient(
     private val dispatcher: CoroutineDispatcher
 ) {
-    private val mIsWorking = MutableStateFlow(false)
+    protected val mIsWorking = MutableStateFlow(false)
 
     protected lateinit var webSocketClient: WebSocket
 
@@ -52,6 +51,4 @@ abstract class BaseWebsocketClient(
             mIsWorking.value = false
         }
     }
-
-    val isWorking = mIsWorking.asStateFlow()
 }

@@ -1,11 +1,10 @@
 package com.tynkovski.apps.messenger.feature.chats
 
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
@@ -13,19 +12,18 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextOverflow
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
-import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import androidx.paging.LoadState
+import androidx.paging.compose.LazyPagingItems
+import androidx.paging.compose.collectAsLazyPagingItems
+import androidx.paging.compose.itemKey
 import com.tynkovski.apps.messenger.core.designsystem.component.DefaultAvatar
-import com.tynkovski.apps.messenger.core.designsystem.theme.MessengerTheme
-import com.tynkovski.apps.messenger.core.model.Result
 import com.tynkovski.apps.messenger.core.ui.bold
 import com.tynkovski.apps.messenger.core.ui.error.Error
 import com.tynkovski.apps.messenger.core.ui.loading.Loading
@@ -37,42 +35,33 @@ internal fun ChatsRoute(
     modifier: Modifier = Modifier,
     viewModel: ChatsViewModel = hiltViewModel(),
 ) {
-    val rooms by viewModel.rooms.collectAsStateWithLifecycle()
+    val paging = viewModel.pager.collectAsLazyPagingItems()
     ChatsScreen(
-        state = rooms,
+        paging = paging,
         modifier = modifier,
+        onChatClick = navigateToChat
     )
 }
 
 @Composable
 internal fun ChatsScreen(
-    state: Result<List<RoomUi>>,
+    paging: LazyPagingItems<RoomUi>,
+    onChatClick: (Long) -> Unit,
     modifier: Modifier = Modifier,
 ) {
-    Box(modifier = modifier) {
-        when (state) {
-            is Result.Error -> {
-                Error(
-                    modifier = Modifier.fillMaxSize(),
-                    error = state.exception.message.toString(),
-                    onRetry = { }
-                )
-            }
-
-            Result.Loading -> {
-                Loading(modifier = Modifier.fillMaxSize())
-            }
-
-            is Result.Success -> {
-                Success(
-                    modifier = Modifier.fillMaxSize(),
-                    chats = state.data,
-                )
-            }
-        }
+    PagingSuccess(
+        modifier = modifier,
+        paging = paging,
+        onChatClick = onChatClick
+    )
+    if (paging.loadState.source.refresh is LoadState.Error)  {
+        Error(
+            error = "Paging error",
+            onRetry = { },
+            modifier = modifier
+        )
     }
 }
-
 
 private fun getChatActionDescription(action: RoomUi.LastActionUi.ActionTypeUi): Int {
     return when (action) {
@@ -88,19 +77,21 @@ private fun getChatActionDescription(action: RoomUi.LastActionUi.ActionTypeUi): 
 }
 
 @Composable
-private fun Success(
-    chats: List<RoomUi>,
+private fun PagingSuccess(
+    paging: LazyPagingItems<RoomUi>,
+    onChatClick: (Long) -> Unit,
     modifier: Modifier,
 ) {
     LazyColumn(modifier = modifier) {
         items(
-            chats.size,
-            //key = { chats[it].id }
+            count = paging.itemCount,
+            key = paging.itemKey { it.id },
         ) {
-            val chat = chats[it]
+            val chat = paging[it] ?: return@items
             Chat(
                 modifier = Modifier
                     .fillMaxWidth()
+                    .clickable(onClick = { onChatClick(chat.id) })
                     .padding(vertical = 8.dp, horizontal = 16.dp),
                 title = chat.name ?: "Without name",
                 time = chat.lastAction.actionDateTime,
@@ -110,6 +101,20 @@ private fun Success(
                 count = chat.unreadMessages,
                 image = chat.image,
             )
+        }
+
+        when {
+            paging.loadState.source.append is LoadState.Error -> {
+                item {
+                    Error("Load error", {})
+                }
+            }
+
+            paging.loadState.source.append is LoadState.Loading -> {
+                item {
+                    Loading()
+                }
+            }
         }
     }
 }
@@ -163,7 +168,6 @@ private fun Chat(
                 horizontalArrangement = Arrangement.spacedBy(4.dp),
                 verticalAlignment = Alignment.CenterVertically
             ) {
-
                 Text(
                     text = author,
                     style = MaterialTheme.typography.bodyMedium.bold,
@@ -172,11 +176,11 @@ private fun Chat(
                     color = MaterialTheme.colorScheme.onSurfaceVariant
                 )
                 Text(
-                    modifier = Modifier.weight(1f),
                     text = description ?: stringResource(actionRes),
                     style = MaterialTheme.typography.bodyMedium,
                     maxLines = 1,
                     overflow = TextOverflow.Ellipsis,
+                    modifier = Modifier.weight(1f),
                 )
                 if (count > 0) {
                     Text(
@@ -192,42 +196,5 @@ private fun Chat(
                 }
             }
         }
-    }
-}
-
-@Preview(showBackground = true)
-@Composable
-private fun SuccessPreview() {
-    MessengerTheme {
-        val rooms = listOf(
-            RoomUi(
-                id = 8307,
-                name = null,
-                image = null,
-                lastAction = RoomUi.LastActionUi(
-                    authorName = "Chelsea Stark",
-                    actionType = RoomUi.LastActionUi.ActionTypeUi.USER_CREATE_ROOM,
-                    description = null,
-                    actionDateTime = "21:21"
-                ),
-                unreadMessages = 0
-            ),
-            RoomUi(
-                id = 8307,
-                name = null,
-                image = null,
-                lastAction = RoomUi.LastActionUi(
-                    authorName = "Minor Update",
-                    actionType = RoomUi.LastActionUi.ActionTypeUi.USER_SENT_MESSAGE,
-                    description = "Hello",
-                    actionDateTime = "21:22"
-                ),
-                unreadMessages = 0
-            )
-        )
-        Success(
-            chats = rooms,
-            modifier = Modifier.fillMaxSize()
-        )
     }
 }

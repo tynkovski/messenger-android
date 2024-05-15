@@ -7,49 +7,50 @@ import androidx.paging.ExperimentalPagingApi
 import androidx.paging.LoadType
 import androidx.paging.PagingState
 import androidx.paging.RemoteMediator
+import androidx.room.withTransaction
 import com.tynkovski.apps.messenger.core.data.util.RoomMapper
+import com.tynkovski.apps.messenger.core.database.MessengerDatabase
 import com.tynkovski.apps.messenger.core.database.dao.RoomsDao
-import com.tynkovski.apps.messenger.core.model.data.Room
+import com.tynkovski.apps.messenger.core.database.model.RoomEntity
 import com.tynkovski.apps.messenger.core.network.RoomsDataSource
 
 class RoomsRemoteMediator(
-    private val roomsDao: RoomsDao,
+    private val db: MessengerDatabase,
+    private val dao: RoomsDao,
     private val network: RoomsDataSource
-) : RemoteMediator<Int, Room>() {
+) : RemoteMediator<Int, RoomEntity>() {
+    private var currentPage = 0L
 
     override suspend fun load(
         loadType: LoadType,
-        state: PagingState<Int, Room>
+        state: PagingState<Int, RoomEntity>
     ): MediatorResult {
         try {
             val page = when (loadType) {
-                LoadType.REFRESH -> 0 // todo 0 or null?
+                LoadType.REFRESH -> 0L
                 LoadType.PREPEND -> return MediatorResult.Success(endOfPaginationReached = true)
                 LoadType.APPEND -> {
                     val lastItem = state.lastItemOrNull()
-                    lastItem?.id ?: return MediatorResult.Success(endOfPaginationReached = true)
+                    if (lastItem == null) {
+                        0L
+                    } else {
+                        currentPage + 1
+                    }
                 }
             }
-
-            val response = network.getRoomsPaged(page, PAGE_SIZE)
+            val response = network.getRoomsPaged(page, state.config.pageSize)
             val rooms = RoomMapper.remoteListToEntryList(response.rooms)
             val entities = RoomMapper.entryListToLocalList(rooms)
 
-            if (loadType == LoadType.REFRESH) {
-                Log.d("RoomsRemoteMediator", "Refresh")
-                // roomsDao.deleteRooms(entities)
+            currentPage = page
+
+            db.withTransaction {
+                dao.upsert(entities)
             }
 
-            roomsDao.upsert(entities)
-
-            val endOfPaginationReached = rooms.isEmpty()
-            return MediatorResult.Success(endOfPaginationReached = endOfPaginationReached)
+            return MediatorResult.Success(endOfPaginationReached = rooms.isEmpty())
         } catch (exception: Exception) {
             return MediatorResult.Error(exception)
         }
-    }
-
-    companion object {
-        const val PAGE_SIZE = 10
     }
 }
