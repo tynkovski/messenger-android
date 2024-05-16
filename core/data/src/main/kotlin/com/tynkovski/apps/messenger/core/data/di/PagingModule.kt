@@ -31,4 +31,5 @@ object PagingModule {
             pagingSourceFactory = { dao.pagingSource() }
         )
     }
+
 }

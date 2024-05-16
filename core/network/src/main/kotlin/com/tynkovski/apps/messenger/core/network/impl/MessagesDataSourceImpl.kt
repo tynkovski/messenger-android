@@ -39,7 +39,7 @@ class MessagesDataSourceImpl @Inject constructor(
         return api.getMessage(messageId)
     }
 
-    override suspend fun getMessagesPaged(page: Long, pageSize: Int): MessagesPagingResponse {
-        return api.getMessagesPaged(page, pageSize)
+    override suspend fun getMessagesPaged(roomId: Long,page: Long, pageSize: Int): MessagesPagingResponse {
+        return api.getMessagesPaged(roomId, page, pageSize)
     }
 }

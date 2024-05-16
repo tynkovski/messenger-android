@@ -7,22 +7,23 @@ import androidx.paging.LoadType
 import androidx.paging.PagingState
 import androidx.paging.RemoteMediator
 import androidx.room.withTransaction
-import com.tynkovski.apps.messenger.core.data.util.RoomMapper
+import com.tynkovski.apps.messenger.core.data.util.MessageMapper
 import com.tynkovski.apps.messenger.core.database.MessengerDatabase
-import com.tynkovski.apps.messenger.core.database.dao.RoomsDao
-import com.tynkovski.apps.messenger.core.database.model.RoomEntity
-import com.tynkovski.apps.messenger.core.network.RoomsDataSource
+import com.tynkovski.apps.messenger.core.database.dao.MessagesDao
+import com.tynkovski.apps.messenger.core.database.model.MessageEntity
+import com.tynkovski.apps.messenger.core.network.MessagesDataSource
 
-class RoomsRemoteMediator(
+class MessagesRemoteMediator(
+    private val roomId: Long,
     private val db: MessengerDatabase,
-    private val dao: RoomsDao,
-    private val network: RoomsDataSource
-) : RemoteMediator<Int, RoomEntity>() {
+    private val dao: MessagesDao,
+    private val network: MessagesDataSource
+) : RemoteMediator<Int, MessageEntity>() {
     private var currentPage = 0L
 
     override suspend fun load(
         loadType: LoadType,
-        state: PagingState<Int, RoomEntity>
+        state: PagingState<Int, MessageEntity>
     ): MediatorResult {
         try {
             val page = when (loadType) {
@@ -37,9 +38,9 @@ class RoomsRemoteMediator(
                     }
                 }
             }
-            val response = network.getRoomsPaged(page, state.config.pageSize)
-            val rooms = RoomMapper.remoteListToEntryList(response.rooms)
-            val entities = RoomMapper.entryListToLocalList(rooms)
+            val response = network.getMessagesPaged(roomId, page, state.config.pageSize)
+            val messages = MessageMapper.remoteListToEntryList(response.messages)
+            val entities = MessageMapper.entryListToLocalList(messages)
 
             currentPage = page
 
@@ -47,7 +48,7 @@ class RoomsRemoteMediator(
                 dao.upsert(entities)
             }
 
-            return MediatorResult.Success(endOfPaginationReached = rooms.isEmpty())
+            return MediatorResult.Success(endOfPaginationReached = messages.isEmpty())
         } catch (exception: Exception) {
             return MediatorResult.Error(exception)
         }

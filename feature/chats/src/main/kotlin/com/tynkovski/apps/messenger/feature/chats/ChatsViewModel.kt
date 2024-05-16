@@ -15,14 +15,9 @@ import javax.inject.Inject
 @HiltViewModel
 class ChatsViewModel @Inject constructor(
     private val roomsRepository: RoomsRepository,
-    private val roomsWebsocketClient: RoomsWebsocketClient,
 ) : ViewModel() {
 
-    val isConnected = roomsWebsocketClient.isConnected.stateIn(
-        scope = viewModelScope,
-        initialValue = false,
-        started = SharingStarted.WhileSubscribed(5_000),
-    )
+    val isConnected = roomsRepository.isConnected
 
     val pager = roomsRepository.getPagingRooms().map { paging ->
         paging.map { room -> RoomUi.fromRoom(room, room.lastAction.authorName, 0) }

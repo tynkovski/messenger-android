@@ -1,7 +1,11 @@
 package com.tynkovski.apps.messenger.core.data.util
 
+import androidx.paging.PagingData
+import androidx.paging.map
 import com.tynkovski.apps.messenger.core.database.model.MessageEntity
+import com.tynkovski.apps.messenger.core.database.model.RoomEntity
 import com.tynkovski.apps.messenger.core.model.data.Message
+import com.tynkovski.apps.messenger.core.model.data.Room
 import com.tynkovski.apps.messenger.core.network.model.response.MessageResponse
 import java.time.LocalDateTime
 
@@ -23,6 +27,10 @@ object MessageMapper {
             editedAt = editedAt,
             sentAt = sentAt
         )
+    }
+
+    val localPagerToEntryPager: (PagingData<MessageEntity>) -> PagingData<Message> = { messages ->
+        messages.map(MessageMapper::localToEntry)
     }
 
     fun localListToEntryList(messages: List<MessageEntity>) = messages.map(::localToEntry)

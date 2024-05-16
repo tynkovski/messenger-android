@@ -4,7 +4,7 @@ import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.tynkovski.apps.messenger.core.domain.AddUserToContactsUsecase
-import com.tynkovski.apps.messenger.core.domain.CreateChatUsecase
+import com.tynkovski.apps.messenger.core.domain.FindChatWithUserUsecase
 import com.tynkovski.apps.messenger.core.domain.FindUserUsecase
 import com.tynkovski.apps.messenger.core.domain.GetContactsUsecase
 import com.tynkovski.apps.messenger.core.domain.RemoveUserFromContactsUsecase
@@ -19,7 +19,6 @@ import kotlinx.coroutines.flow.asSharedFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.combine
-import kotlinx.coroutines.flow.firstOrNull
 import kotlinx.coroutines.flow.flatMapLatest
 import kotlinx.coroutines.flow.flowOf
 import kotlinx.coroutines.flow.map
@@ -35,7 +34,7 @@ class SearchViewModel @Inject constructor(
     private val addUserToContactsUsecase: AddUserToContactsUsecase,
     private val removeUserFromContactsUsecase: RemoveUserFromContactsUsecase,
     private val getContactsUsecase: GetContactsUsecase,
-    private val createChatUsecase: CreateChatUsecase,
+    private val findChatWithUserUsecase: FindChatWithUserUsecase,
     private val findUserUsecase: FindUserUsecase,
     private val savedStateHandle: SavedStateHandle,
 ) : ViewModel() {
@@ -53,7 +52,7 @@ class SearchViewModel @Inject constructor(
 
     fun createRoom(userId: Long) {
         viewModelScope.launch {
-            createChatUsecase(userId).collector(
+            findChatWithUserUsecase(userId).collector(
                 onSuccess = {
                     mSideEffect.emit(SearchSideEffect.NavigateToChat(it.id))
                 },

@@ -21,8 +21,9 @@ interface MessagesNetworkApi {
         @Path(value = "id", encoded = true) messageId: Long
     ): MessageResponse
 
-    @GET("$MESSAGES_API/paged")
+    @GET("$MESSAGES_API/paged/{roomId}")
     suspend fun getMessagesPaged(
+        @Path(value = "roomId", encoded = true) roomId: Long,
         @Query("page") page: Long,
         @Query("pageSize") pageSize: Int
     ): MessagesPagingResponse
