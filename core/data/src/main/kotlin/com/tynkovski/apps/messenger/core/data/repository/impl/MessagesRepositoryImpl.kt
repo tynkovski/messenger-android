@@ -10,7 +10,7 @@ import com.tynkovski.apps.messenger.core.data.Synchronizer
 import com.tynkovski.apps.messenger.core.data.paging.MessagesRemoteMediator
 import com.tynkovski.apps.messenger.core.data.repository.MessagesRepository
 import com.tynkovski.apps.messenger.core.data.util.MessageMapper
-import com.tynkovski.apps.messenger.core.data.websockets.ChatsWebsocketsClient
+import com.tynkovski.apps.messenger.core.data.websockets.RealtimeWebsocketsClient
 import com.tynkovski.apps.messenger.core.database.MessengerDatabase
 import com.tynkovski.apps.messenger.core.database.dao.MessagesDao
 import com.tynkovski.apps.messenger.core.model.data.Message
@@ -28,18 +28,18 @@ internal class MessagesRepositoryImpl @Inject constructor(
     private val network: MessagesDataSource,
     private val dao: MessagesDao,
     private val db: MessengerDatabase,
-    private val messagesWebsocketClient: ChatsWebsocketsClient,
+    private val websocketsClient: RealtimeWebsocketsClient,
     @Dispatcher(MessengerDispatchers.IO) private val dispatcher: CoroutineDispatcher,
 ) : MessagesRepository {
 
-    override val isConnected = messagesWebsocketClient.isConnected
+    override val isConnected = websocketsClient.isConnected
 
     override fun startWebsocket() {
-        messagesWebsocketClient.start()
+        websocketsClient.start()
     }
 
     override fun stopWebsocket() {
-        messagesWebsocketClient.stop()
+        websocketsClient.stop()
     }
 
     override fun getPagingMessages(roomId: Long): Flow<PagingData<Message>> =
@@ -55,7 +55,7 @@ internal class MessagesRepositoryImpl @Inject constructor(
         ).flow.map(MessageMapper.localPagerToEntryPager)
 
     override fun sendMessage(roomId: Long, message: String): Flow<Boolean> = flow {
-        emit(messagesWebsocketClient.sendMessage(roomId, message))
+        emit(websocketsClient.sendMessage(roomId, message))
     }.flowOn(dispatcher)
 
     override suspend fun syncWith(synchronizer: Synchronizer): Boolean = true // todo add sync

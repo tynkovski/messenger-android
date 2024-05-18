@@ -62,8 +62,4 @@ internal class ChatViewModel @Inject constructor(
             MessageUi.fromMessage(message, sender, myselfId)
         }
     }.cachedIn(viewModelScope)
-
-    init {
-        messagesRepository.startWebsocket()
-    }
 }

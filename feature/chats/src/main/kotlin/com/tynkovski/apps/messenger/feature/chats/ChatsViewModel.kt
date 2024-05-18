@@ -5,11 +5,8 @@ import androidx.lifecycle.viewModelScope
 import androidx.paging.cachedIn
 import androidx.paging.map
 import com.tynkovski.apps.messenger.core.data.repository.RoomsRepository
-import com.tynkovski.apps.messenger.core.data.websockets.RoomsWebsocketClient
 import dagger.hilt.android.lifecycle.HiltViewModel
-import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.map
-import kotlinx.coroutines.flow.stateIn
 import javax.inject.Inject
 
 @HiltViewModel
