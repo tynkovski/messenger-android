@@ -25,4 +25,7 @@ interface RoomsRepository : Syncable {
         collocutorId: Long,
     ): Flow<Room>
 
+    fun getRoom(
+        roomId: Long,
+    ): Flow<Room>
 }

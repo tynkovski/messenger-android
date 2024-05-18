@@ -7,6 +7,7 @@ import java.time.format.DateTimeFormatter
 @Stable
 data class MessageUi(
     val id: Long,
+    val owner: Boolean,
     val senderId: Long,
     val senderName: String?,
     val text: String,
@@ -25,6 +26,7 @@ data class MessageUi(
         ): MessageUi = with(message) {
             MessageUi(
                 id = id,
+                owner = senderId == myselfId,
                 senderId = senderId,
                 senderName = senderName,
                 text = text,

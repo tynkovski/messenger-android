@@ -33,3 +33,10 @@ fun Modifier.clearingFocusClickable(
         }
     )
 }
+
+
+inline fun Modifier.chose(
+    value: Boolean,
+    block: Modifier.() -> Modifier,
+    another: Modifier.() -> Modifier
+): Modifier = if (value) block.invoke(this) else another.invoke(this)

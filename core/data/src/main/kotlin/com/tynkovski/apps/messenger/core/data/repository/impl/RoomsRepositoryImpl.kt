@@ -15,6 +15,7 @@ import com.tynkovski.apps.messenger.core.network.RoomsDataSource
 import com.tynkovski.apps.messenger.core.network.util.offlineFirst
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.flowOn
 import kotlinx.coroutines.flow.map
 import javax.inject.Inject
@@ -60,6 +61,10 @@ internal class RoomsRepositoryImpl @Inject constructor(
         remoteToEntryMapper = RoomMapper.remoteToEntry,
         entryToLocalMapper = RoomMapper.entryToLocal
     ).flowOn(dispatcher)
+
+    override fun getRoom(roomId: Long): Flow<Room> = flow {
+        emit(network.getRoom(roomId))
+    }.map(RoomMapper.remoteToEntry).flowOn(dispatcher)
 
     override fun findRoom(collocutorId: Long): Flow<Room> = offlineFirst(
         getEntity = {

@@ -10,6 +10,7 @@ import androidx.compose.material.icons.rounded.Add
 import androidx.compose.material.icons.rounded.ChatBubble
 import androidx.compose.material.icons.rounded.ChatBubbleOutline
 import androidx.compose.material.icons.rounded.Close
+import androidx.compose.material.icons.rounded.Edit
 import androidx.compose.material.icons.rounded.Group
 import androidx.compose.material.icons.rounded.Lock
 import androidx.compose.material.icons.rounded.PermIdentity
@@ -44,4 +45,6 @@ object MessengerIcons {
     val RemoveFromContacts = Icons.Rounded.PersonRemove
     val NewChat = Icons.Rounded.ChatBubbleOutline
     val Profile = Icons.Rounded.PermIdentity
+
+    val Edited = Icons.Rounded.Edit
 }
