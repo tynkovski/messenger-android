@@ -9,6 +9,7 @@ data class RoomUi(
     val id: Long,
     val name: String?,
     val image: String?,
+    val users: List<String>,
     val lastAction: LastActionUi,
     val unreadMessages: Int,
 ) {
@@ -33,10 +34,11 @@ data class RoomUi(
             actionDateTime = messageTimeFormatter.format(action.actionDateTime)
         )
 
-        fun fromRoom(room: Room, authorName: String, unreadMessages: Int) = RoomUi(
+        fun fromRoom(room: Room, users:List<String>, authorName: String, unreadMessages: Int) = RoomUi(
             id = room.id,
             name = room.name,
             image = room.image,
+            users = users,
             lastAction = actionMapper(authorName, room.lastAction),
             unreadMessages = unreadMessages
         )

@@ -19,6 +19,7 @@ import androidx.compose.material.icons.rounded.PersonAdd
 import androidx.compose.material.icons.rounded.PersonRemove
 import androidx.compose.material.icons.rounded.PersonSearch
 import androidx.compose.material.icons.rounded.Search
+import androidx.compose.material.icons.rounded.Send
 import androidx.compose.material.icons.rounded.Settings
 import androidx.compose.material.icons.rounded.Visibility
 import androidx.compose.material.icons.rounded.VisibilityOff
@@ -47,4 +48,6 @@ object MessengerIcons {
     val Profile = Icons.Rounded.PermIdentity
 
     val Edited = Icons.Rounded.Edit
+
+    val Send = Icons.Rounded.Send
 }

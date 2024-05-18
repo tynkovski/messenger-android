@@ -1,4 +1,4 @@
-package com.tynkovski.apps.messenger.feature.chat
+package com.tynkovski.apps.messenger.core.ui.chat
 
 import androidx.compose.runtime.Stable
 import com.tynkovski.apps.messenger.core.model.data.Message

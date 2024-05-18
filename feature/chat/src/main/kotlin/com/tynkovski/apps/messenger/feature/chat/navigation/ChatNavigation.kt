@@ -1,6 +1,8 @@
 package com.tynkovski.apps.messenger.feature.chat.navigation
 
 import androidx.annotation.VisibleForTesting
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.ui.Modifier
 import androidx.lifecycle.SavedStateHandle
 import androidx.navigation.NavController
 import androidx.navigation.NavGraphBuilder
@@ -46,7 +48,8 @@ fun NavGraphBuilder.chatScreen(
     ) {
         ChatRoute(
             navigatePopBack = navigatePopBack,
-            navigateToUser = navigateToUser
+            navigateToUser = navigateToUser,
+            modifier = Modifier.fillMaxSize()
         )
     }
 }

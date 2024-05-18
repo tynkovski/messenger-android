@@ -15,12 +15,6 @@ interface RoomsRepository : Syncable {
 
     fun getPagingRooms(): Flow<PagingData<Room>>
 
-    fun createRoom(
-        collocutorId: Long,
-        name: String? = null,
-        image: String? = null
-    ): Flow<Room>
-
     fun findRoom(
         collocutorId: Long,
     ): Flow<Room>

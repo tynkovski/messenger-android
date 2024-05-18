@@ -5,7 +5,7 @@ import androidx.paging.PagingData
 import com.tynkovski.apps.messenger.core.data.Synchronizer
 import com.tynkovski.apps.messenger.core.data.repository.RoomsRepository
 import com.tynkovski.apps.messenger.core.data.util.RoomMapper
-import com.tynkovski.apps.messenger.core.data.websockets.RoomsWebsocketClient
+import com.tynkovski.apps.messenger.core.data.websockets.RealtimeWebsocketsClient
 import com.tynkovski.apps.messenger.core.database.dao.RoomsDao
 import com.tynkovski.apps.messenger.core.database.model.RoomEntity
 import com.tynkovski.apps.messenger.core.model.data.Room
@@ -26,41 +26,18 @@ internal class RoomsRepositoryImpl @Inject constructor(
     private val network: RoomsDataSource,
     private val dao: RoomsDao,
     private val roomsPager: Pager<Int, RoomEntity>,
-    private val roomsWebsocketClient: RoomsWebsocketClient,
+    private val websocketsClient: RealtimeWebsocketsClient,
     @Dispatcher(MessengerDispatchers.IO) private val dispatcher: CoroutineDispatcher,
 ) : RoomsRepository {
 
-    override val isConnected = roomsWebsocketClient.isConnected
+    override val isConnected = websocketsClient.isConnected
 
-    override fun startWebsocket() {
-        roomsWebsocketClient.start()
-    }
+    override fun startWebsocket() = websocketsClient.start()
 
-    override fun stopWebsocket() {
-        roomsWebsocketClient.stop()
-    }
+    override fun stopWebsocket() = websocketsClient.stop()
 
     override fun getPagingRooms(): Flow<PagingData<Room>> =
         roomsPager.flow.map(RoomMapper.localPagerToEntryPager)
-
-    override fun createRoom(
-        collocutorId: Long,
-        name: String?,
-        image: String?,
-    ): Flow<Room> = offlineFirst(
-        getEntity = { null },
-        getResponse = {
-            network.createRoom(
-                collocutorId = collocutorId,
-                name = null,
-                image = null
-            )
-        },
-        saveToDatabase = { dao.upsert(it) },
-        localToEntryMapper = RoomMapper.localToEntry,
-        remoteToEntryMapper = RoomMapper.remoteToEntry,
-        entryToLocalMapper = RoomMapper.entryToLocal
-    ).flowOn(dispatcher)
 
     override fun getRoom(roomId: Long): Flow<Room> = flow {
         emit(network.getRoom(roomId))
