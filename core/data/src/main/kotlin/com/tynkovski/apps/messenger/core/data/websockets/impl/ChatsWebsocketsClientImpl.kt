@@ -11,6 +11,7 @@ import com.tynkovski.apps.messenger.core.network.interceptors.TokenInterceptor
 import com.tynkovski.apps.messenger.core.network.model.request.SendMessageRequest
 import com.tynkovski.apps.messenger.core.network.model.response.MessageResponse
 import kotlinx.coroutines.CoroutineDispatcher
+import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.serialization.json.Json
 import okhttp3.OkHttpClient
 import okhttp3.Request
@@ -18,7 +19,6 @@ import okhttp3.logging.HttpLoggingInterceptor
 import java.util.concurrent.TimeUnit
 import javax.inject.Inject
 import javax.inject.Singleton
-
 
 private const val MESSAGES_WS_URL = "ws://192.168.0.109:8080/message"
 private const val SEND_MESSAGE = "send_message"
@@ -34,6 +34,8 @@ class ChatsWebsocketsClientImpl @Inject constructor(
     private val dao: MessagesDao,
     @Dispatcher(MessengerDispatchers.IO) private val dispatcher: CoroutineDispatcher,
 ) : ChatsWebsocketsClient, BaseWebsocketClient(dispatcher) {
+    override val isConnected = mIsWorking.asStateFlow()
+
     override fun start() {
         val okHttpClient = OkHttpClient
             .Builder()
@@ -64,7 +66,7 @@ class ChatsWebsocketsClientImpl @Inject constructor(
 
     override suspend fun processServerResponse(event: String, json: String) {
         val response = Json.decodeFromString<MessageResponse>(json)
-        val room = MessageMapper.remoteToEntry(response)
+        val room = MessageMapper.remoteToEntry(response) // todo throws error
         val entity = MessageMapper.entryToLocal(room)
         when (event) {
             SEND_MESSAGE -> dao.insert(entity)

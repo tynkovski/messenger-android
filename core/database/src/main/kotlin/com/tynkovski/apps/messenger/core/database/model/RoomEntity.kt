@@ -20,7 +20,8 @@ data class RoomEntity(
 @Entity(tableName = "last_actions")
 data class LastActionEntity(
     @PrimaryKey(autoGenerate = true) val lastActionId: Long,
-    val applicantId: Long,
+    val authorId: Long,
+    val authorName: String,
     val actionType: String,
     val description: String?,
     val actionDateTime: LocalDateTime

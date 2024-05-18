@@ -4,7 +4,7 @@ import com.tynkovski.apps.messenger.core.data.repository.RoomsRepository
 import javax.inject.Inject
 
 class FindChatWithUserUsecase @Inject constructor(
-    val roomsRepository: RoomsRepository
+    private val roomsRepository: RoomsRepository
 ) {
     operator fun invoke(collocutorId: Long) = roomsRepository.findRoom(collocutorId)
 }

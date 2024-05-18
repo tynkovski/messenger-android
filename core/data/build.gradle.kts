@@ -2,6 +2,7 @@ plugins {
     alias(libs.plugins.messenger.android.library)
     alias(libs.plugins.messenger.android.library.jacoco)
     alias(libs.plugins.messenger.android.hilt)
+    alias(libs.plugins.messenger.android.room)
     id("kotlinx-serialization")
 }
 

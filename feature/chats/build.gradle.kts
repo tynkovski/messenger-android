@@ -9,6 +9,9 @@ android {
 }
 
 dependencies {
+    implementation(libs.androidx.paging)
+    implementation(libs.androidx.paging.compose)
+
     implementation(projects.core.data)
     implementation(projects.core.domain)
     implementation(projects.core.ui)

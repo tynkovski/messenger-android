@@ -22,7 +22,7 @@ import com.tynkovski.apps.messenger.core.database.model.RoomEntity
 @TypeConverters(
     LocalDateTimeConverter::class
 )
-internal abstract class MessengerDatabase : RoomDatabase() {
+abstract class MessengerDatabase : RoomDatabase() {
     abstract fun roomsDao(): RoomsDao
     abstract fun messagesDao(): MessagesDao
 }

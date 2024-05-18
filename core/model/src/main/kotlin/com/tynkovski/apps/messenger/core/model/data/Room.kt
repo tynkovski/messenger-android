@@ -14,6 +14,7 @@ data class Room(
 ) {
     data class LastAction(
         val authorId: Long,
+        val authorName: String,
         val actionType: ActionType,
         val description: String?,
         val actionDateTime: LocalDateTime,

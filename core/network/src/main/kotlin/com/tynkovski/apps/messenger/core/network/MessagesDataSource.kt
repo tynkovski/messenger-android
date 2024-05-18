@@ -11,6 +11,7 @@ interface MessagesDataSource {
     suspend fun getMessage(messageId: Long): MessageResponse
 
     suspend fun getMessagesPaged(
+        roomId: Long,
         page: Long,
         pageSize: Int
     ): MessagesPagingResponse

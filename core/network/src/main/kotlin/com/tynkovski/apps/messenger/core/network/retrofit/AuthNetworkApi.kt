@@ -14,8 +14,8 @@ interface AuthNetworkApi {
     data class SignUpRequest(
         @SerialName("login") val login: String,
         @SerialName("password") val password: String,
+        @SerialName("name") val name: String?,
         @SerialName("image") val image: String?,
-        @SerialName("name") val name: String?
     )
 
     @Serializable

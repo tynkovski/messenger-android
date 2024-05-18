@@ -1,5 +1,7 @@
 package com.tynkovski.apps.messenger.core.data.util
 
+import androidx.paging.PagingData
+import androidx.paging.map
 import com.tynkovski.apps.messenger.core.database.model.LastActionEntity
 import com.tynkovski.apps.messenger.core.database.model.RoomEntity
 import com.tynkovski.apps.messenger.core.model.data.Room
@@ -16,7 +18,8 @@ object RoomMapper {
     val localToEntry: (RoomEntity) -> Room = { room ->
         val actionMapper: (LastActionEntity) -> Room.LastAction = { action ->
             Room.LastAction(
-                authorId = action.applicantId,
+                authorId = action.authorId,
+                authorName = action.authorName,
                 actionType = Room.LastAction.ActionType.fromString(action.actionType),
                 description = action.description,
                 actionDateTime = action.actionDateTime
@@ -39,11 +42,16 @@ object RoomMapper {
         rooms.map(localToEntry)
     }
 
+    val localPagerToEntryPager: (PagingData<RoomEntity>) -> PagingData<Room> = { rooms ->
+        rooms.map(localToEntry)
+    }
+
     val entryToLocal: (Room) -> RoomEntity = { room ->
         val actionMapper: (Room.LastAction) -> LastActionEntity = { action ->
             LastActionEntity(
+                authorId = action.authorId,
                 lastActionId = room.id,
-                applicantId = action.authorId,
+                authorName = action.authorName,
                 actionType = action.actionType.toString(),
                 description = action.description,
                 actionDateTime = action.actionDateTime
@@ -69,6 +77,7 @@ object RoomMapper {
         val actionMapper: (RoomLastActionResponse) -> Room.LastAction = { action ->
             Room.LastAction(
                 authorId = action.authorId,
+                authorName = action.authorName,
                 actionType = Room.LastAction.ActionType.fromString(action.actionType),
                 description = action.description,
                 actionDateTime = LocalDateTime.parse(action.actionDateTime, timeFormatter)
@@ -95,6 +104,7 @@ object RoomMapper {
         val actionMapper: (Room.LastAction) -> RoomLastActionResponse = { action ->
             RoomLastActionResponse(
                 authorId = action.authorId,
+                authorName = action.authorName,
                 actionType = action.actionType.toString(),
                 description = action.description,
                 actionDateTime = timeFormatter.format(action.actionDateTime)
@@ -111,5 +121,4 @@ object RoomMapper {
             createdAt = timeFormatter.format(room.createdAt)
         )
     }
-
 }

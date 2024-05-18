@@ -11,6 +11,8 @@ import com.tynkovski.apps.messenger.core.network.interceptors.TokenInterceptor
 import com.tynkovski.apps.messenger.core.network.model.request.CreateRoomRequest
 import com.tynkovski.apps.messenger.core.network.model.response.RoomResponse
 import kotlinx.coroutines.CoroutineDispatcher
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.serialization.json.Json
 import okhttp3.OkHttpClient
 import okhttp3.Request
@@ -37,6 +39,8 @@ class RoomsWebsocketClientImpl @Inject constructor(
     private val dao: RoomsDao,
     @Dispatcher(MessengerDispatchers.IO) private val dispatcher: CoroutineDispatcher,
 ) : RoomsWebsocketClient, BaseWebsocketClient(dispatcher) {
+    override val isConnected = mIsWorking.asStateFlow()
+
     override fun start() {
         val client = OkHttpClient
             .Builder()
