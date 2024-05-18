@@ -58,7 +58,7 @@ object MessageMapper {
             text = text,
             readBy = readBy.toSet(),
             isDeleted = isDeleted,
-            editedAt = LocalDateTime.parse(editedAt, timeFormatter),
+            editedAt = editedAt?.let { LocalDateTime.parse(it, timeFormatter) },
             sentAt = LocalDateTime.parse(sentAt, timeFormatter)
         )
     }

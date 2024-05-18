@@ -31,6 +31,14 @@ internal class RoomsRepositoryImpl @Inject constructor(
 
     override val isConnected = roomsWebsocketClient.isConnected
 
+    override fun startWebsocket() {
+        roomsWebsocketClient.start()
+    }
+
+    override fun stopWebsocket() {
+        roomsWebsocketClient.stop()
+    }
+
     override fun getPagingRooms(): Flow<PagingData<Room>> =
         roomsPager.flow.map(RoomMapper.localPagerToEntryPager)
 

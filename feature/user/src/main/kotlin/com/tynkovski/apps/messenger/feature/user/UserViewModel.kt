@@ -1,5 +1,6 @@
 package com.tynkovski.apps.messenger.feature.user
 
+import android.util.Log
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
@@ -114,6 +115,9 @@ class UserViewModel @Inject constructor(
             findChatWithUserUsecase(userId).collector(
                 onSuccess = {
                     mSideEffect.emit(UserSideEffect.NavigateToRoom(it.id))
+                },
+                onError = {
+                    Log.d("user screen","no room ${it.message}}")
                 }
             )
         }

@@ -66,7 +66,7 @@ class ChatsWebsocketsClientImpl @Inject constructor(
 
     override suspend fun processServerResponse(event: String, json: String) {
         val response = Json.decodeFromString<MessageResponse>(json)
-        val room = MessageMapper.remoteToEntry(response)
+        val room = MessageMapper.remoteToEntry(response) // todo throws error
         val entity = MessageMapper.entryToLocal(room)
         when (event) {
             SEND_MESSAGE -> dao.insert(entity)
@@ -75,9 +75,5 @@ class ChatsWebsocketsClientImpl @Inject constructor(
             READ_MESSAGE -> dao.upsert(entity)
             else -> error("Unknown response")
         }
-    }
-
-    init {
-        start()
     }
 }

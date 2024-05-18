@@ -34,6 +34,14 @@ internal class MessagesRepositoryImpl @Inject constructor(
 
     override val isConnected = messagesWebsocketClient.isConnected
 
+    override fun startWebsocket() {
+        messagesWebsocketClient.start()
+    }
+
+    override fun stopWebsocket() {
+        messagesWebsocketClient.stop()
+    }
+
     override fun getPagingMessages(roomId: Long): Flow<PagingData<Message>> =
         Pager(
             config = PagingConfig(pageSize = 5),

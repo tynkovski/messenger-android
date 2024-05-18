@@ -10,6 +10,10 @@ import kotlinx.coroutines.flow.StateFlow
 interface MessagesRepository : Syncable {
     val isConnected: StateFlow<Boolean>
 
+    fun startWebsocket()
+
+    fun stopWebsocket()
+
     fun getPagingMessages(roomId: Long): Flow<PagingData<Message>>
 
     fun sendMessage(roomId: Long, message: String): Flow<Boolean>

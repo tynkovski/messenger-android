@@ -28,11 +28,15 @@ internal class ChatViewModel @Inject constructor(
 
     val pager = messagesRepository.getPagingMessages(chatArgs.chatId).map { paging ->
         paging.map { message ->
-            val sender = if (message.senderId != myselfId)  usersRepository
+            val sender = if (message.senderId != myselfId) usersRepository
                 .getUser(message.senderId)
                 .firstOrNull()
                 ?.let { it.name ?: it.login } else null
             MessageUi.fromMessage(message, sender, myselfId)
         }
     }.cachedIn(viewModelScope)
+
+    init {
+        messagesRepository.startWebsocket()
+    }
 }

@@ -85,8 +85,4 @@ class RoomsWebsocketClientImpl @Inject constructor(
             else -> error("Unknown response")
         }
     }
-
-    init {
-        start()
-    }
 }

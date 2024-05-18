@@ -22,4 +22,8 @@ class ChatsViewModel @Inject constructor(
     val pager = roomsRepository.getPagingRooms().map { paging ->
         paging.map { room -> RoomUi.fromRoom(room, room.lastAction.authorName, 0) }
     }.cachedIn(viewModelScope)
+
+    init {
+        roomsRepository.startWebsocket()
+    }
 }

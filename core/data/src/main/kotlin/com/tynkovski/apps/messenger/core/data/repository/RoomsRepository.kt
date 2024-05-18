@@ -7,8 +7,11 @@ import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.StateFlow
 
 interface RoomsRepository : Syncable {
-
     val isConnected: StateFlow<Boolean>
+
+    fun startWebsocket()
+
+    fun stopWebsocket()
 
     fun getPagingRooms(): Flow<PagingData<Room>>
 
