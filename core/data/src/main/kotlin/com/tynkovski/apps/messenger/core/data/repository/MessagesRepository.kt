@@ -16,6 +16,6 @@ interface MessagesRepository : Syncable {
 
     fun getPagingMessages(roomId: Long): Flow<PagingData<Message>>
 
-    fun sendMessage(roomId: Long, message: String): Flow<Boolean>
+    suspend fun sendMessage(roomId: Long, message: String): Boolean
 
 }

@@ -14,6 +14,7 @@ dependencies {
 
     implementation(libs.coil.kt)
     implementation(libs.coil.kt.compose)
+    implementation(libs.androidx.paging)
 
     androidTestImplementation(projects.core.testing)
 }

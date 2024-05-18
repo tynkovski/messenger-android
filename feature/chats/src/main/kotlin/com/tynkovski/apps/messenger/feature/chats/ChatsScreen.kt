@@ -93,7 +93,7 @@ private fun PagingSuccess(
                     .fillMaxWidth()
                     .clickable(onClick = { onChatClick(chat.id) })
                     .padding(vertical = 8.dp, horizontal = 16.dp),
-                title = chat.name ?: "Without name",
+                title = chat.name ?: chat.users.joinToString(", "),
                 time = chat.lastAction.actionDateTime,
                 actionType = chat.lastAction.actionType,
                 author = chat.lastAction.authorName,

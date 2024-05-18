@@ -19,8 +19,6 @@ import com.tynkovski.apps.messenger.core.network.MessagesDataSource
 import com.tynkovski.apps.messenger.core.network.MessengerDispatchers
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.flow
-import kotlinx.coroutines.flow.flowOn
 import kotlinx.coroutines.flow.map
 import javax.inject.Inject
 
@@ -54,9 +52,7 @@ internal class MessagesRepositoryImpl @Inject constructor(
             pagingSourceFactory = { dao.pagingSource(roomId) }
         ).flow.map(MessageMapper.localPagerToEntryPager)
 
-    override fun sendMessage(roomId: Long, message: String): Flow<Boolean> = flow {
-        emit(websocketsClient.sendMessage(roomId, message))
-    }.flowOn(dispatcher)
+    override suspend fun sendMessage(roomId: Long, message: String) = websocketsClient.sendMessage(roomId, message)
 
     override suspend fun syncWith(synchronizer: Synchronizer): Boolean = true // todo add sync
 }

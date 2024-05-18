@@ -41,8 +41,7 @@ class UserViewModel @Inject constructor(
     private val savedStateHandle: SavedStateHandle,
 ) : ViewModel() {
     private val userArgs: UserArgs = UserArgs(savedStateHandle)
-    private val mContactsState: MutableStateFlow<Result<Set<User>>> =
-        MutableStateFlow(Result.Loading)
+    private val mContactsState: MutableStateFlow<Result<Set<User>>> = MutableStateFlow(Result.Loading)
 
     private val mSideEffect: MutableSharedFlow<UserSideEffect> = MutableSharedFlow()
     val sideEffect = mSideEffect.asSharedFlow()
