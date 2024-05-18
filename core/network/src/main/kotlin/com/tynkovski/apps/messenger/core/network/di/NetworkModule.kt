@@ -6,6 +6,8 @@ import coil.ImageLoader
 import coil.decode.SvgDecoder
 import coil.util.DebugLogger
 import com.tynkovski.apps.messenger.core.network.BuildConfig
+import com.tynkovski.apps.messenger.core.network.interceptors.RefreshTokenInterceptor
+import com.tynkovski.apps.messenger.core.network.interceptors.TokenInterceptor
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -27,32 +29,35 @@ internal object NetworkModule {
     }
 
     @Provides
+    fun providesLoggingInterceptor(): HttpLoggingInterceptor = HttpLoggingInterceptor().apply {
+        if (BuildConfig.DEBUG) {
+            setLevel(HttpLoggingInterceptor.Level.BODY)
+        }
+    }
+
+    @Provides
     @Singleton
-    fun okHttpCallFactory(): Call.Factory = trace("NiaOkHttpClient") {
+    fun okHttpCallFactory(
+        loggingInterceptor: HttpLoggingInterceptor,
+        tokenInterceptor: TokenInterceptor,
+        refreshTokenInterceptor: RefreshTokenInterceptor
+    ): Call.Factory = trace("OkHttpClient") {
         OkHttpClient.Builder()
-            .addInterceptor( // todo add token header interceptor
-                HttpLoggingInterceptor()
-                    .apply {
-                        if (BuildConfig.DEBUG) {
-                            setLevel(HttpLoggingInterceptor.Level.BODY)
-                        }
-                    }
-            )
+            .addInterceptor(tokenInterceptor)
+            .addInterceptor(refreshTokenInterceptor)
+            .addInterceptor(loggingInterceptor)
             .build()
     }
 
     @Provides
     @Singleton
     fun imageLoader(
-        // We specifically request dagger.Lazy here, so that it's not instantiated from Dagger.
         okHttpCallFactory: dagger.Lazy<Call.Factory>,
         @ApplicationContext application: Context,
-    ): ImageLoader = trace("NiaImageLoader") {
+    ): ImageLoader = trace("ImageLoader") {
         ImageLoader.Builder(application)
             .callFactory { okHttpCallFactory.get() }
             .components { add(SvgDecoder.Factory()) }
-            // Assume most content images are versioned urls
-            // but some problematic images are fetching each time
             .respectCacheHeaders(false)
             .apply {
                 if (BuildConfig.DEBUG) {
@@ -61,5 +66,4 @@ internal object NetworkModule {
             }
             .build()
     }
-
 }

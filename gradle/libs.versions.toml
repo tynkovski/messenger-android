@@ -15,6 +15,7 @@ androidxComposeRuntimeTracing = "1.0.0-beta01"
 androidxCore = "1.12.0"
 androidxCoreSplashscreen = "1.0.1"
 androidxDataStore = "1.0.0"
+androidxDataStorePreferences = "1.1.1"
 androidxEspresso = "3.5.1"
 androidxHiltNavigationCompose = "1.2.0"
 androidxLifecycle = "2.7.0"
@@ -59,6 +60,7 @@ room = "2.6.1"
 secrets = "2.0.1"
 truth = "1.4.2"
 turbine = "1.0.0"
+paging = "3.2.1"
 
 [libraries]
 accompanist-permissions = { group = "com.google.accompanist", name = "accompanist-permissions", version.ref = "accompanist" }
@@ -86,6 +88,7 @@ androidx-compose-ui-util = { group = "androidx.compose.ui", name = "ui-util" }
 androidx-core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "androidxCore" }
 androidx-core-splashscreen = { group = "androidx.core", name = "core-splashscreen", version.ref = "androidxCoreSplashscreen" }
 androidx-dataStore-core = { group = "androidx.datastore", name = "datastore", version.ref = "androidxDataStore" }
+androidx-dataStore-preferences-core = { group = "androidx.datastore", name = "datastore-preferences", version.ref = "androidxDataStorePreferences" }
 androidx-hilt-navigation-compose = { group = "androidx.hilt", name = "hilt-navigation-compose", version.ref = "androidxHiltNavigationCompose" }
 androidx-lifecycle-runtimeCompose = { group = "androidx.lifecycle", name = "lifecycle-runtime-compose", version.ref = "androidxLifecycle" }
 androidx-lifecycle-runtimeTesting = { group = "androidx.lifecycle", name = "lifecycle-runtime-testing", version.ref = "androidxLifecycle" }
@@ -93,6 +96,8 @@ androidx-lifecycle-viewModelCompose = { group = "androidx.lifecycle", name = "li
 androidx-metrics = { group = "androidx.metrics", name = "metrics-performance", version.ref = "androidxMetrics" }
 androidx-navigation-compose = { group = "androidx.navigation", name = "navigation-compose", version.ref = "androidxNavigation" }
 androidx-navigation-testing = { group = "androidx.navigation", name = "navigation-testing", version.ref = "androidxNavigation" }
+androidx-paging = {group = "androidx.paging", name = "paging-runtime", version.ref="paging"}
+androidx-paging-compose = {group = "androidx.paging", name = "paging-compose", version.ref="paging"}
 androidx-profileinstaller = { group = "androidx.profileinstaller", name = "profileinstaller", version.ref = "androidxProfileinstaller" }
 androidx-test-core = { group = "androidx.test", name = "core", version.ref = "androidxTestCore" }
 androidx-test-espresso-core = { group = "androidx.test.espresso", name = "espresso-core", version.ref = "androidxEspresso" }
@@ -138,6 +143,8 @@ roborazzi = { group = "io.github.takahirom.roborazzi", name = "roborazzi", versi
 room-compiler = { group = "androidx.room", name = "room-compiler", version.ref = "room" }
 room-ktx = { group = "androidx.room", name = "room-ktx", version.ref = "room" }
 room-runtime = { group = "androidx.room", name = "room-runtime", version.ref = "room" }
+room-paging = {group = "androidx.room", name = "room-paging", version.ref="room"}
+
 truth = { group = "com.google.truth", name = "truth", version.ref = "truth" }
 turbine = { group = "app.cash.turbine", name = "turbine", version.ref = "turbine" }
 
@@ -186,19 +193,3 @@ messenger-android-lint = { id = "messenger.android.lint", version = "unspecified
 messenger-android-room = { id = "messenger.android.room", version = "unspecified" }
 messenger-android-test = { id = "messenger.android.test", version = "unspecified" }
 messenger-jvm-library = { id = "messenger.jvm.library", version = "unspecified" }
-
-# old todo delete
-#messenger-android-application          = { id = "messenger.android.application",          version = "unspecified" }
-#messenger-android-application-compose  = { id = "messenger.android.application.compose",  version = "unspecified" }
-#messenger-android-application-flavors  = { id = "messenger.android.application.flavors",  version = "unspecified" }
-#messenger-android-application-jacoco   = { id = "messenger.android.application.jacoco",   version = "unspecified" }
-#messenger-android-feature              = { id = "messenger.android.feature",              version = "unspecified" }
-#messenger-android-hilt                 = { id = "messenger.android.hilt",                 version = "unspecified" }
-#messenger-android-library              = { id = "messenger.android.library",              version = "unspecified" }
-#messenger-android-library-compose      = { id = "messenger.android.library.compose",      version = "unspecified" }
-#messenger-android-library-jacoco       = { id = "messenger.android.library.jacoco",       version = "unspecified" }
-#messenger-android-room                 = { id = "messenger.android.room",                 version = "unspecified" }
-#messenger-jvm-library                  = { id = "messenger.jvm.library",                  version = "unspecified" }
-#messenger-android-test                 = { id = "messenger.android.test",                 version = "unspecified" }
-## messenger-android-lint                 = { id = "messenger.android.lint",                 version = "unspecified" }
-## messenger-android-application-firebase = { id = "messenger.android.application.firebase", version = "unspecified" }

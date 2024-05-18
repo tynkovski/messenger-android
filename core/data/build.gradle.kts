@@ -2,6 +2,7 @@ plugins {
     alias(libs.plugins.messenger.android.library)
     alias(libs.plugins.messenger.android.library.jacoco)
     alias(libs.plugins.messenger.android.hilt)
+    alias(libs.plugins.messenger.android.room)
     id("kotlinx-serialization")
 }
 
@@ -23,6 +24,10 @@ dependencies {
     api(projects.core.network)
 
     implementation(projects.core.notifications)
+
+    implementation(libs.androidx.paging)
+    implementation(libs.okhttp.logging)
+    implementation(libs.kotlinx.serialization.json)
 
     testImplementation(libs.kotlinx.coroutines.test)
     testImplementation(libs.kotlinx.serialization.json)

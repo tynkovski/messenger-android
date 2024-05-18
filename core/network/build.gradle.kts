@@ -24,6 +24,7 @@ secrets {
 
 dependencies {
     api(libs.kotlinx.datetime)
+    api(projects.core.datastore)
     api(projects.core.common)
     api(projects.core.model)
 

@@ -39,6 +39,7 @@ android {
                 getDefaultProguardFile("proguard-android-optimize.txt"),
                 "proguard-rules.pro"
             )
+            signingConfig = signingConfigs.getByName("debug")
         }
     }
 
@@ -63,6 +64,7 @@ dependencies {
     implementation(projects.feature.settings)
     implementation(projects.feature.chat)
     implementation(projects.feature.user)
+    implementation(projects.feature.search)
 
     // core modules here
     implementation(projects.core.common)

@@ -1,5 +1,7 @@
 package com.tynkovski.apps.messenger.feature.settings.navigation
 
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.ui.Modifier
 import androidx.navigation.NavController
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.NavOptions
@@ -17,6 +19,8 @@ fun NavGraphBuilder.settingsScreen(
         route = SETTINGS_ROUTE,
         arguments = listOf(),
     ) {
-        SettingsRoute()
+        SettingsRoute(
+            modifier = Modifier.fillMaxSize()
+        )
     }
 }

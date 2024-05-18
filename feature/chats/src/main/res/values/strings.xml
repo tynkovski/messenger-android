@@ -2,4 +2,12 @@
 
 <resources>
     <string name="feature_chats_title_chats">Chats</string>
+     <string name="feature_chats_action_user_create_room">created chat</string>
+     <string name="feature_chats_action_user_rename_room">renamed room</string>
+     <string name="feature_chats_action_user_sent_message">:</string>
+     <string name="feature_chats_action_user_invite_user">invited</string>
+     <string name="feature_chats_action_user_kick_user">kicked</string>
+     <string name="feature_chats_action_user_quit">quit</string>
+     <string name="feature_chats_action_user_joined">joined</string>
+     <string name="feature_chats_action_make_moderator">is moderator</string>
 </resources>

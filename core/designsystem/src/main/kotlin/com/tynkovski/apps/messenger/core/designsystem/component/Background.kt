@@ -37,6 +37,10 @@ fun MessengerBackground(
 @Preview(uiMode = Configuration.UI_MODE_NIGHT_YES, name = "Dark theme")
 annotation class ThemePreviews
 
+@Preview(uiMode = Configuration.UI_MODE_NIGHT_NO, name = "Light theme", showBackground = true)
+@Preview(uiMode = Configuration.UI_MODE_NIGHT_YES, name = "Dark theme", showBackground = true)
+annotation class ThemeBackgroundPreviews
+
 @ThemePreviews
 @Composable
 fun BackgroundDefault() {

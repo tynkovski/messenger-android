@@ -1,6 +1,15 @@
 package com.tynkovski.apps.messenger.feature.settings
 
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.navigationBars
+import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.statusBars
+import androidx.compose.foundation.layout.union
+import androidx.compose.material3.Button
+import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
@@ -11,15 +20,44 @@ internal fun SettingsRoute(
     modifier: Modifier = Modifier,
     viewModel: SettingsViewModel = hiltViewModel(),
 ) {
-    SettingsScreen(modifier = modifier)
+    SettingsScreen(
+        modifier = modifier,
+        signOut = viewModel::signOut,
+        getUser = viewModel::getUser
+    )
 }
 
 @Composable
 internal fun SettingsScreen(
     modifier: Modifier = Modifier,
+    signOut: () -> Unit,
+    getUser: () -> Unit,
 ) {
-    Text(
-        modifier = Modifier.fillMaxSize(),
-        text = "Settings"
-    )
+    Scaffold(
+        modifier = modifier,
+    ) { padding ->
+        Column(
+            modifier = Modifier
+                .fillMaxSize()
+                .padding(padding),
+        ) {
+            Text(
+                modifier = Modifier.fillMaxWidth(),
+                text = "Settings"
+            )
+            Button(
+                modifier = Modifier.fillMaxWidth(),
+                onClick = getUser
+            ) {
+                Text("getUser")
+            }
+            Button(
+                modifier = Modifier.fillMaxWidth(),
+                onClick = signOut
+            ) {
+                Text("sign out")
+            }
+        }
+    }
+
 }

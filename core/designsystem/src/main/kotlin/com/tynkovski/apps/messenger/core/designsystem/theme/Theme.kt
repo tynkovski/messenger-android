@@ -163,8 +163,8 @@ fun MessengerTheme(
 
     // Background theme
     val defaultBackgroundTheme = BackgroundTheme(
-        color = colorScheme.surface,
-        tonalElevation = 2.dp,
+        color = colorScheme.background,
+        tonalElevation = 0.dp,
     )
     val backgroundTheme = when {
         androidTheme -> if (darkTheme) DarkAndroidBackgroundTheme else LightAndroidBackgroundTheme
@@ -172,7 +172,7 @@ fun MessengerTheme(
     }
     val tintTheme = when {
         androidTheme -> TintTheme()
-        !disableDynamicTheming && supportsDynamicTheming() -> TintTheme(colorScheme.primary)
+        !disableDynamicTheming && supportsDynamicTheming() -> TintTheme(colorScheme.background)
         else -> TintTheme()
     }
 

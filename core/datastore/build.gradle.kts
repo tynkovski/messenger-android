@@ -15,7 +15,7 @@ android {
 }
 
 dependencies {
-    api(libs.androidx.dataStore.core)
+    api(libs.androidx.dataStore.preferences.core)
     api(projects.core.model)
 
     implementation(projects.core.common)
