@@ -22,4 +22,6 @@ interface RoomsRepository : Syncable {
     fun getRoom(
         roomId: Long,
     ): Flow<Room>
+
+    suspend fun deleteRoom(roomId: Long): Boolean
 }

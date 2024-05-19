@@ -256,7 +256,7 @@ private fun EmptySearch(
 
         Spacer(modifier = Modifier.height(8.dp))
 
-        Text(text = "Search people", style = MaterialTheme.typography.bodyLarge)
+        Text(text = "And add them to your contacts", style = MaterialTheme.typography.bodyLarge)
     }
 }
 

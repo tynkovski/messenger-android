@@ -52,9 +52,6 @@ internal fun ChatRoute(
 ) {
     val state by viewModel.state.collectAsStateWithLifecycle()
     val messageInput by viewModel.inputState.collectAsStateWithLifecycle()
-    viewModel.sideEffect.collectAsSideEffect {
-
-    }
 
     ChatScreen(
         state = state,

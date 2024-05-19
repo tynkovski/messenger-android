@@ -30,6 +30,9 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.tynkovski.apps.messenger.core.designsystem.component.DefaultAvatar
 import com.tynkovski.apps.messenger.core.designsystem.theme.MessengerTheme
+import com.tynkovski.apps.messenger.core.ui.contact.Contact
+import com.tynkovski.apps.messenger.core.ui.contact.ContactUi
+import com.tynkovski.apps.messenger.core.ui.contact.ContactsUiState
 import com.tynkovski.apps.messenger.core.ui.error.Error
 import com.tynkovski.apps.messenger.core.ui.loading.Loading
 
@@ -107,61 +110,12 @@ private fun Success(
     LazyColumn(
         modifier = modifier,
     ) {
-        items(
-            contacts.size,
-            //key = { contacts[it].id }
-        ) {
+        items(contacts.size, key = { contacts[it].id }) {
             Contact(
                 contact = contacts[it],
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(vertical = 12.dp, horizontal = 16.dp),
-                onClick = {
-                    onContactClick(contacts[it].id)
-                }
+                modifier = Modifier.fillMaxWidth(),
+                onClick = { onContactClick(contacts[it].id) }
             )
-        }
-    }
-}
-
-@Composable
-private fun Contact(
-    contact: ContactUi,
-    onClick: () -> Unit,
-    modifier: Modifier,
-) {
-    Row(
-        modifier = modifier.clickable(onClick = onClick),
-        verticalAlignment = Alignment.CenterVertically,
-        horizontalArrangement = Arrangement.spacedBy(8.dp)
-    ) {
-        DefaultAvatar(url = contact.image)
-
-        Column(
-            modifier = Modifier.weight(1f),
-            verticalArrangement = Arrangement.Center
-        ) {
-            Text(
-                overflow = TextOverflow.Ellipsis,
-                text = contact.login,
-                style = MaterialTheme.typography.titleMedium
-            )
-            contact.name?.let {
-                Text(
-                    modifier = Modifier,
-                    text = it,
-                    maxLines = 1,
-                    overflow = TextOverflow.Ellipsis,
-                    style = MaterialTheme.typography.bodyMedium,
-                )
-            }
-        }
-
-        Column(
-            modifier = Modifier.weight(1f),
-            verticalArrangement = Arrangement.spacedBy(2.dp)
-        ) {
-            // buttons
         }
     }
 }
@@ -184,30 +138,3 @@ private fun Empty(
     }
 }
 
-@Preview(showBackground = true)
-@Composable
-private fun ContactPreview() {
-    MessengerTheme {
-        Contact(
-            modifier = Modifier.fillMaxWidth(),
-            contact = ContactUi(
-                id = 4553, login = "verear", name = null, image = null
-            ),
-            onClick = {}
-        )
-    }
-}
-
-@Preview(showBackground = true)
-@Composable
-private fun ContactPreview2() {
-    MessengerTheme {
-        Contact(
-            modifier = Modifier.fillMaxWidth(),
-            contact = ContactUi(
-                id = 4553, login = "verear", name = "Some name", image = null
-            ),
-            onClick = {}
-        )
-    }
-}

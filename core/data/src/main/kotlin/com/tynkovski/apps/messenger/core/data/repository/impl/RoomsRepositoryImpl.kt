@@ -58,5 +58,9 @@ internal class RoomsRepositoryImpl @Inject constructor(
         entryToLocalMapper = RoomMapper.entryToLocal
     ).flowOn(dispatcher)
 
+    override suspend fun deleteRoom(roomId: Long): Boolean {
+        return websocketsClient.deleteRoom(roomId)
+    }
+
     override suspend fun syncWith(synchronizer: Synchronizer): Boolean = true
 }

@@ -5,6 +5,8 @@ import androidx.lifecycle.viewModelScope
 import com.tynkovski.apps.messenger.core.data.repository.ContactsRepository
 import com.tynkovski.apps.messenger.core.model.collector
 import com.tynkovski.apps.messenger.core.model.data.User
+import com.tynkovski.apps.messenger.core.ui.contact.ContactUi
+import com.tynkovski.apps.messenger.core.ui.contact.ContactsUiState
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow

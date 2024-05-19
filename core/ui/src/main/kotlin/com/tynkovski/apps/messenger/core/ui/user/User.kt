@@ -32,10 +32,12 @@ fun SuccessSomebody(
 ) {
     Column(
         modifier = modifier,
-        horizontalAlignment = Alignment.CenterHorizontally,
         verticalArrangement = Arrangement.spacedBy(12.dp)
     ) {
-        Column(horizontalAlignment = Alignment.CenterHorizontally) {
+        Column(
+            modifier = Modifier.fillMaxWidth(),
+            horizontalAlignment = Alignment.CenterHorizontally
+        ) {
             DefaultAvatar(
                 url = user.image,
                 size = 128.dp
@@ -67,13 +69,18 @@ fun SuccessMyself(
 ) {
     Column(
         modifier = modifier,
-        horizontalAlignment = Alignment.CenterHorizontally,
         verticalArrangement = Arrangement.spacedBy(24.dp)
     ) {
-        DefaultAvatar(
-            url = user.image,
-            size = 128.dp
-        )
+        Column(
+            modifier = Modifier.fillMaxWidth(),
+            horizontalAlignment = Alignment.CenterHorizontally
+        ) {
+            DefaultAvatar(
+                url = user.image,
+                size = 128.dp
+            )
+        }
+
         Column(verticalArrangement = Arrangement.spacedBy(8.dp)) {
             ListItem(title = "id", description = user.id.toString())
             ListItem(title = "login", description = user.login)

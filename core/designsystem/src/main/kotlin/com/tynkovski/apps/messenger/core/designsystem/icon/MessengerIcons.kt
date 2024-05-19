@@ -2,14 +2,15 @@ package com.tynkovski.apps.messenger.core.designsystem.icon
 
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.rounded.ArrowBack
-import androidx.compose.material.icons.automirrored.rounded.Message
-import androidx.compose.material.icons.automirrored.rounded.Send
 import androidx.compose.material.icons.automirrored.rounded.ShortText
 import androidx.compose.material.icons.filled.MoreVert
 import androidx.compose.material.icons.rounded.Add
 import androidx.compose.material.icons.rounded.ChatBubble
 import androidx.compose.material.icons.rounded.ChatBubbleOutline
 import androidx.compose.material.icons.rounded.Close
+import androidx.compose.material.icons.rounded.Create
+import androidx.compose.material.icons.rounded.Delete
+import androidx.compose.material.icons.rounded.Done
 import androidx.compose.material.icons.rounded.Edit
 import androidx.compose.material.icons.rounded.Group
 import androidx.compose.material.icons.rounded.Lock
@@ -50,4 +51,8 @@ object MessengerIcons {
     val Edited = Icons.Rounded.Edit
 
     val Send = Icons.Rounded.Send
+    val CreateChat = Icons.Rounded.Create
+
+    val Done = Icons.Rounded.Done
+    val Delete = Icons.Rounded.Delete
 }
