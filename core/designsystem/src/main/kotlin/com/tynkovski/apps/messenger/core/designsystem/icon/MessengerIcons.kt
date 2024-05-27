@@ -2,6 +2,8 @@ package com.tynkovski.apps.messenger.core.designsystem.icon
 
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.rounded.ArrowBack
+import androidx.compose.material.icons.automirrored.rounded.Help
+import androidx.compose.material.icons.automirrored.rounded.Logout
 import androidx.compose.material.icons.automirrored.rounded.ShortText
 import androidx.compose.material.icons.filled.MoreVert
 import androidx.compose.material.icons.rounded.Add
@@ -12,13 +14,16 @@ import androidx.compose.material.icons.rounded.Create
 import androidx.compose.material.icons.rounded.Delete
 import androidx.compose.material.icons.rounded.Done
 import androidx.compose.material.icons.rounded.Edit
+import androidx.compose.material.icons.rounded.Forum
 import androidx.compose.material.icons.rounded.Group
 import androidx.compose.material.icons.rounded.Lock
+import androidx.compose.material.icons.rounded.Notifications
 import androidx.compose.material.icons.rounded.PermIdentity
 import androidx.compose.material.icons.rounded.Person
 import androidx.compose.material.icons.rounded.PersonAdd
 import androidx.compose.material.icons.rounded.PersonRemove
 import androidx.compose.material.icons.rounded.PersonSearch
+import androidx.compose.material.icons.rounded.PrivacyTip
 import androidx.compose.material.icons.rounded.Search
 import androidx.compose.material.icons.rounded.Send
 import androidx.compose.material.icons.rounded.Settings
@@ -55,4 +60,11 @@ object MessengerIcons {
 
     val Done = Icons.Rounded.Done
     val Delete = Icons.Rounded.Delete
+
+    val Logout = Icons.AutoMirrored.Rounded.Logout
+
+    val Help = Icons.AutoMirrored.Rounded.Help
+    val PrivacyPolicy = Icons.Rounded.PrivacyTip
+    val Notifications = Icons.Rounded.Notifications
+    val Forum = Icons.Rounded.Forum
 }

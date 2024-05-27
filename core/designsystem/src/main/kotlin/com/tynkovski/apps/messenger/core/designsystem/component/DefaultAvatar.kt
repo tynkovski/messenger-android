@@ -38,7 +38,7 @@ fun DefaultAvatar(
     Image(
         modifier = modifier
             .size(size)
-            .background(shape = CircleShape, color = MaterialTheme.colorScheme.outline),
+            .background(shape = CircleShape, color = MaterialTheme.colorScheme.background),
         contentScale = ContentScale.Inside,
         painter = if (isError.not()) {
             imageLoader
