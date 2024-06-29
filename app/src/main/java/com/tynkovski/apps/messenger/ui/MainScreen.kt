@@ -64,17 +64,13 @@ fun MainScreen(
                     )
                 }
 
-                TopLevelDestination.CHATS -> {
-                    MessengerTopAppBar(
-                        titleRes = destination.titleTextId
-                    )
-                }
-
                 TopLevelDestination.SETTINGS -> {
                     MessengerTopAppBar(
                         titleRes = destination.titleTextId
                     )
                 }
+
+                TopLevelDestination.CHATS -> { Unit }
 
                 null -> Unit
             }

@@ -33,10 +33,10 @@ interface RoomsDao {
     @Query("SELECT * FROM rooms WHERE isDeleted = 0 ORDER by actionDateTime DESC")
     fun getRooms(): Flow<List<RoomEntity>>
 
-    @Query("SELECT * FROM rooms ORDER by actionDateTime DESC")
+    @Query("SELECT * FROM rooms WHERE isDeleted = 0 ORDER by actionDateTime DESC")
     fun pagingSource(): PagingSource<Int, RoomEntity>
 
-    @Query("SELECT * FROM rooms where id LIKE :roomId")
+    @Query("SELECT * FROM rooms where id LIKE :roomId AND isDeleted = 0")
     fun getRoom(roomId: Long): RoomEntity?
 
     @Query("SELECT * FROM rooms WHERE isDeleted = 0 AND users LIKE '%' || :collocutorId || '%'")

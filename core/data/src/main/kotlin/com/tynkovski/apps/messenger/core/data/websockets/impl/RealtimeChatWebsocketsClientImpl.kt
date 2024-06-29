@@ -1,5 +1,6 @@
 package com.tynkovski.apps.messenger.core.data.websockets.impl
 
+import android.util.Log
 import com.tynkovski.apps.messenger.core.data.util.MessageMapper
 import com.tynkovski.apps.messenger.core.data.util.RoomMapper
 import com.tynkovski.apps.messenger.core.data.websockets.BaseWebsocketClient
@@ -12,6 +13,7 @@ import com.tynkovski.apps.messenger.core.network.MessengerDispatchers
 import com.tynkovski.apps.messenger.core.network.interceptors.RefreshTokenInterceptor
 import com.tynkovski.apps.messenger.core.network.interceptors.TokenInterceptor
 import com.tynkovski.apps.messenger.core.network.model.request.CreateRoomRequest
+import com.tynkovski.apps.messenger.core.network.model.request.DeleteRoomRequest
 import com.tynkovski.apps.messenger.core.network.model.request.SendMessageRequest
 import com.tynkovski.apps.messenger.core.network.model.response.MessageResponse
 import com.tynkovski.apps.messenger.core.network.model.response.RoomResponse
@@ -52,20 +54,24 @@ class RealtimeChatWebsocketsClientImpl @Inject constructor(
     override val isConnected = mIsWorking.asStateFlow()
 
     override fun start() {
-        val okHttpClient = OkHttpClient.Builder()
-            .addInterceptor(loggingInterceptor)
-            .addInterceptor(tokenInterceptor)
-            .addInterceptor(refreshInterceptor)
-            .readTimeout(0, TimeUnit.MILLISECONDS)
-            .build()
+        try {
+            val okHttpClient = OkHttpClient.Builder()
+                .addInterceptor(loggingInterceptor)
+                .addInterceptor(refreshInterceptor)
+                .addInterceptor(tokenInterceptor)
+                .readTimeout(0, TimeUnit.MILLISECONDS)
+                .build()
 
-        val request = Request.Builder()
-            .url(WEBSOCKET_URL)
-            .build()
+            val request = Request.Builder()
+                .url(WEBSOCKET_URL)
+                .build()
 
-        webSocketClient = okHttpClient.newWebSocket(request, listener)
+            webSocketClient = okHttpClient.newWebSocket(request, listener)
 
-        okHttpClient.dispatcher.executorService.shutdown()
+            okHttpClient.dispatcher.executorService.shutdown()
+        } catch (e: Throwable) {
+            Log.d("WEBSOCKET", "Error occured ${e.message}")
+        }
     }
 
     override fun stop() {
@@ -80,6 +86,11 @@ class RealtimeChatWebsocketsClientImpl @Inject constructor(
     override suspend fun createRoom(collocutorId: Long, name: String?, image: String?): Boolean {
         val request = CreateRoomRequest(name = name, image = image, users = listOf(collocutorId))
         return sendFrame(CREATE_ROOM, request)
+    }
+
+    override suspend fun deleteRoom(roomId: Long): Boolean {
+        val request = DeleteRoomRequest(roomId)
+        return sendFrame(DELETE_ROOM, request)
     }
 
     override suspend fun processServerResponse(event: String, json: String) {

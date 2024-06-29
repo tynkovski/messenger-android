@@ -1,4 +1,4 @@
-package com.tynkovski.apps.messenger.feature.contacts
+package com.tynkovski.apps.messenger.core.ui.contact
 
 import androidx.compose.runtime.Stable
 import com.tynkovski.apps.messenger.core.model.data.User

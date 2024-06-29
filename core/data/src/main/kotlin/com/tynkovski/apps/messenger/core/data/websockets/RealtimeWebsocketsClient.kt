@@ -16,4 +16,6 @@ interface RealtimeWebsocketsClient {
         name: String? = null,
         image: String? = null
     ): Boolean
+
+    suspend fun deleteRoom(roomId: Long): Boolean
 }

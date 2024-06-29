@@ -8,16 +8,15 @@ import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
 import androidx.activity.viewModels
 import androidx.compose.foundation.isSystemInDarkTheme
-import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.material3.Button
-import androidx.compose.material3.Text
 import androidx.compose.runtime.DisposableEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
+import androidx.core.view.WindowCompat
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
@@ -43,6 +42,7 @@ class MainActivity : ComponentActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         val splashScreen = installSplashScreen()
+        enableEdgeToEdge()
         super.onCreate(savedInstanceState)
 
         var tokenState: MainActivityViewModel.TokenState by mutableStateOf(MainActivityViewModel.TokenState.Loading)
@@ -72,18 +72,28 @@ class MainActivity : ComponentActivity() {
                     navigationBarStyle = SystemBarStyle.auto(
                         Color.TRANSPARENT,
                         Color.TRANSPARENT,
-                    ) { isSystemInDarkTheme },
+                    ) { isSystemInDarkTheme }
                 )
                 onDispose {}
             }
 
             MessengerTheme {
-                MessengerApp(
-                    authenticated = tokenState.authenticated(),
-                    timeZoneMonitor = timeZoneMonitor,
-                    networkMonitor = networkMonitor,
-                    modifier = Modifier.fillMaxSize(),
-                )
+                when (val state = tokenState) {
+                    MainActivityViewModel.TokenState.Loading -> {
+                        Box(
+                            modifier = Modifier.fillMaxSize()
+                        )
+                    }
+                    is MainActivityViewModel.TokenState.Success -> {
+                        MessengerApp(
+                            authenticated = state.hasToken,
+                            timeZoneMonitor = timeZoneMonitor,
+                            networkMonitor = networkMonitor,
+                            modifier = Modifier.fillMaxSize(),
+                        )
+                    }
+                }
+
             }
         }
     }

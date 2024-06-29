@@ -39,8 +39,6 @@ internal class ChatViewModel @Inject constructor(
     private val roomsRepository: RoomsRepository,
     private val usersRepository: UsersRepository,
 ) : ViewModel() {
-    private val mSideEffect = MutableSharedFlow<ChatSideEffect>()
-
     val inputState = savedStateHandle.getStateFlow(INPUT_STATE, "")
 
     fun inputStateChanged(value: String) {
@@ -87,6 +85,4 @@ internal class ChatViewModel @Inject constructor(
             inputStateChanged("")
         }
     }
-
-    val sideEffect = mSideEffect.asSharedFlow()
 }
